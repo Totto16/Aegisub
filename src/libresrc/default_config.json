@@ -28,7 +28,7 @@
 		},
 		"Cache" : {
 			"HD" : {
-				"Location" : "default",
+				"Location" : "default"
 			},
 			"Type" : 1
 		},
@@ -100,14 +100,14 @@
 
 	"Colour" : {
 		"Audio Display" : {
-			"Keyframe" : "rgb(255,0,255)",
-			"Line Boundary Inactive Line" : "rgb(190,190,190)",
+			"Keyframe" : "rgb(255, 0, 255)",
+			"Line Boundary Inactive Line" : "rgb(190, 190, 190)",
 			"Line boundary End" : "rgb(0, 0, 216)",
 			"Line boundary Start" : "rgb(216, 0, 0)",
-			"Play Cursor" : "rgb(255,255,255)",
-			"Seconds Line" : "rgb(0,100,255)",
+			"Play Cursor" : "rgb(255, 255, 255)",
+			"Seconds Line" : "rgb(0, 100, 255)",
 			"Spectrum" : "Icy Blue",
-			"Syllable Boundaries" : "rgb(255,255,0)",
+			"Syllable Boundaries" : "rgb(255, 255, 0)",
 			"Waveform" : "Green"
 		},
 		"Schemes" : {
@@ -208,19 +208,19 @@
 		"Subtitle Grid" : {
 			"Active Border" : "rgb(255, 91, 239)",
 			"Background" : {
-				"Background" : "rgb(255,255,255)",
+				"Background" : "rgb(255, 255, 255)",
 				"Comment" : "rgb(216, 222, 245)",
 				"Inframe" : "rgb(255, 253, 234)",
 				"Selected Comment" : "rgb(211, 238, 238)",
 				"Selection" : "rgb(206, 255, 231)"
 			},
-			"Collision" : "rgb(255,0,0)",
-			"CPS Error" : "rgb(255,0,0)",
+			"Collision" : "rgb(255, 0, 0)",
+			"CPS Error" : "rgb(255, 0, 0)",
 			"Header" : "rgb(165, 207, 231)",
 			"Left Column" : "rgb(196, 236, 201)",
-			"Lines" : "rgb(190,190,190)",
-			"Selection" : "rgb(0,0,0)",
-			"Standard" : "rgb(0,0,0)"
+			"Lines" : "rgb(190, 190, 190)",
+			"Selection" : "rgb(0, 0, 0)",
+			"Standard" : "rgb(0, 0, 0)"
 		},
 		"Subtitle" : {
 			"Background" : "rgb(255, 255, 255)",
@@ -252,13 +252,13 @@
 					"Tags" : true
 				},
 				"Brackets" : "rgb(20, 50, 255)",
-				"Comment" : "rgb(0,0,0)",
-				"Drawing" : "rgb(0,0,0)",
+				"Comment" : "rgb(0, 0, 0)",
+				"Drawing" : "rgb(0, 0, 0)",
 				"Error" : "rgb(200, 0, 0)",
 				"Karaoke Template" : "rgb(128, 0, 192)",
 				"Karaoke Variable" : "rgb(128, 0, 192)",
 				"Line Break" : "rgb(160, 160, 160)",
-				"Normal" : "rgb(0,0,0)",
+				"Normal" : "rgb(0, 0, 0)",
 				"Parameters" : "rgb(40, 90, 40)",
 				"Slashes" : "rgb(255, 0, 200)",
 				"Tags" : "rgb(90, 90, 90)"
@@ -395,8 +395,8 @@
 	},
 
 	"Subtitle Format" : {
-		"ASS": {
-			"Default Style Catalog": "Default"
+		"ASS" : {
+			"Default Style Catalog" : "Default"
 		},
 		"EBU STL" : {
 			"Display Standard" : 0,
@@ -413,20 +413,19 @@
 			},
 			"Translate Alignments" : true
 		},
-		"MicroDVD": {
-			"Default Style Catalog": "Default",
+		"MicroDVD" : {
+			"Default Style Catalog" : "Default"
 		},
-		"SRT": {
-			"Default Style Catalog": "Default",
+		"SRT" : {
+			"Default Style Catalog" : "Default"
 		},
-		"TTXT": {
-			"Default Style Catalog": "Default",
+		"TTXT" : {
+			"Default Style Catalog" : "Default"
 		},
-		"TXT": {
-			"Default Style Catalog": "Default",
+		"TXT" : {
+			"Default Style Catalog" : "Default"
 		}
 	},
-
 	"Timing" : {
 		"Default Duration" : 3000
 	},
@@ -574,12 +573,12 @@
 			"Skip Whitespace" : true
 		},
 		"Visual" : {
-			"Autohide": false
+			"Autohide" : false
 		}
 	},
 
 	"Version" : {
-		"Last Version" : 4040,
+		"Last Version" : 9293,
 		"Next Check" : 0
 	},
 
