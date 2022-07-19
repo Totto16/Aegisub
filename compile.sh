@@ -14,10 +14,17 @@ export CC=gcc
 export CXX=g++
 
 buildtype=""
+DEBUG="false"
 if [ $ARG == "release" ]; then 
     buildtype="release"
 elif [ $ARG == "debug" ]; then
     buildtype="debugoptimized"
+elif [ $ARG == "clean" ]; then
+    sudo rm -rf build/
+    exit 0
+elif [ $ARG == "dev" ]; then
+    buildtype="debugoptimized"
+    DEBUG="true"
 elif [ $ARG == "runner" ]; then
 
     ACT=$(which act)
@@ -35,6 +42,12 @@ fi
     # CONFIGURE
 
     bash -c "meson build -Dbuildtype=$buildtype -Dlocal_boost=true -Dwx_version=3.1.7"
+
+    if [ $DEBUG == "true" ]; then
+        nodemon --watch src/ -e .cpp,.h --exec "sudo meson compile -C build && ./build/aegisub || exit 1"
+        exit 0
+    fi
+
 
     # COMPILE
 
@@ -56,14 +69,26 @@ fi
     sudo meson compile -C build linux-dependency-control
     sudo meson compile -C build aegisub.desktop
     sudo meson compile -C build ubuntu-deb
+    sudo meson compile -C build ubuntu.assdraw-deb
 
 
     # INSTALL if no second parameter is given
     if  [ -z $2 ]; then
         sudo dpkg -i build/$(ls build/  | grep aegisub_.*deb) || sudo apt-get -f install
         sudo dpkg -i build/$(ls build/  | grep aegisub-l10n_.*deb)  || sudo apt-get -f install
+        sudo dpkg -i build/$(ls build/  | grep assdraw.*deb)  || sudo apt-get -f install
     else
 
         sudo meson install -C build
 
     fi
+
+
+
+    #TODO make icons for ass work!
+    #icons for .ass .ssa
+    #mime type,
+
+    #TODO create flatpak: https://docs.flatpak.org/en/latest/first-build.html
+
+    # TODO compile each dependency local with the newest (stable?) version and then distruibute them as deb, and their also gonna be neede for flatpak support!

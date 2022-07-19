@@ -16,6 +16,7 @@ jobs:
     runs-on: ${{ matrix.config.os }}
 
     strategy:
+      fail-fast: false
       matrix:
         python-version: [ '3.x' ]   
         config:
@@ -124,6 +125,7 @@ jobs:
           sudo apt-get update
           sudo apt-get install ninja-build build-essential libx11-dev gcc-11 g++-11 libwxgtk3.0-gtk3-dev libgtk-3-dev libfreetype6-dev pkg-config libfontconfig1-dev libass-dev libasound2-dev libffms2-dev intltool libboost-all-dev luarocks libcurl4-nss-dev lua5.1* -y
           sudo luarocks install moonscript
+          pip install meson==0.62.2
 
       - name: Configure
         run: meson build ${{ matrix.config.args }} -Dbuildtype=${{ matrix.config.buildtype }}
@@ -180,10 +182,11 @@ jobs:
           meson compile -C build linux-dependency-control
           meson compile -C build aegisub.desktop
           meson compile -C build ubuntu-deb
+          meson compile -C build ubuntu.assdraw-deb
 
       - name: Upload artifacts - ubuntu deb
         uses: actions/upload-artifact@v3
         if: matrix.config.os == 'ubuntu-latest' && ${{ !env.ACT }}
         with:
           name: ${{ matrix.config.name }} - deb package
-          path: build/aegisub*.deb
+          path: build/*.deb
