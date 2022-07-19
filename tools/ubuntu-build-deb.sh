@@ -47,7 +47,9 @@ mkdir -p lib/x86_64-linux-gnu/
 declare -a modules=('chrono' 'thread' 'filesystem' 'locale' 'program_options')
 boost_version='1.79.0'
     for module in  ${modules[@]}; do
-        cp "../subprojects/boost_1_79_0/libs/$module/libboost_$module.$boost_version.so" "usr/lib/"
+        if  [ -d "../subprojects/boost_1_79_0/libs/$module" ]; then
+            cp "../subprojects/boost_1_79_0/libs/$module/libboost_$module.$boost_version.so" "usr/lib/"
+        fi
     done  
 
 
@@ -359,15 +361,14 @@ mkdir debian
 
 touch debian/control
 
-DEPENDECIES=$(dpkg-shlibdeps -O ../aegisub 2>/dev/null) 
+DEPENDECIES=$(dpkg-shlibdeps -O ../aegisub) 
 
 # substring, removes the first 15 charcaters
 
 DEPENDECY_LIST=${DEPENDECIES:15}
 
 # adding luarocks, that is also needed for dependency control!
-echo "Depends: $DEPENDECY_LIST ,luarocks (>= 3.8.0+dfsg1-1)"  >> DEBIAN/control
-
+echo "Depends: $DEPENDECY_LIST ,luarocks (>= 3.8.0+dfsg1-1)"  >> DEBIAN/control 
 rm debian/control
 
 rm -r debian

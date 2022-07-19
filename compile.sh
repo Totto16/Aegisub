@@ -41,7 +41,7 @@ fi
 
     # CONFIGURE
 
-    bash -c "meson build -Dbuildtype=$buildtype -Dlocal_boost=true -Dwx_version=3.1.7"
+    bash -c "meson build -Dbuildtype=$buildtype --force-fallback-for=icu,ffms2" 
 
     if [ $DEBUG == "true" ]; then
         nodemon --watch src/ -e .cpp,.h --exec "sudo meson compile -C build && ./build/aegisub || exit 1"
@@ -69,14 +69,15 @@ fi
     sudo meson compile -C build linux-dependency-control
     sudo meson compile -C build aegisub.desktop
     sudo meson compile -C build ubuntu-deb
-    sudo meson compile -C build ubuntu.assdraw-deb
+    # todo migrate to wxWidgets 3.2
+  #  sudo meson compile -C build ubuntu.assdraw-deb
 
 
     # INSTALL if no second parameter is given
     if  [ -z $2 ]; then
         sudo dpkg -i build/$(ls build/  | grep aegisub_.*deb) || sudo apt-get -f install
         sudo dpkg -i build/$(ls build/  | grep aegisub-l10n_.*deb)  || sudo apt-get -f install
-        sudo dpkg -i build/$(ls build/  | grep assdraw.*deb)  || sudo apt-get -f install
+     #   sudo dpkg -i build/$(ls build/  | grep assdraw.*deb)  || sudo apt-get -f install
     else
 
         sudo meson install -C build

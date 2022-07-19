@@ -1,6 +1,6 @@
 project('Aegisub', ['c', 'cpp'],
         license: 'BSD-3-Clause',
-        meson_version: '>=0.56.1', # with 63.0.0 the cmake project of wxWidgets fails!!! do 
+        meson_version: '>=0.57.0', # with 63.0.0 the cmake project of wxWidgets fails!!! do 
         default_options: ['cpp_std=c++14', 'buildtype=debugoptimized'],
         version: '3.3.0')
 
@@ -107,13 +107,14 @@ else
 endif
 deps += iconv_dep
 
-deps += dependency('libass', version: '>=0.9.7',
+## TODO test local build of libass with make!
+deps += dependency('libass', version: '>=0.16.0',
                    fallback: ['libass', 'libass_dep'])
 
 ## since at least 1.79 (or 1.75 ?) regex isn't needed anymore, its a C++11 builtin!)
 boost_modules = ['chrono', 'filesystem', 'thread', 'locale', ]
 if not get_option('local_boost')
-    boost_dep = dependency('boost', version: '>=1.50.0',
+    boost_dep = dependency('boost', version: '>=1.79.0',
                             modules: boost_modules + ['system'],
                             required: false,
                             static: get_option('default_library') == 'static')
@@ -174,6 +175,8 @@ else
             'wxUSE_GTK': 'no'
             })
 
+##TODO: DOES not work atm, are all qt5 libraries installed correctly? (install lib*qt5*dev)
+
 # sudo apt-get install qt5*-dev libcppunit-dev build-essential libjpeg-dev libtiff5-dev ubuntu-restricted-extras freeglut3 freeglut3-dev libsdl1.2-dev libgstreamer-plugins-base1.0-dev 
     else 
         opt_var.add_cmake_defines({
@@ -229,8 +232,10 @@ else
     endif
 endif
 
-deps += dependency('icu-uc', version: '>=4.8.1.1')
-deps += dependency('icu-i18n', version: '>=4.8.1.1')
+
+## atm not buildable by ci, since the meson.build file isn't working atm
+deps += dependency('icu-uc', version: '>=71.1')
+deps += dependency('icu-i18n', version: '>=71.1')
 
 dep_avail = []
 foreach dep: [
@@ -240,7 +245,7 @@ foreach dep: [
     ['portaudio-2.0', [], 'PortAudio', [], []],
     ['openal', '>=0.0.8', 'OpenAL', [], ['OpenAL']],
     # video
-    ['ffms2', '>=2.22', 'FFMS2', ['ffms2', 'ffms2_dep'], []],
+    ['ffms2', '>=2.40', 'FFMS2', ['ffms2', 'ffms2_dep'], []],
     # other
     ['fftw3', [], 'FFTW3', [], []],
     ['hunspell', [], 'Hunspell', ['hunspell', 'hunspell_dep'], []],
@@ -315,7 +320,7 @@ endif
 conf_platform = configuration_data()
 conf_platform.set('DEFAULT_PLAYER_AUDIO', def_audio)
 
-luajit = dependency('luajit', version: '>=2.0.0', required: get_option('system_luajit'))
+luajit = dependency('luajit', version: '>=2.1.0', required: get_option('system_luajit'))
 if luajit.found() and luajit.type_name() != 'internal'
     luajit_test = cc.run('''#include <lauxlib.h>
 int main(void)

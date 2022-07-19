@@ -46,13 +46,13 @@ jobs:
             name: Ubuntu Debug,
             os: ubuntu-latest,
             buildtype: debugoptimized,
-            args: -Dlocal_boost=true -Dwx_version=3.1.7 --force-fallback-for=icu
+            args: -Dlocal_boost=true
           }
           - {
             name: Ubuntu Release,
             os: ubuntu-latest,
             buildtype: release,
-            args: -Dlocal_boost=true -Dwx_version=3.1.7 --force-fallback-for=icu
+            args: -Dlocal_boost=true
           }
           #- {
           #  name: macOS Debug,

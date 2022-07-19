@@ -147,7 +147,7 @@ mkdir debian
 
 touch debian/control
 
-DEPENDECIES=$(dpkg-shlibdeps -O ../assdraw/src/assdraw 2>/dev/null) 
+DEPENDECIES=$(dpkg-shlibdeps -v -ignore-missing-info  -O ../assdraw/src/assdraw 2>/dev/null) 
 
 # substring, removes the first 15 charcaters
 
@@ -173,3 +173,6 @@ cd ..  || exit 5
 dpkg-deb --build -Zxz  --root-owner-group $DEB_NAME
 
 rm -r $DEB_NAME
+
+
+    #sudo meson compile -C build ubuntu-deb
