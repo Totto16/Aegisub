@@ -147,14 +147,16 @@ mkdir debian
 
 touch debian/control
 
-DEPENDECIES=$(dpkg-shlibdeps -v -ignore-missing-info  -O ../assdraw/src/assdraw 2>/dev/null) 
+DEPENDECIES=$(dpkg-shlibdeps --ignore-missing-info  -O ../assdraw/src/assdraw 2> /dev/null) 
 
 # substring, removes the first 15 charcaters
 
 DEPENDECY_LIST=${DEPENDECIES:15}
 
-# adding luarocks, that is also needed for dependency control!
-echo "Depends: $DEPENDECY_LIST"  >> DEBIAN/control
+if [ ! -z "$DEPENDECY_LIST" ]; then 
+    echo "Depends: $DEPENDECY_LIST"  >> DEBIAN/control
+fi
+
 
 rm debian/control
 

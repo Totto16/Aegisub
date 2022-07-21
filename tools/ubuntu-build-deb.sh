@@ -10,6 +10,10 @@ DEB_NAME="aegisub_3.3.0+dpctrl-ubuntu_amd64"
 
 # create deb directroy, later this will be bundled into the deb
 
+if  [ -d "$DEB_NAME" ]; then
+    rm -r "$DEB_NAME"
+fi
+
 mkdir $DEB_NAME
 cd $DEB_NAME || exit 5
 
@@ -361,14 +365,21 @@ mkdir debian
 
 touch debian/control
 
-DEPENDECIES=$(dpkg-shlibdeps -O ../aegisub) 
+## TODO here it fails, since some libraries can't be found!
+
+DEPENDECIES=$(dpkg-shlibdeps --ignore-missing-info -O ../aegisub 2>/dev/null) 
 
 # substring, removes the first 15 charcaters
 
 DEPENDECY_LIST=${DEPENDECIES:15}
 
+
+if [ ! -z "$DEPENDECY_LIST" ]; then 
+    DEPENDECY_LIST="$DEPENDECY_LIST ,"
+fi
+
 # adding luarocks, that is also needed for dependency control!
-echo "Depends: $DEPENDECY_LIST ,luarocks (>= 3.8.0+dfsg1-1)"  >> DEBIAN/control 
+echo "Depends: $DEPENDECY_LIST luarocks (>= 3.8.0+dfsg1-1)"  >> DEBIAN/control 
 rm debian/control
 
 rm -r debian
