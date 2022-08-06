@@ -1,0 +1,25 @@
+name: Flatpak build
+
+on:
+  release:
+    types: [published]
+  push:
+    branches: [flatpak]
+  workflow_dispatch:
+env:
+  CC: gcc-11
+  CXX: g++-11
+
+jobs:
+  flatpak:
+    name: "Flatpak build org.aegisub.Aegisub"
+    runs-on: ubuntu-22.04
+    container:
+      image: bilelmoussaoui/flatpak-github-actions:freedesktop-21.08
+      options: --privileged
+    steps:
+      - uses: bilelmoussaoui/flatpak-github-actions/flatpak-builder@v4
+        with:
+          bundle: aegisub.flatpak
+          manifest-path: org.aegisub.Aegisub.yml
+          run-tests: false
