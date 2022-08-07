@@ -35,11 +35,13 @@ modules:
     run-tests: false
 
 finish-args:
-  - --socket=x11
+  - --socket=fallback-x11
   - --socket=wayland
   - --socket=pulseaudio
   - --share=network
+  - --share=ipc
   - --device=all
   - --device=dri
   - --filesystem=~/.aegisub
-  - --filesystem=host 
+  - --filesystem=host
+  - --org.gtk.Notifications=talk 
