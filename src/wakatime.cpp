@@ -220,7 +220,7 @@ using namespace std::chrono;
 
        	bool cli::is_cli_present(){
 			
-            long returnCode = wxExecute(wxString::Format("bash  -c \"which '%s' > /dev/null\"",*cli_path), wxEXEC_SYNC);
+            long returnCode = wxExecute(wxString::Format("bash  -c \"which '%s' > /dev/null 2>&1 \"",*cli_path), wxEXEC_SYNC);
 
             return returnCode == 0;
         }
