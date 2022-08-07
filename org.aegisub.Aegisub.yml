@@ -44,4 +44,5 @@ finish-args:
   - --device=dri
   - --filesystem=~/.aegisub
   - --filesystem=host
-  - --org.gtk.Notifications=talk 
+  - --talk-name=org.gtk.Notifications
+  - --talk-name=org.freedesktop.Notifications
