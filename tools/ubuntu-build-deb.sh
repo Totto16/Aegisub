@@ -368,9 +368,13 @@ DEPENDECY_LIST=${DEPENDECIES:15}
 if [ ! -z "$DEPENDECY_LIST" ]; then
     $DEPENDECY_LIST  = "$DEPENDECY_LIST ,"
 fi
-
+    echo "DEPENDENCIES'$DEPENDECIES'"
+    echo 
 # adding luarocks, that is also needed for dependency control!
 echo "Depends: $DEPENDECY_LIST luarocks (>= 3.8.0+dfsg1-1)"  >> DEBIAN/control
+
+cat DEBIAN/control
+echo "END"
 
 rm debian/control
 
