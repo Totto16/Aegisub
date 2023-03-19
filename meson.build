@@ -384,6 +384,8 @@ endif
 
 acconf = configure_file(output: 'acconf.h', configuration: conf)
 
+general_inc = []
+
 subdir('automation')
 subdir('libaegisub')
 subdir('packages')
@@ -396,7 +398,7 @@ aegisub_c_pch = ['src/include/agi_pre_c.h']
 
 aegisub = executable('aegisub', aegisub_src, version_h, acconf,
                      link_with: [libresrc, libluabins, libaegisub],
-                     include_directories: [libaegisub_inc, libresrc_inc, version_inc, deps_inc, include_directories('src')],
+                     include_directories: [general_inc, libaegisub_inc, libresrc_inc, version_inc, deps_inc, include_directories('src')],
                      cpp_pch: aegisub_cpp_pch,
                      c_pch: aegisub_c_pch,
                      install: true,

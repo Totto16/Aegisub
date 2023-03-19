@@ -31,7 +31,7 @@
 
 #include "command.h"
 
-#include "../auto4_base.h"
+#include "auto4_base.h"
 #include "../dialogs.h"
 #include "../frame_main.h"
 #include "../include/aegisub/context.h"

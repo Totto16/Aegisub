@@ -80,7 +80,7 @@ fi
     bash -c "meson build -Dbuildtype=$buildtype -Dlocal_boost=true  -Dwx_version=3.2.1"
 
     if [ $DEBUG == "true" ]; then
-        nodemon --watch src/ -e .cpp,.h --exec "sudo meson compile -C build && ./build/aegisub || exit 1"
+        nodemon --watch src/ -e .cpp,.h,.hpp --exec "meson compile -C build && ./build/aegisub || exit 1"
         exit 0
     fi
 
@@ -91,8 +91,7 @@ fi
 
     meson compile -C build
 
-    ## run tests, these fail at the moment, for some file permission reasons :(
-
+    ## run tests, these fail at the moment, for some file permission reasons :( (sudo error!!!!!!)
     meson test -C build --verbose "gtest main"
 
     # PACK into DEB
@@ -119,7 +118,7 @@ fi
         bash -c ""
         
         # enable if needed
-        # sudo meson install -C build
+        # meson install -C build
         
     fi
 

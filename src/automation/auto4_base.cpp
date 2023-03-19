@@ -314,7 +314,7 @@ namespace Automation4 {
 	AutoloadScriptManager::AutoloadScriptManager(std::string path)
 	: path(std::move(path))
 	{
-		// Before Loading Plugins, save the current path, that could be changed by lua
+		// Before Loading Plugins, save the current path, that could be changed by lua or any factory
 		auto cwd = boost::filesystem::current_path();
 
 		Reload();
@@ -456,6 +456,13 @@ namespace Automation4 {
 
 		Factories().emplace_back(std::move(factory));
 	}
+
+	void ScriptFactory::RegisterMany(std::vector<std::unique_ptr<ScriptFactory>> factories)
+	{
+                for (auto& factory : factories) {
+                        ScriptFactory::Register(std::move(factory));
+                }
+        }
 
 	std::unique_ptr<Script> ScriptFactory::CreateFromFile(agi::fs::path const& filename, bool complain_about_unrecognised, bool create_unknown)
 	{

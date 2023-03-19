@@ -259,6 +259,8 @@ namespace Automation4 {
 		/// Register an automation engine.
 		static void Register(std::unique_ptr<ScriptFactory> factory);
 
+		static void RegisterMany(std::vector<std::unique_ptr<ScriptFactory>> factories);
+
 		/// Get the full wildcard string for all loaded engines
 		static std::string GetWildcardStr();
 
