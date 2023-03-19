@@ -91,11 +91,6 @@ meson compile -C build
 ## run tests
 meson test -C build --verbose "gtest main"
 
-# PACK into DEB
-
-## run tests, these fail at the moment, for some file permission reasons :( (sudo error!!!!!!)
-meson test -C build --verbose "gtest main"
-
 if [ ! -f "build/aegisub" ]; then
     echo "Failed to build aegisub. Aborting"
     exit 4
