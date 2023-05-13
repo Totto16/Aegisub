@@ -16,7 +16,11 @@ local check = require 'aegisub.argcheck'
 local ffi_util = require 'aegisub.ffi'
 local impl = aegisub.__init_clipboard()
 
+local type set_fn = function(str: string): boolean
+
 return {
-  get = function() return ffi_util.string(impl.get()) end,
-  set = check'string'(impl.set)
+  get = function(): string 
+    return ffi_util.string(impl.get()) 
+  end,
+  set: set_fn = check('string')(impl.set) as set_fn
 }
