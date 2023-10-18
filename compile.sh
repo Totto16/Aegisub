@@ -78,10 +78,10 @@ fi
 
 # CONFIGURE
 
-bash -c "meson setup build -Dbuildtype=$buildtype -Dwx_version=3.2.3 -Dcredit='Totto local build'"
+bash -c "meson setup build -Dbuildtype=$buildtype -Dwx_version=3.2.3 -Dcredit='Totto local build' -Denable_js_automation=true"
 
 if [ $DEBUG == "true" ]; then
-    nodemon --watch src/ -e .cpp,.h --exec "sudo meson compile -C build && ./build/aegisub || exit 1"
+    nodemon --watch src/ -e .cpp,.h,.hpp --exec "meson compile -C build && ./build/aegisub || exit 1"
     exit 0
 fi
 

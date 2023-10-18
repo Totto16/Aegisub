@@ -30,3 +30,5 @@ option('build_osx_bundle', type: 'boolean', value: false, description: 'Package 
 option('build_flatpak_bundle', type: 'boolean', value: false, description: 'enable flatpak bundle build')
 
 option('tests', type: 'feature', value: 'auto', description: 'enable tests')
+
+option('enable_js_automation', type: 'boolean', value: false, description: 'Enable the js automation plugin via v8 (chromium engine)')
