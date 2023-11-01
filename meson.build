@@ -68,8 +68,23 @@ if get_option('credit') != ''
 endif
 conf.set('WITH_UPDATE_CHECKER', get_option('enable_update_checker'))
 
+
 deps = []
 deps_inc = []
+
+if get_option('enable_update_checker') and host_machine.system() == 'linux'
+
+deps += dependency(
+    'libflatpak',
+    version: '>=1.15.4',
+    fallback: ['flatpak', 'libflatpak_dep'],
+    default_options:{
+        'system_helper':'auto'   
+    }
+)
+conf.set('LIBFLATPAK_AVAILABLE', 1)
+endif
+
 
 if host_machine.system() == 'darwin'
     add_languages('objc', 'objcpp')

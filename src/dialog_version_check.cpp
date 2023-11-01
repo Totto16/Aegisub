@@ -29,6 +29,254 @@
 
 #ifdef WITH_UPDATE_CHECKER
 
+#ifdef FLATPAK_BUILD
+
+
+
+
+#if defined(__APPLE__) || defined(WIN32)
+#error "Flatpak is only supported on linux"
+#endif
+
+#ifndef LIBFLATPAK_AVAILABLE
+#error "libflatpak not available, but needed!"
+#endif
+
+
+#include <flatpak.h>
+
+
+namespace {
+std::mutex VersionCheckLock;
+
+struct AegisubUpdateDescription {
+	std::string package_name;
+	std::string friendly_name;
+	std::string description;
+};
+
+class VersionCheckerResultDialog final : public wxDialog {
+	void OnCloseButton(wxCommandEvent &evt);
+	void OnRemindMeLater(wxCommandEvent &evt);
+	void OnClose(wxCloseEvent &evt);
+
+	wxCheckBox *automatic_check_checkbox;
+
+public:
+	VersionCheckerResultDialog(wxString const& main_text, const std::vector<AegisubUpdateDescription> &updates);
+
+	bool ShouldPreventAppExit() const override { return false; }
+};
+
+VersionCheckerResultDialog::VersionCheckerResultDialog(wxString const& main_text, const std::vector<AegisubUpdateDescription> &updates)
+: wxDialog(nullptr, -1, _("Version Checker"))
+{
+	const int controls_width = 500;
+
+	wxSizer *main_sizer = new wxBoxSizer(wxVERTICAL);
+
+	wxStaticText *text = new wxStaticText(this, -1, main_text);
+	text->Wrap(controls_width);
+	main_sizer->Add(text, 0, wxBOTTOM|wxEXPAND, 6);
+
+	for (auto const& update : updates) {
+		main_sizer->Add(new wxStaticLine(this), 0, wxEXPAND|wxALL, 6);
+
+		text = new wxStaticText(this, -1, to_wx(update.friendly_name));
+		wxFont boldfont = text->GetFont();
+		boldfont.SetWeight(wxFONTWEIGHT_BOLD);
+		text->SetFont(boldfont);
+		main_sizer->Add(text, 0, wxEXPAND|wxBOTTOM, 6);
+
+		wxTextCtrl *descbox = new wxTextCtrl(this, -1, to_wx(update.description), wxDefaultPosition, wxSize(controls_width,60), wxTE_MULTILINE|wxTE_READONLY);
+		main_sizer->Add(descbox, 0, wxEXPAND|wxBOTTOM, 6);
+
+		main_sizer->Add(new wxHyperlinkCtrl(this, -1, to_wx(update.url), to_wx(update.url)), 0, wxALIGN_LEFT|wxBOTTOM, 6);
+	}
+
+	automatic_check_checkbox = new wxCheckBox(this, -1, _("&Auto Check for Updates"));
+	automatic_check_checkbox->SetValue(OPT_GET("App/Auto/Check For Updates")->GetBool());
+
+	wxButton *remind_later_button = nullptr;
+	if (updates.size() > 0)
+		remind_later_button = new wxButton(this, wxID_NO, _("Remind me again in a &week"));
+
+	wxButton *close_button = new wxButton(this, wxID_OK, _("&Close"));
+	SetAffirmativeId(wxID_OK);
+	SetEscapeId(wxID_OK);
+
+	if (updates.size())
+		main_sizer->Add(new wxStaticLine(this), 0, wxEXPAND|wxALL, 6);
+	main_sizer->Add(automatic_check_checkbox, 0, wxEXPAND|wxBOTTOM, 6);
+
+	auto button_sizer = new wxStdDialogButtonSizer();
+	button_sizer->AddButton(close_button);
+	if (remind_later_button)
+		button_sizer->AddButton(remind_later_button);
+	button_sizer->Realize();
+	main_sizer->Add(button_sizer, 0, wxEXPAND, 0);
+
+	wxSizer *outer_sizer = new wxBoxSizer(wxVERTICAL);
+	outer_sizer->Add(main_sizer, 0, wxALL|wxEXPAND, 12);
+
+	SetSizerAndFit(outer_sizer);
+	Centre();
+	Show();
+
+	Bind(wxEVT_BUTTON, std::bind(&VersionCheckerResultDialog::Close, this, false), wxID_OK);
+	Bind(wxEVT_BUTTON, &VersionCheckerResultDialog::OnRemindMeLater, this, wxID_NO);
+	Bind(wxEVT_CLOSE_WINDOW, &VersionCheckerResultDialog::OnClose, this);
+}
+
+void VersionCheckerResultDialog::OnRemindMeLater(wxCommandEvent &) {
+	// In one week
+	time_t new_next_check_time = time(nullptr) + 7*24*60*60;
+	OPT_SET("Version/Next Check")->SetInt(new_next_check_time);
+
+	Close();
+}
+
+void VersionCheckerResultDialog::OnClose(wxCloseEvent &) {
+	OPT_SET("App/Auto/Check For Updates")->SetBool(automatic_check_checkbox->GetValue());
+	Destroy();
+}
+
+DEFINE_EXCEPTION(VersionCheckError, agi::Exception);
+
+void PostErrorEvent(bool interactive, wxString const& error_text) {
+	if (interactive) {
+		agi::dispatch::Main().Async([=]{
+			new VersionCheckerResultDialog(error_text, {});
+		});
+	}
+}
+
+static wxString GetSystemLanguage() {
+	return wxLocale::GetLanguageInfo(wxLocale::GetSystemLanguage())->CanonicalName;
+}
+
+
+static wxString GetAegisubLanguage() {
+	return to_wx(OPT_GET("App/Language")->GetString());
+}
+
+void DoCheck(bool interactive) {
+	boost::asio::ip::tcp::iostream stream;
+	stream.connect(UPDATE_CHECKER_SERVER, "http");
+	if (!stream)
+		throw VersionCheckError(from_wx(_("Could not connect to updates server.")));
+
+	agi::format(stream,
+		"GET %s?rev=%d&rel=%d&os=%s&lang=%s&aegilang=%s HTTP/1.0\r\n"
+		"User-Agent: Aegisub %s\r\n"
+		"Host: %s\r\n"
+		"Accept: */*\r\n"
+		"Connection: close\r\n\r\n"
+		, UPDATE_CHECKER_BASE_URL
+		, GetSVNRevision()
+		, (GetIsOfficialRelease() ? 1 : 0)
+		, GetOSShortName()
+		, GetSystemLanguage()
+		, GetAegisubLanguage()
+		, GetAegisubLongVersionString()
+		, UPDATE_CHECKER_SERVER);
+
+	std::string http_version;
+	stream >> http_version;
+	int status_code;
+	stream >> status_code;
+	if (!stream || http_version.substr(0, 5) != "HTTP/")
+		throw VersionCheckError(from_wx(_("Could not download from updates server.")));
+	if (status_code != 200)
+		throw VersionCheckError(agi::format(_("HTTP request failed, got HTTP response %d."), status_code));
+
+	stream.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+
+	// Skip the headers since we don't care about them
+	for (auto const& header : agi::line_iterator<std::string>(stream))
+		if (header.empty()) break;
+
+	std::vector<AegisubUpdateDescription> results;
+	for (auto const& line : agi::line_iterator<std::string>(stream)) {
+		if (line.empty()) continue;
+
+		std::vector<std::string> parsed;
+		agi::Split(parsed, line, '|');
+		if (parsed.size() != 6) continue;
+
+		if (atoi(parsed[1].c_str()) <= GetSVNRevision())
+			continue;
+
+		// 0 and 2 being things that never got used
+		results.push_back(AegisubUpdateDescription{
+			inline_string_decode(parsed[3]),
+			inline_string_decode(parsed[4]),
+			inline_string_decode(parsed[5])
+		});
+	}
+
+	if (!results.empty() || interactive) {
+		agi::dispatch::Main().Async([=]{
+			wxString text;
+			if (results.size() == 1)
+				text = _("An update to Aegisub was found.");
+			else if (results.size() > 1)
+				text = _("Several possible updates to Aegisub were found.");
+			else
+				text = _("There are no updates to Aegisub.");
+
+			new VersionCheckerResultDialog(text, results);
+		});
+	}
+}
+}
+
+void PerformVersionCheck(bool interactive) {
+	agi::dispatch::Background().Async([=]{
+		if (!interactive) {
+			// Automatic checking enabled?
+			if (!OPT_GET("App/Auto/Check For Updates")->GetBool())
+				return;
+
+			// Is it actually time for a check?
+			time_t next_check = OPT_GET("Version/Next Check")->GetInt();
+			if (next_check > time(nullptr))
+				return;
+		}
+
+		if (!VersionCheckLock.try_lock()) return;
+
+		try {
+			DoCheck(interactive);
+		}
+		catch (const agi::Exception &e) {
+			PostErrorEvent(interactive, fmt_tl(
+				"There was an error checking for updates to Aegisub:\n%s\n\nIf other applications can access the Internet fine, this is probably a temporary server problem on our end.",
+				e.GetMessage()));
+		}
+		catch (...) {
+			PostErrorEvent(interactive, _("An unknown error occurred while checking for updates to Aegisub."));
+		}
+
+		VersionCheckLock.unlock();
+
+		agi::dispatch::Main().Async([]{
+			time_t new_next_check_time = time(nullptr) + 60*60; // in one hour
+			OPT_SET("Version/Next Check")->SetInt(new_next_check_time);
+		});
+	});
+}
+
+
+
+
+
+
+
+
+#else
+
+
 #ifdef _MSC_VER
 #pragma warning(disable : 4250) // 'boost::asio::basic_socket_iostream<Protocol>' : inherits 'std::basic_ostream<_Elem,_Traits>::std::basic_ostream<_Elem,_Traits>::_Add_vtordisp2' via dominance
 #endif
@@ -387,4 +635,5 @@ void PerformVersionCheck(bool interactive) {
 	});
 }
 
+#endif
 #endif

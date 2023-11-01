@@ -1,0 +1,10 @@
+[wrap-git]
+url = https://github.com/flatpak/flatpak
+revision = head
+
+[provide]
+libflatpak_common_base = libflatpak_common_base_dep
+libflatpak_common = libflatpak_common_dep
+libflatpak = libflatpak_dep
+libflatpak_app = libflatpak_app_dep
+libflatpak_test = libtestlib_dep

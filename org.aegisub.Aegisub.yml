@@ -100,6 +100,28 @@ modules:
           - mkdir -p /app/share/aegisub/automation/include/l0/
           - cp -r modules/* /app/share/aegisub/automation/include/l0/
 
+    - name: acl
+      buildsystem: simple
+      sources:
+          - type: git
+            url: https://github.com/philips/acl.git
+      build-commands:
+          - make include/config.h
+          - ./configure --prefix=/app
+          - make install
+
+    - name: udev
+      buildsystem: simple
+      sources:
+          - type: archive
+            url: https://github.com/mfwitten/udev/archive/refs/tags/167.tar.gz
+            sha256: d843919d913727b89ae4a820248d97571aad8f4cf7039c24a0ab17557fc1a259
+      build-commands:
+          - ./autogen.sh
+          - ./configure --prefix=/app
+          - make
+          - make install
+
     - name: aegisub
       buildsystem: meson
       config-opts:
@@ -110,6 +132,7 @@ modules:
           - -Dcredit=Flatpak build
           - -Dcpp_args=-DFLATPAK_BUILD
           - -Dtests=disabled
+          - -Denable_update_checker=true
       build-options:
           build-args:
               - --share=network
