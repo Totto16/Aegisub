@@ -82,7 +82,7 @@ else
     i18n = import('i18n')
     i18n.merge_file(
         input: desktop_template,
-        output: 'aegisub.desktop',
+        output: app_name + '.desktop',
         type: 'desktop',
         po_dir: '../po',
         install: true,
@@ -106,6 +106,7 @@ else
         install_data(
             'desktop' / dir / 'aegisub.' + ext,
             install_dir: datadir / 'icons' / 'hicolor' / dir / 'apps',
+            rename: [app_name + '.' + ext],
         )
     endforeach
 endif
