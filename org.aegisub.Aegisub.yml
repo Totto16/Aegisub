@@ -115,7 +115,7 @@ modules:
           - -Dbuildtype=release
           - -Dwx_version=3.2.3
           - -Dcredit=Flatpak build
-          - -Dcpp_args=-DFLATPAK_BUILD
+          - -Dbuild_flatpak_bundle=true
           - -Dtests=disabled
       build-options:
           build-args:
