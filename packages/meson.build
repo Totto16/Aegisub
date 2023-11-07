@@ -72,6 +72,7 @@ else
     endif
 
     conf_pkg.set('AEGISUB_COMMAND', 'aegisub')
+    conf_pkg.set('AEGISUB_APP_NAME', app_name)
 
     desktop_template = configure_file(
         input: 'desktop/aegisub.desktop.template.in',
