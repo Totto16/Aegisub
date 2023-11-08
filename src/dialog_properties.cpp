@@ -115,6 +115,7 @@ DialogProperties::DialogProperties(agi::Context *c)
 	TopSizerGrid->AddGrowableCol(1,1);
 	TopSizer->Add(TopSizerGrid,1,wxALL | wxEXPAND,0);
 
+	//TODO: maybe use LayoutResX/Y in libass > 17
 	// Resolution box
 	ResX = new wxTextCtrl(&d,-1,"",wxDefaultPosition,wxSize(50, -1),0,IntValidator(c->ass->GetScriptInfoAsInt("PlayResX")));
 	ResY = new wxTextCtrl(&d,-1,"",wxDefaultPosition,wxSize(50, -1),0,IntValidator(c->ass->GetScriptInfoAsInt("PlayResY")));

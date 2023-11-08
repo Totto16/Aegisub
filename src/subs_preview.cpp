@@ -145,6 +145,7 @@ void SubtitlesPreview::OnSize(wxSizeEvent &evt) {
 			"No subtitles provider", wxOK | wxICON_ERROR | wxCENTER);
 	}
 
+	//TODO: maybe use LayoutResX/Y in libass > 17
 	sub_file->SetScriptInfo("PlayResX", std::to_string(w));
 	sub_file->SetScriptInfo("PlayResY", std::to_string(h));
 

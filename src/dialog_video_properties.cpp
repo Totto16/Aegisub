@@ -94,6 +94,7 @@ bool update_video_properties(AssFile *file, const AsyncVideoProvider *new_provid
 		commit_subs = true;
 	}
 
+	//TODO: maybe use LayoutResX/Y in libass > 17
 	// Check that the script resolution matches the video resolution
 	int sx = file->GetScriptInfoAsInt("PlayResX");
 	int sy = file->GetScriptInfoAsInt("PlayResY");

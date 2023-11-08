@@ -50,8 +50,16 @@ void AssSubtitleFormat::ReadFile(AssFile *target, agi::fs::path const& filename,
 
 namespace {
 const char *format(AssEntryGroup group) {
-	if (group == AssEntryGroup::DIALOGUE)
+	if (group == AssEntryGroup::DIALOGUE){
+		//TODO: use AlphaLevel in all possible places in libass > 17, while also supporting the old format!
+		// #ifdef AEGISUB_VERSION && AEGISUB_VERSION >= 17
+		// return "Format: Layer, Start, End, Style, Name, MarginL, MarginR, MarginV, AlphaLevel, Effect, Text" LINEBREAK;
+		// #else
+		// return "Format: Layer, Start, End, Style, Name, MarginL, MarginR, MarginV, Effect, Text" LINEBREAK;
+		// #endif
+
 		return "Format: Layer, Start, End, Style, Name, MarginL, MarginR, MarginV, Effect, Text" LINEBREAK;
+	}
 	if (group == AssEntryGroup::STYLE)
 		return "Format: Name, Fontname, Fontsize, PrimaryColour, SecondaryColour, OutlineColour, BackColour, Bold, Italic, Underline, StrikeOut, ScaleX, ScaleY, Spacing, Angle, BorderStyle, Outline, Shadow, Alignment, MarginL, MarginR, MarginV, Encoding" LINEBREAK;
 	return nullptr;
