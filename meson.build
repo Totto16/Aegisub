@@ -102,11 +102,23 @@ else
 endif
 deps += iconv_dep
 
-deps += dependency(
+libass_dep = dependency(
     'libass',
-    version: '>=0.9.7',
+    version: '>=0.16.0',
     fallback: ['libass', 'libass_dep'],
 )
+deps += libass_dep
+
+
+aegisub_version_define = '0'
+if libass_dep.version() != ''
+    aegisub_version_define = libass_dep.version().split('.')[0]
+endif
+
+conf.set('AEGISUB_VERSION', aegisub_version_define)
+
+#TODO: dtermine if we are using libass 17 or 16 and use features from 0.17 like e.g LayoutResX/Y, AlphaLevel and potentially more!
+
 
 ## since at least 1.79 (or 1.75 ?) regex isn't needed anymore, its a C++11 builtin!)
 boost_modules = [

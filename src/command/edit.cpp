@@ -383,6 +383,8 @@ void show_color_picker(const agi::Context *c, agi::Color (AssStyle::*field), con
 	}
 }
 
+//TODO: maybe use AlphaLevel in libass > 17
+
 struct edit_color_primary final : public Command {
 	CMD_NAME("edit/color/primary")
 	CMD_ICON(button_color_one)

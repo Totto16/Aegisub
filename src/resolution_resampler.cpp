@@ -281,6 +281,7 @@ void ResampleResolution(AssFile *ass, ResampleSettings settings) {
 	for (auto& line : ass->Events)
 		resample_line(&state, line);
 
+	//TODO: maybe use LayoutResX/Y in libass > 17
 	ass->SetScriptInfo("PlayResX", std::to_string(settings.dest_x));
 	ass->SetScriptInfo("PlayResY", std::to_string(settings.dest_y));
 	if (resample_colors)

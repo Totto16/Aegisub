@@ -43,6 +43,8 @@ void AssFile::LoadDefault(bool include_dialogue_line, std::string const& style_c
 	Info.emplace_back("ScriptType", "v4.00+");
 	Info.emplace_back("WrapStyle", "0");
 	Info.emplace_back("ScaledBorderAndShadow", "yes");
+	
+	//TODO: maybe use LayoutResX/Y in libass > 17
 	if (!OPT_GET("Subtitle/Default Resolution/Auto")->GetBool()) {
 		Info.emplace_back("PlayResX", std::to_string(OPT_GET("Subtitle/Default Resolution/Width")->GetInt()));
 		Info.emplace_back("PlayResY", std::to_string(OPT_GET("Subtitle/Default Resolution/Height")->GetInt()));
