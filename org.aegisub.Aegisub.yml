@@ -109,13 +109,37 @@ modules:
           - ./bootstrap.sh
           - ./b2 --prefix=/app --with-chrono --with-filesystem --with-thread --with-locale --with-system install variant=release
 
+    - name: libunibreak
+      buildsystem: simple
+      sources:
+          - type: archive
+            url: https://github.com/adah1972/libunibreak/releases/download/libunibreak_5_1/libunibreak-5.1.tar.gz
+            sha256: dd1a92d4c5646aa0e457ff41d89812ec5243863be6c20bbcb5ee380f3dd78377
+      build-commands:
+          - mkdir build
+          - cd build && ../configure --prefix=/app
+          - cd build && make
+          - cd build && make install
+
+    - name: libass
+      buildsystem: simple
+      sources:
+          - type: archive
+            url: https://github.com/libass/libass/releases/download/0.17.1/libass-0.17.1.tar.gz
+            sha256: d653be97198a0543c69111122173c41a99e0b91426f9e17f06a858982c2fb03d
+      build-commands:
+          - mkdir build
+          - cd build && ../configure --prefix=/app --enable-libunibreak
+          - cd build && make
+          - cd build && make install
+
     - name: aegisub
       buildsystem: meson
       config-opts:
           - -Dbuildtype=release
           - -Dwx_version=3.2.3
           - -Dcredit=Flatpak build
-          - -Dcpp_args=-DFLATPAK_BUILD
+          - -Dbuild_flatpak_bundle=true
           - -Dtests=disabled
       build-options:
           build-args:
@@ -140,7 +164,8 @@ finish-args:
     - --device=dri
     - --filesystem=~/.aegisub
     - --filesystem=~/.fonts
-    - --filesystem=/usr/share/fonts
+    - --filesystem=~/.local/share/fonts
+    - --filesystem=~/.cache/fontconfig
     - --filesystem=host
     - --talk-name=org.freedesktop.portal.Background
     - --talk-name=org.freedesktop.portal.Notification
