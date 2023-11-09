@@ -31,4 +31,4 @@ option('build_flatpak_bundle', type: 'boolean', value: false, description: 'enab
 
 option('tests', type: 'feature', value: 'auto', description: 'enable tests')
 
-option('enable_js_automation', type: 'boolean', value: false, description: 'Enable the js automation plugin via v8 (chromium engine)')
+option('enable_js_automation', type: 'feature', value: 'auto', description: 'Enable the js automation plugin via v8 (chromium engine)')

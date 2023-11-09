@@ -677,7 +677,7 @@ namespace Automation4 {
 			PendingCommit& back = pending_commits.back();
 
 			back.modification_type = modification_type;
-			back.mesage = to_wx(check_string(L, 1));
+			back.message = to_wx(check_string(L, 1));
 			back.lines = lines;
 			modification_type = 0;
 		}
@@ -714,7 +714,7 @@ namespace Automation4 {
 		// Apply any pending commits
 		for (auto const& pc : pending_commits) {
 			apply_lines(pc.lines);
-			ass->Commit(pc.mesage, pc.modification_type);
+			ass->Commit(pc.message, pc.modification_type);
 		}
 
 		// Commit any changes after the last undo point was set

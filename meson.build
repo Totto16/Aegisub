@@ -13,7 +13,11 @@ project(
 cmake = import('cmake')
 
 if host_machine.system() == 'windows'
-    add_project_arguments('-DNOMINMAX', '-D_WIN32_WINNT=0x0601', language: 'cpp')
+    add_project_arguments(
+        '-DNOMINMAX',
+        '-D_WIN32_WINNT=0x0601',
+        language: 'cpp',
+    )
 
     if not get_option('csri').disabled()
         add_global_arguments('-DCSRI_NO_EXPORT', language: 'c')
@@ -224,7 +228,11 @@ else
     wx = cmake.subproject('wxWidgets', options: opt_var)
 
 
-    deps += [wx.dependency('wxmono'), wx.dependency('wxregex'), wx.dependency('wxscintilla')]
+    deps += [
+        wx.dependency('wxmono'),
+        wx.dependency('wxregex'),
+        wx.dependency('wxscintilla'),
+    ]
 
     wx.target_list()
 
@@ -248,7 +256,9 @@ else
         if cc.has_header('commctrl.h')
             deps += cc.find_library('comctl32', required: true)
         else
-            error('Missing Windows SDK Common Controls Library (commctrl.h / comctl32.lib)')
+            error(
+                'Missing Windows SDK Common Controls Library (commctrl.h / comctl32.lib)',
+            )
         endif
     endif
 endif
@@ -291,7 +301,7 @@ foreach dep : [
             )
         endif
 
-        if not d.found() and dep[4].length() > 0 and host_machine.system() == 'darwin'
+        if (not d.found() and dep[4].length() > 0 and host_machine.system() == 'darwin')
             d = dependency(
                 'appleframeworks',
                 modules: dep[4],
@@ -313,7 +323,7 @@ if host_machine.system() == 'windows' and get_option('avisynth').enabled()
     conf.set('WITH_AVISYNTH', 1) # bundled separately with installer
 endif
 
-if host_machine.system() == 'windows' and not get_option('directsound').disabled()
+if (host_machine.system() == 'windows' and not get_option('directsound').disabled())
     dsound_dep = cc.find_library('dsound', required: get_option('directsound'))
     winmm_dep = cc.find_library('winmm', required: get_option('directsound'))
     ole32_dep = cc.find_library('ole32', required: get_option('directsound'))
@@ -349,7 +359,11 @@ endif
 def_audio = get_option('default_audio_output')
 if def_audio != 'auto'
     if not dep_avail.contains(def_audio)
-        error('Default audio output "@0@" selected but not available'.format(def_audio))
+        error(
+            'Default audio output "@0@" selected but not available'.format(
+                def_audio,
+            ),
+        )
     endif
 elif dep_avail.length() != 0
     def_audio = dep_avail[0]
@@ -383,7 +397,9 @@ int main(void)
         if get_option('system_luajit')
             error('System luajit found but not compiled in 5.2 mode')
         else
-            message('System luajit found but not compiled in 5.2 mode; using built-in luajit')
+            message(
+                'System luajit found but not compiled in 5.2 mode; using built-in luajit',
+            )
         endif
     else
         deps += luajit
@@ -430,6 +446,98 @@ if not get_option('csri').disabled() and host_machine.system() == 'windows'
     deps += csri_sp.get_variable('csri_dep')
 endif
 
+enable_js_automation = false
+
+if get_option('enable_js_automation').allowed()
+    js_deps = []
+
+    cpp = meson.get_compiler('cpp')
+
+    all_deps_found = true
+
+    foreach dep_name : ['v8', 'v8_libbase', 'v8_libplatform', 'v8_libsampler', 'node', 'uv']
+        local_dep = cpp.find_library(
+            dep_name,
+            required: get_option('enable_js_automation').enabled(),
+        )
+
+        if not local_dep.found()
+            all_deps_found = false
+        else
+            js_deps += local_dep
+        endif
+
+    endforeach
+
+
+
+    js_include_dirs = []
+    found_include_dirs = true
+
+
+    foreach def : [['node', 'node.h'], ['node', 'v8.h'], ['nodejs/deps/uv/include/', 'uv.h']]
+        local_found = false
+        foreach idir : ['/usr/include', '/usr/local/include']
+
+            subdir = def[0]
+            header = def[1]
+
+            dir = idir / subdir
+            if not local_found and cpp.has_header(header, args: '-I' + dir)
+                js_include_dirs += dir
+                local_found = true
+            endif
+        endforeach
+
+        if not local_found
+            found_include_dirs = false
+        endif
+    endforeach
+
+    if not found_include_dirs and get_option('enable_js_automation').enabled()
+        error('Not all headers could be found!')
+    endif
+
+    if all_deps_found and found_include_dirs
+        enable_js_automation = true
+        js_include_dirs = include_directories(js_include_dirs)
+        deps += js_deps
+    endif
+endif
+
+deps += dependency(
+    'tl-expected',
+    required: true,
+    fallback: ['tl-expected'],
+)
+
+
+if enable_js_automation
+    conf.set('ENABLE_JS_AUTOMATION', true)
+
+    node_js_version = 18
+
+    if (
+        not cpp.compiles(
+            '''
+#include "node_version.h"
+
+int main(void){
+static_assert(NODE_MAJOR_VERSION == ''' + node_js_version.to_string() + ''', "Wrong node js version");
+}
+''',
+            dependencies: js_deps,
+            include_directories: js_include_dirs,
+        )
+    )
+        error('Required node.js version ' + node_js_version.to_string())
+
+    endif
+
+
+endif
+
+
 acconf = configure_file(
     output: 'acconf.h',
     configuration: conf,
@@ -462,6 +570,7 @@ aegisub = executable(
         libresrc_inc,
         version_inc,
         deps_inc,
+        js_include_dirs,
         include_directories('src'),
     ],
     cpp_pch: aegisub_cpp_pch,
@@ -474,7 +583,9 @@ aegisub = executable(
 
 if host_machine.system() == 'windows'
     mt_exe = find_program('mt.exe')
-    apply_manifest = find_program(meson.project_source_root() / 'tools/apply-manifest.py')
+    apply_manifest = find_program(
+        meson.project_source_root() / 'tools/apply-manifest.py',
+    )
     custom_target(
         'apply-manifest',
         input: aegisub,
