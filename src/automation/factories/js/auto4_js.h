@@ -43,7 +43,7 @@
 
 namespace Automation4 {
 
-enum class JSType : uint8_t { Module, CommonJS, Auto };
+enum class JSType : uint8_t { Module, CommonJS };
 
 JSType get_type(agi::fs::path const &filename);
 
