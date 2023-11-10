@@ -119,39 +119,16 @@ void Init2(v8::Local<v8::Object> exports) {
       exports->GetCreationContext().ToLocalChecked();
   auto isolate = context->GetIsolate();
   exports
-      ->Set(context,
-            v8::String::NewFromUtf8(isolate, "printkli",
-                                    v8::NewStringType::kNormal)
-                .ToLocalChecked(),
+      ->Set(context, TO_V8("printkli"),
             v8::Function::New(context, Print).ToLocalChecked())
       .Check();
-}
-
-v8::MaybeLocal<v8::Value>
-AegisubModuleEvaluationSteps(v8::Local<v8::Context> context,
-                             v8::Local<v8::Module> module) {
-
-  auto isolate = context->GetIsolate();
-  module
-      ->SetSyntheticModuleExport(
-          isolate,
-          v8::String::NewFromUtf8(isolate, "printkli",
-                                  v8::NewStringType::kNormal)
-              .ToLocalChecked(),
-          v8::Function::New(context, Print).ToLocalChecked())
-      .Check();
-
-  return v8::MaybeLocal<v8::Value>(v8::Null(isolate));
 }
 
 void addGlobalProperties(v8::Isolate *isolate, v8::Local<v8::Context> &context,
                          const std::filesystem::path &path,
                          const std::uint32_t timeout, const bool isModule) {
   context->Global()
-      ->Set(context,
-            v8::String::NewFromUtf8(isolate, "printkli",
-                                    v8::NewStringType::kNormal)
-                .ToLocalChecked(),
+      ->Set(context, TO_V8("printkli"),
             v8::Function::New(context, Print).ToLocalChecked())
       .Check();
 
@@ -159,95 +136,34 @@ void addGlobalProperties(v8::Isolate *isolate, v8::Local<v8::Context> &context,
   if (!isModule) {
 
     context->Global()
-        ->Set(context,
-              v8::String::NewFromUtf8(isolate, "__filename",
-                                      v8::NewStringType::kNormal)
-                  .ToLocalChecked(),
-              v8::String::NewFromUtf8(isolate, path.string().c_str(),
-                                      v8::NewStringType::kNormal)
-                  .ToLocalChecked())
+        ->Set(context, TO_V8("__filename"), TO_V8(path.string()))
         .Check();
 
     context->Global()
-        ->Set(context,
-              v8::String::NewFromUtf8(isolate, "__dirname",
-                                      v8::NewStringType::kNormal)
-                  .ToLocalChecked(),
-              v8::String::NewFromUtf8(isolate,
-                                      path.parent_path().string().c_str(),
-                                      v8::NewStringType::kNormal)
-                  .ToLocalChecked())
+        ->Set(context, TO_V8("__dirname"), TO_V8(path.parent_path().string()))
         .Check();
   }
 
-  v8::Local<v8::Module> module = v8::Module::CreateSyntheticModule(
-      isolate,
-      v8::String::NewFromUtf8(isolate, "aegisub", v8::NewStringType::kNormal)
-          .ToLocalChecked(),
-      {v8::String::NewFromUtf8(isolate, "aegisub", v8::NewStringType::kNormal)
-           .ToLocalChecked(),
-       v8::String::NewFromUtf8(isolate, "node:aegisub",
-                               v8::NewStringType::kNormal)
-           .ToLocalChecked()},
-      AegisubModuleEvaluationSteps);
-
   v8::Local<v8::Object> internalProperties = v8::Object::New(isolate);
   internalProperties
-      ->Set(context,
-            v8::String::NewFromUtf8(isolate, "fileContent",
-                                    v8::NewStringType::kNormal)
-                .ToLocalChecked(),
-            v8::String::NewFromUtf8(isolate, read_content(path).c_str(),
-                                    v8::NewStringType::kNormal)
-                .ToLocalChecked())
+      ->Set(context, TO_V8("fileContent"), TO_V8(read_content(path)))
       .Check();
 
-  internalProperties
-      ->Set(context,
-            v8::String::NewFromUtf8(isolate, "timeout",
-                                    v8::NewStringType::kNormal)
-                .ToLocalChecked(),
-            v8::Uint32::NewFromUnsigned(isolate, timeout))
+  internalProperties->Set(context, TO_V8("timeout"), TO_V8(timeout)).Check();
+
+  internalProperties->Set(context, TO_V8("isModule"), TO_V8(isModule)).Check();
+
+  internalProperties->Set(context, TO_V8("filename"), TO_V8(path.string()))
       .Check();
 
-  internalProperties
-      ->Set(context,
-            v8::String::NewFromUtf8(isolate, "isModule",
-                                    v8::NewStringType::kNormal)
-                .ToLocalChecked(),
-            v8::Boolean::New(isolate, isModule))
-      .Check();
+  v8::Local<v8::Array> linkedBindingsArray =
+      VECTOR_TO_V8(std::vector<const char *>{"aegisub"});
 
-  internalProperties
-      ->Set(context,
-            v8::String::NewFromUtf8(isolate, "filename",
-                                    v8::NewStringType::kNormal)
-                .ToLocalChecked(),
-            v8::String::NewFromUtf8(isolate, path.string().c_str(),
-                                    v8::NewStringType::kNormal)
-                .ToLocalChecked())
-      .Check();
-
-  std::vector<v8::Local<v8::String>> values{
-      v8::String::NewFromUtf8(isolate, "aegisub", v8::NewStringType::kNormal)
-          .ToLocalChecked()};
-
-  v8::Local<v8::Array> linkedBindingsArray = array_from_vector(isolate, values);
-
-  internalProperties
-      ->Set(context,
-            v8::String::NewFromUtf8(isolate, "linkedBindings",
-                                    v8::NewStringType::kNormal)
-                .ToLocalChecked(),
-            linkedBindingsArray)
+  internalProperties->Set(context, TO_V8("linkedBindings"), linkedBindingsArray)
       .Check();
 
   context->Global()
-      ->Set(context,
-            v8::String::NewFromUtf8(isolate, "__internal__properties__",
-                                    v8::NewStringType::kNormal)
-                .ToLocalChecked(),
-            internalProperties)
+      ->Set(context, TO_V8("__internal__properties__"), internalProperties)
       .Check();
 
   if (isModule) {
@@ -356,11 +272,7 @@ int RunNodeInstance(node::MultiIsolatePlatform *platform,
     v8::Local<v8::Object> object = result->ToObject(context).ToLocalChecked();
 
     const v8::Local<v8::Value> exitCode =
-        object
-            ->Get(context, v8::String::NewFromUtf8(isolate, "exitCode",
-                                                   v8::NewStringType::kNormal)
-                               .ToLocalChecked())
-            .ToLocalChecked();
+        object->Get(context, TO_V8("exitCode")).ToLocalChecked();
 
     const std::uint32_t exitCodeInt =
         exitCode->ToUint32(context).ToLocalChecked()->Value();
