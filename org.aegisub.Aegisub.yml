@@ -4,12 +4,12 @@ runtime-version: "23.08"
 sdk: org.freedesktop.Sdk
 command: aegisub
 modules:
-    - name: lua
+    - name: lua5.1
       buildsystem: simple
       sources:
           - type: archive
-            url: https://www.lua.org/ftp/lua-5.4.6.tar.gz
-            sha256: 7d5ea1b9cb6aa0b59ca3dde1c6adcb57ef83a1ba8e5432c0ecd06bf439b3ad88
+            url: https://www.lua.org/ftp/lua-5.1.5.tar.gz
+            sha256: 2640fc56a795f29d28ef15e13c34a47e223960b0240e8cb0a82d9b0738695333
       build-commands:
           - sed -i 's/INSTALL_TOP= \/usr\/local/INSTALL_TOP= \/app/g' Makefile
           - make
@@ -70,7 +70,7 @@ modules:
           - type: git
             url: https://github.com/Totto16/ffi-experiments.git
       build-commands:
-          - luarocks install moonscript --dev ## we need the dev version for lua 5.4!
+          - luarocks install moonscript
           - make -B lua
           #  - luarocks remove moonscript # remove again, to not end in the final pack
           - make -B all
