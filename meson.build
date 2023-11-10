@@ -374,6 +374,22 @@ endif
 conf_platform = configuration_data()
 conf_platform.set('DEFAULT_PLAYER_AUDIO', def_audio)
 
+# aegisub currently only supports lu 5.1!
+lua_dep = dependency(
+    'lua',
+    version: ['>=5.1.0', '<5.2.0'],
+    required: false,
+)
+
+if not lua_dep.found()
+    lua_dep = dependency(
+        'lua5.1',
+        version: ['>=5.1.0', '<5.2.0'],
+    )
+endif
+
+deps += lua_dep
+
 luajit = dependency(
     'luajit',
     version: '>=2.0.0',

@@ -3,9 +3,14 @@ luabins_src = files(
     'load.c',
     'luabins.c',
     'luainternals.c',
-    'savebuffer.c',
     'save.c',
+    'savebuffer.c',
     'write.c',
 )
 
-libluabins = static_library('luabins', luabins_src, include_directories: luajit_inc)
+libluabins = static_library(
+    'luabins',
+    luabins_src,
+    include_directories: luajit_inc,
+    dependencies: lua_dep,
+)
