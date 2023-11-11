@@ -472,6 +472,8 @@ if get_option('enable_js_automation').allowed()
 
     found_include_dirs = true
 
+    fs = import('fs')
+
     foreach def : [['node', 'node.h'], ['node', 'v8.h'], ['nodejs/deps/uv/include/', 'uv.h']]
         local_found = false
         foreach idir : ['/usr/include', '/usr/local/include']
@@ -480,7 +482,8 @@ if get_option('enable_js_automation').allowed()
             header = def[1]
 
             dir = idir / subdir
-            if not local_found and cpp.has_header(header, args: '-I' + dir)
+
+            if not local_found and fs.is_dir(dir) and cpp.has_header(header, args: '-I' + dir)
                 js_include_dirs += dir
                 local_found = true
             endif
