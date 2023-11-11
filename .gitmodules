@@ -1,0 +1,3 @@
+[submodule "idl-generator"]
+	path = src/automation/factories/js/idl-generator
+	url = https://github.com/Totto16/aegisub-idl-generator.git
