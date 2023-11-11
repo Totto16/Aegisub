@@ -11,9 +11,11 @@ gmock_dep = gtest_proj.get_variable('gmock_dep')
 all_test_deps += [gtest_dep, gmock_dep, iconv_dep, boost_dep, js_deps]
 all_test_dep_libs += [libaegisub]
 
-all_test_sources += [
-    'js/compiles.cpp',
+if enable_js_automation
+    all_test_sources += ['js/compiles.cpp']
+endif 
 
+all_test_sources += [
     'support/main.cpp',
     'support/util.cpp',
 

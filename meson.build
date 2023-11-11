@@ -464,9 +464,10 @@ endif
 
 enable_js_automation = false
 
-if get_option('enable_js_automation').allowed()
-    js_deps = []
+js_deps = []
+js_include_dirs = []
 
+if get_option('enable_js_automation').allowed()
     cpp = meson.get_compiler('cpp')
 
     all_deps_found = true
@@ -485,11 +486,7 @@ if get_option('enable_js_automation').allowed()
 
     endforeach
 
-
-
-    js_include_dirs = []
     found_include_dirs = true
-
 
     foreach def : [['node', 'node.h'], ['node', 'v8.h'], ['nodejs/deps/uv/include/', 'uv.h']]
         local_found = false

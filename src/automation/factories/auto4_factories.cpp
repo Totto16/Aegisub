@@ -6,7 +6,10 @@
 #include "auto4_base.h"
 #include "auto4_factories.hpp"
 #include "auto4_lua_factory.h"
+
+#ifdef ENABLE_JS_AUTOMATION
 #include "auto4_js_factory.h"
+#endif
 
 #include <libaegisub/make_unique.h>
 
