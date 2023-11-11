@@ -11,6 +11,5 @@ luabins_src = files(
 libluabins = static_library(
     'luabins',
     luabins_src,
-    include_directories: luajit_inc,
-    dependencies: lua_dep,
+    include_directories: luajit_inc
 )

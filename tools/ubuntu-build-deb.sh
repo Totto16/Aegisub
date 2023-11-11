@@ -22,19 +22,19 @@ mkdir -p usr/bin
 
 cp ../aegisub usr/bin/
 
-mkdir -p usr/local/share/aegisub/automation
+mkdir -p usr/share/aegisub/automation
 
-cp -r ../../automation/autoload/ usr/local/share/aegisub/automation/
+cp -r ../../automation/autoload/ usr/share/aegisub/automation/
 
-cp -r ../../automation/demos/ usr/local/share/aegisub/automation/
+cp -r ../../automation/demos/ usr/share/aegisub/automation/
 
-cp -r ../../automation/include/ usr/local/share/aegisub/automation/
+cp -r ../../automation/include/ usr/share/aegisub/automation/
 
 # remove the meson build files, that where copied over
 
-rm usr/local/share/aegisub/automation/include/meson.build
+rm usr/share/aegisub/automation/include/meson.build
 
-rm usr/local/share/aegisub/automation/include/aegisub/meson.build
+rm usr/share/aegisub/automation/include/aegisub/meson.build
 
 mkdir -p usr/lib
 
@@ -57,39 +57,96 @@ done
 
 if [ -d "../DependencyControl" ]; then
 
-    mkdir -p tmp/DependencyControl/autoload/
+    mkdir -p usr/share/aegisub/automation/autoload/
 
-    cp ../DependencyControl/DependencyControl/macros/l0.DependencyControl.Toolbox.moon tmp/DependencyControl/autoload/
+    cp ../DependencyControl/DependencyControl/macros/l0.DependencyControl.Toolbox.moon usr/share/aegisub/automation/autoload/
 
-    mkdir -p tmp/DependencyControl/include
+    mkdir -p usr/share/aegisub/automation/include/l0/
 
-    mkdir -p tmp/DependencyControl/include/l0/
+    cp -r ../DependencyControl/DependencyControl/modules/* usr/share/aegisub/automation/include/l0/
 
-    cp -r ../DependencyControl/DependencyControl/modules/* tmp/DependencyControl/include/l0/
+    cp -r ../DependencyControl/luajson/lua/* usr/share/aegisub/automation/include/
 
-    cp -r ../DependencyControl/luajson/lua/* tmp/DependencyControl/include/
+    cp ../DependencyControl/YUtils/src/Yutils.lua usr/share/aegisub/automation/include/
 
-    cp ../DependencyControl/YUtils/src/Yutils.lua tmp/DependencyControl/include/
+    mkdir -p usr/share/aegisub/automation/include/requireffi/
 
-    mkdir -p tmp/DependencyControl/include/requireffi/
+    cp ../DependencyControl/ffi-experiments/build/requireffi.lua usr/share/aegisub/automation/include/requireffi/
 
-    cp ../DependencyControl/ffi-experiments/build/requireffi.lua tmp/DependencyControl/include/requireffi/
+    mkdir -p usr/share/aegisub/automation/include/BM/
 
-    mkdir -p tmp/DependencyControl/include/BM/
+    cp ../DependencyControl/ffi-experiments/build/BadMutex.lua usr/share/aegisub/automation/include/BM/
 
-    cp ../DependencyControl/ffi-experiments/build/BadMutex.lua tmp/DependencyControl/include/BM/
+    mkdir -p usr/share/aegisub/automation/include/DM/
 
-    mkdir -p tmp/DependencyControl/include/DM/
+    cp ../DependencyControl/ffi-experiments/build/DownloadManager.lua usr/share/aegisub/automation/include/DM/
 
-    cp ../DependencyControl/ffi-experiments/build/DownloadManager.lua tmp/DependencyControl/include/DM/
+    mkdir -p usr/share/aegisub/automation/include/PT/
 
-    mkdir -p tmp/DependencyControl/include/PT/
-
-    cp ../DependencyControl/ffi-experiments/build/PreciseTimer.lua tmp/DependencyControl/include/PT/
+    cp ../DependencyControl/ffi-experiments/build/PreciseTimer.lua usr/share/aegisub/automation/include/PT/
 
     cp ../DependencyControl/ffi-experiments/build/lib*.so usr/lib/
 
     mkdir -p DEBIAN/
+
+    #TODO: how to do this while installing
+    ## generate mimetypes: see https://wiki.ubuntu.com.cn/UbuntuHelp:AddingMimeTypes
+
+    # EXISTS_SSA=$(grep 'text/x-ssa' /etc/mime.types || echo "")
+    # EXISTS_ASS=$(grep 'text/x-ass' /etc/mime.types || echo "")
+
+    # if [ -z "$EXISTS_SSA" ]; then
+    #     echo "text/x-ssa ssa"  >> /etc/mime.types
+    # fi
+
+    # if [ -z "$EXISTS_ASS" ]; then
+    #     echo "text/x-ass ass"  >> /etc/mime.types
+
+    # mkdir -p "/usr/share/icons/hicolor/scalable/mimetypes/"
+
+    # cp "/tmp/Aegisub/scaleable.svg" "/usr/share/icons/hicolor/scalable/mimetypes/text-x-ssa.svg"
+    # cp "/tmp/Aegisub/scaleable.svg" "/usr/share/icons/hicolor/scalable/mimetypes/text-x-ass.svg"
+
+    # also here: /usr/share/icons/Humanity/mimes/16/text-x-ssa.svg
+
+    # use icon browser to make it work!!
+
+    #     EXISTS_MIME_TYPE_ASS=$(grep -rn 'text/x-ass' /usr/share/mime/packages/ || echo "")
+    #     EXISTS_MIME_TYPE_SSA=$(grep -rn 'text/x-ssa' /usr/share/mime/packages/ || echo "")
+
+    #     if [ -z "$EXISTS_MIME_TYPE_ASS" ] || [ -z "$EXISTS_MIME_TYPE_SSA" ]; then
+
+    #         # should exist, but fdor safty
+    #         mkdir -p "/usr/share/mime/packages/"
+
+    #         touch "/usr/share/mime/packages/text.xml"
+    #         echo '<?xml version="1.0" encoding="UTF-8"?>'                                       >> "/usr/share/mime/packages/text.xml"
+    #         echo '<mime-info xmlns='\''http://www.freedesktop.org/standards/shared-mime-info'\''>'  >> "/usr/share/mime/packages/text.xml"
+    #         echo '        <mime-type type="text/x-ass">'                                        >> "/usr/share/mime/packages/text.xml"
+    #         echo '                <glob pattern="*.ass"/>'                                      >> "/usr/share/mime/packages/text.xml"
+    #         echo '                <magic priority="100">'                                       >> "/usr/share/mime/packages/text.xml"
+    #         echo '                    <match value="0xEF" type="byte" offset="0"/>'             >> "/usr/share/mime/packages/text.xml"
+    #         echo '                    <match value="0xBB" type="byte" offset="1"/>'             >> "/usr/share/mime/packages/text.xml"
+    #         echo '                    <match value="0xBF" type="byte" offset="2"/>'             >> "/usr/share/mime/packages/text.xml"
+    #         echo '                    <match value="[Script Info]" type="string" offset="3"/>'  >> "/usr/share/mime/packages/text.xml"
+    #         echo '                </magic>'                                                     >> "/usr/share/mime/packages/text.xml"
+    #         echo '        </mime-type>'                                                         >> "/usr/share/mime/packages/text.xml"
+    #         echo '        <mime-type type="text/x-ssa">'                                        >> "/usr/share/mime/packages/text.xml"
+    #         echo '                <glob pattern="*.ssa"/>'                                      >> "/usr/share/mime/packages/text.xml"
+    #         echo '        </mime-type>'                                                         >> "/usr/share/mime/packages/text.xml"
+    #         echo '</mime-info>'                                                                 >> "/usr/share/mime/packages/text.xml"
+
+    #         sudo update-mime-database /usr/share/mime
+    #         sudo update-icon-caches /usr/share/icons/*
+    #         sudo gtk-update-icon-cache /usr/share/icons/hicolor -f
+    #     fi
+
+    #     rm -r /tmp/Aegisub/
+
+    #     sudo chmod -R 776 /usr/share/aegisub
+    #     sudo chown -R "root:$SUDO_USER" "/usr/share/aegisub"
+
+    # fi
 
     #post or preinst ???
     touch DEBIAN/postinst
@@ -97,99 +154,17 @@ if [ -d "../DependencyControl" ]; then
 #!/bin/bash
 set -e
 
-## check if executed correctly:
-
-
-
 if [ -z "$SUDO_USER" ]; then
 
-echo  "DO NOT call the installation from the root user, but rather use 'sudo <installation command>' to install it, otherwise the files can't be moved to the correct folder!!"
+echo  "DO NOT call the installation from the root user, but rather use 'sudo <installation command>' to install it, otherwise the postinstall steps will be incorrect!"
 exit 5
 rm -r /tmp/DependencyControl/
 
 fi
 
-HOME_DIR=$(getent passwd "$SUDO_USER" | cut -d: -f6 )
 
-
-## now copy the file from tmp to the target!
-## better not do that here, but why not xD
-
-mkdir -p "$HOME_DIR/.aegisub/automation/"
-
-sudo chown -R "$SUDO_USER" "$HOME_DIR/.aegisub/"
-
-if [ -d "/tmp/DependencyControl" ]; then
-
-    cp -r /tmp/DependencyControl/*  "$HOME_DIR/.aegisub/automation/"
-
-    rm -r /tmp/DependencyControl/
-fi
-
-
-## generate mimetypes: see https://wiki.ubuntu.com.cn/UbuntuHelp:AddingMimeTypes
-
-if [ -d "/tmp/Aegisub" ]; then
-
-    EXISTS_SSA=$(grep 'text/x-ssa' /etc/mime.types || echo "")
-    EXISTS_ASS=$(grep 'text/x-ass' /etc/mime.types || echo "")
-
-    if [ -z "$EXISTS_SSA" ]; then 
-        echo "text/x-ssa ssa"  >> /etc/mime.types
-    fi
-
-    if [ -z "$EXISTS_ASS" ]; then 
-        echo "text/x-ass ass"  >> /etc/mime.types
-    fi
-
-
-    mkdir -p "/usr/share/icons/hicolor/scalable/mimetypes/"
-
-    cp "/tmp/Aegisub/scaleable.svg" "/usr/share/icons/hicolor/scalable/mimetypes/text-x-ssa.svg"
-    cp "/tmp/Aegisub/scaleable.svg" "/usr/share/icons/hicolor/scalable/mimetypes/text-x-ass.svg"
-
-
-    # also here: /usr/share/icons/Humanity/mimes/16/text-x-ssa.svg
-
-    # use icon browser to make it work!!
-
-    EXISTS_MIME_TYPE_ASS=$(grep -rn 'text/x-ass' /usr/share/mime/packages/ || echo "")
-    EXISTS_MIME_TYPE_SSA=$(grep -rn 'text/x-ssa' /usr/share/mime/packages/ || echo "")
-
-    if [ -z "$EXISTS_MIME_TYPE_ASS" ] || [ -z "$EXISTS_MIME_TYPE_SSA" ]; then 
-        
-        # should exist, but fdor safty
-        mkdir -p "/usr/share/mime/packages/"
-
-        touch "/usr/share/mime/packages/text.xml"
-        echo '<?xml version="1.0" encoding="UTF-8"?>'                                       >> "/usr/share/mime/packages/text.xml"
-        echo '<mime-info xmlns='\''http://www.freedesktop.org/standards/shared-mime-info'\''>'  >> "/usr/share/mime/packages/text.xml"
-        echo '        <mime-type type="text/x-ass">'                                        >> "/usr/share/mime/packages/text.xml"
-        echo '                <glob pattern="*.ass"/>'                                      >> "/usr/share/mime/packages/text.xml"
-        echo '                <magic priority="100">'                                       >> "/usr/share/mime/packages/text.xml"
-        echo '                    <match value="0xEF" type="byte" offset="0"/>'             >> "/usr/share/mime/packages/text.xml"
-        echo '                    <match value="0xBB" type="byte" offset="1"/>'             >> "/usr/share/mime/packages/text.xml"
-        echo '                    <match value="0xBF" type="byte" offset="2"/>'             >> "/usr/share/mime/packages/text.xml"
-        echo '                    <match value="[Script Info]" type="string" offset="3"/>'  >> "/usr/share/mime/packages/text.xml"
-        echo '                </magic>'                                                     >> "/usr/share/mime/packages/text.xml"
-        echo '        </mime-type>'                                                         >> "/usr/share/mime/packages/text.xml"
-        echo '        <mime-type type="text/x-ssa">'                                        >> "/usr/share/mime/packages/text.xml"
-        echo '                <glob pattern="*.ssa"/>'                                      >> "/usr/share/mime/packages/text.xml"
-        echo '        </mime-type>'                                                         >> "/usr/share/mime/packages/text.xml"
-        echo '</mime-info>'                                                                 >> "/usr/share/mime/packages/text.xml"
-
-        sudo update-mime-database /usr/share/mime
-        sudo update-icon-caches /usr/share/icons/*
-        sudo gtk-update-icon-cache /usr/share/icons/hicolor -f
-    fi
-        
-    rm -r /tmp/Aegisub/
-
-    sudo chmod -R 776 /usr/local/share/aegisub
-    sudo chown -R "root:$SUDO_USER" "/usr/local/share/aegisub"
-
-fi
-
+sudo chmod -R 776 /usr/share/aegisub
+sudo chown -R "root:$SUDO_USER" "/usr/share/aegisub"
 
 if ! command -v "luarocks" &> /dev/null
     then
@@ -200,9 +175,6 @@ fi
 ## for sqlite version of dependency-control
 # sudo luarocks install lsqlite3 > /dev/null
 sudo luarocks install moonscript > /dev/null
-
-
-
 EOF
 
     chmod 555 DEBIAN/postinst

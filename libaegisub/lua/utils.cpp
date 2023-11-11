@@ -230,6 +230,7 @@ int exception_wrapper(lua_State *L, int (*func)(lua_State *L)) {
 		return lua_error(L);
 	}
 	catch (...) {
+		LOG_E("lua/utils/exception_wrapper") << "An Unknow type of Exception occurred: this is likely not an issue on your side, but on teh packager / maintainer!\n"; 
 		std::terminate();
 	}
 }
