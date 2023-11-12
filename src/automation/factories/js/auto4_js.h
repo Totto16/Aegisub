@@ -35,6 +35,8 @@
 
 // https://nodejs.org/api/embedding.html
 
+#pragma once
+
 #include "auto4_base.h"
 
 #include <deque>
@@ -43,8 +45,12 @@
 
 namespace Automation4 {
 
+namespace JS {
+
 enum class JSType : uint8_t { Module, CommonJS };
 
 JSType get_type(agi::fs::path const &filename);
+
+} // namespace JS
 
 } // namespace Automation4

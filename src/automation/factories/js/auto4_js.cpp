@@ -75,13 +75,14 @@
 #include <wx/log.h>
 #include <wx/msgdlg.h>
 
-using namespace Automation4;
-namespace Automation4 {
-
 // TODO: make this options!
 #define DEFAULT_JS_TYPE JSType::CommonJS
 #define SCRIPT_EXECUTION_TIMEOUT_MS (60 * 1000) // in milliseconds!
 
+using namespace Automation4::JS;
+
+namespace Automation4 {
+namespace JS {
 JSType get_type(agi::fs::path const &filename) {
   if (agi::fs::HasExtension(filename, "js")) {
     return DEFAULT_JS_TYPE;
@@ -179,9 +180,6 @@ std::vector<ExportFilter *> JavaScriptScript::GetFilters() const {
   return ret;
 }
 
-} // namespace Automation4
-
-namespace Automation4 {
 JavaScriptFactory::JavaScriptFactory()
     : ScriptFactory("JavaScript", "*.js,*.cjs,*.mjs") {}
 
@@ -196,4 +194,5 @@ JavaScriptFactory::Produce(agi::fs::path const &filename) const {
   }
   return nullptr;
 }
+} // namespace JS
 } // namespace Automation4

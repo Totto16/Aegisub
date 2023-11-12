@@ -8,12 +8,17 @@
 #include <vector>
 
 #include "auto4_js.h"
+#include "convertable.h"
+#include "idl_headers.h"
 #include "node.h"
 #include "uv.h"
 #include "v8_helper.h"
 
-// Note: This file is being referred to from doc/api/embedding.md, and excerpts
-// from it are included in the documentation. Try to keep these in sync.
+using namespace Automation4::JS;
+
+namespace Automation4 {
+
+namespace JS {
 
 std::string read_content(const std::string &path) {
   const std::ifstream input_stream(path, std::ios_base::binary);
@@ -29,17 +34,16 @@ std::string read_content(const std::string &path) {
 }
 
 int execute_js_file(
-    const std::string &file_path, const Automation4::JSType type,
+    const std::string &file_path, const JSType type,
     const std::uint32_t timeout,
     std::function<void(std::string, std::string, std::string, std::string)>
         callback) {
 
-  // NODE_MODULE_LINKED(aegisub, Init2);
-
+  // NODE_MODULE_LINKED(aegisub, initAegisubModule);
   node::node_module _module = {
       18,        node::ModuleFlags::kLinked,
       NULL,      __FILE__,
-      NULL,      (node::addon_context_register_func)(Init2),
+      NULL,      (node::addon_context_register_func)(initAegisubModule),
       "aegisub", NULL,
       NULL};
 
@@ -91,50 +95,60 @@ const char *ToCString(const v8::String::Utf8Value &value) {
   return *value ? *value : "<string conversion failed>";
 }
 
-void Print(const v8::FunctionCallbackInfo<v8::Value> &args) {
-  bool first = true;
-  for (int i = 0; i < args.Length(); i++) {
-    v8::HandleScope handle_scope(args.GetIsolate());
-    if (first) {
-      first = false;
-    } else {
-      printf(" ");
-    }
-    v8::String::Utf8Value str(args.GetIsolate(), args[i]);
-    const char *cstr = ToCString(str);
-    printf("%s", cstr);
-  }
-  printf(" <- c++\n");
-  fflush(stdout);
-}
-
-void Print2(const v8::FunctionCallbackInfo<v8::Value> &args) {
-  printf("C++ print2\n");
-  fflush(stdout);
-}
-
-void Init2(v8::Local<v8::Object> exports) {
-  printf("INIT\n");
+void initAegisubModule(v8::Local<v8::Object> exports) {
+  printf("initAegisubModule\n");
   v8::Local<v8::Context> context =
       exports->GetCreationContext().ToLocalChecked();
   auto isolate = context->GetIsolate();
+
+  /* aegisub.register_macro(script_name, script_description, cleantags_macro)
+  aegisub.register_filter(script_name, script_description, 0,
+  cleantags_filter)
+  */
+
+  TEST_IDL
+  // TODO:
+  //  const JavaScriptScript* script = // get external pointer to script object!
+  /*
+    const auto scriptProperties = OrConvertable("scriptProperties");
+    scriptProperties.add({StringConvertable("")})
+    scriptProperties.add({ObjectConvertable()})
+
+
+   */
+
   exports
-      ->Set(context, TO_V8("printkli"),
-            v8::Function::New(context, Print).ToLocalChecked())
+      ->Set(context, TO_V8("set_script_properties"),
+            v8::Function::New(
+                context,
+                [](const v8::FunctionCallbackInfo<v8::Value> &args) {
+                  const auto isolate = args.GetIsolate();
+
+                  // const auto scriptProperties = StringConvertable("test");
+
+                  // TODO get an ArgumentPArser
+
+                  const auto val = args[0];
+
+                  //   const auto result = scriptProperties.from_v8(isolate,
+                  //   val);
+
+                  /*   if (!result.has_value()) {
+                    } */
+
+                  // TODO
+                  // script.name = ...
+                })
+                .ToLocalChecked())
       .Check();
 }
 
 void addGlobalProperties(v8::Isolate *isolate, v8::Local<v8::Context> &context,
                          const std::filesystem::path &path,
                          const std::uint32_t timeout, const bool isModule) {
-  context->Global()
-      ->Set(context, TO_V8("printkli"),
-            v8::Function::New(context, Print).ToLocalChecked())
-      .Check();
 
   // https://nodejs.org/docs/latest-v18.x/api/esm.html#no-__filename-or-__dirname
   if (!isModule) {
-
     context->Global()
         ->Set(context, TO_V8("__filename"), TO_V8(path.string()))
         .Check();
@@ -293,3 +307,6 @@ int RunNodeInstance(node::MultiIsolatePlatform *platform,
 
   return exit_code;
 }
+
+} // namespace JS
+} // namespace Automation4

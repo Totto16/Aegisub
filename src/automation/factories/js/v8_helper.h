@@ -1,13 +1,18 @@
 #include <concepts>
 #include <filesystem>
 #include <functional>
+#include <node.h>
 #include <string>
+#include <v8.h>
 #include <vector>
 
-#include "node.h"
-#include "v8.h"
+#include "auto4_js.h"
 
 #pragma once
+
+namespace Automation4 {
+
+namespace JS {
 
 static int RunNodeInstance(node::MultiIsolatePlatform *platform,
                            const std::vector<std::string> &args,
@@ -15,10 +20,10 @@ static int RunNodeInstance(node::MultiIsolatePlatform *platform,
                            const std::filesystem::path &path,
                            const bool isModule, const std::uint32_t timeout);
 
-void Init2(v8::Local<v8::Object> exports);
+void initAegisubModule(v8::Local<v8::Object> exports);
 
 int execute_js_file(
-    const std::string &file_path, const Automation4::JSType type,
+    const std::string &file_path, const Automation4::JS::JSType type,
     const std::uint32_t timeout,
     std::function<void(std::string, std::string, std::string, std::string)>);
 
@@ -30,9 +35,18 @@ int execute_js_file(
 // TEMPLATES
 
 // template to_v8
+
+template <class T, class U>
+concept Derived = std::is_base_of<U, T>::value;
+
+// template <Derived<v8::Value> T, typename S>
 template <typename S>
 inline v8::Local<v8::Value> to_v8(v8::Isolate *isolate, S value) {
   static_assert(false, "Not implemented for this type!");
+  return isolate->ThrowException(
+      v8::Exception::Error(v8::String::NewFromUtf8(isolate, "UNREACHABLE",
+                                                   v8::NewStringType::kNormal)
+                               .ToLocalChecked()));
 }
 
 template <>
@@ -82,3 +96,6 @@ v8::Local<v8::Array> array_from_vector(v8::Isolate *isolate,
 
   return result;
 }
+
+} // namespace JS
+} // namespace Automation4

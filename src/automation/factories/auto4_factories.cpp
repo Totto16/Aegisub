@@ -19,7 +19,7 @@ std::vector<std::unique_ptr<ScriptFactory>> Factories::createAll() {
   auto all = std::vector<std::unique_ptr<ScriptFactory>>{};
   all.push_back(agi::make_unique<Automation4::LuaScriptFactory>());
 #ifdef ENABLE_JS_AUTOMATION
-  all.push_back(agi::make_unique<Automation4::JavaScriptFactory>());
+  all.push_back(agi::make_unique<Automation4::JS::JavaScriptFactory>());
 #endif
 
   return all;

@@ -32,14 +32,19 @@
 /// @ingroup scripting
 ///
 
-//TODO comments above
+// TODO comments above
 
 #include "auto4_base.h"
 
 namespace Automation4 {
-	class JavaScriptFactory final : public ScriptFactory {
-		std::unique_ptr<Script> Produce(agi::fs::path const& filename) const override;
-	public:
-		JavaScriptFactory();
-	};
-}
+
+namespace JS {
+class JavaScriptFactory final : public ScriptFactory {
+  std::unique_ptr<Script> Produce(agi::fs::path const &filename) const override;
+
+public:
+  JavaScriptFactory();
+};
+
+} // namespace JS
+} // namespace Automation4
