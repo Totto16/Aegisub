@@ -41,6 +41,7 @@ subprojects/zlib-*
 subprojects/dirent-*
 subprojects/hunspell-*
 subprojects/uchardet-*
+subprojects/expected-*
 
 .vscode/*
 

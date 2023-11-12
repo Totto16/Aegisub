@@ -38,7 +38,7 @@
 #include "include/aegisub/hotkey.h"
 
 #include "auto4_base.h"
-#include "auto4_lua_factory.h"
+#include "auto4_factories.hpp"
 #include "compat.h"
 #include "crash_writer.h"
 #include "dialogs.h"
@@ -287,8 +287,15 @@ bool AegisubApp::OnInit() {
 
 		exception_message = _("Oops, Aegisub has crashed!\n\nAn attempt has been made to save a copy of your file to:\n\n%s\n\nAegisub will now close.");
 
+		// Before Loading Plugins, save the current path, that could be changed by lua
+		auto cwd = boost::filesystem::current_path();
+
 		// Load plugins
-		Automation4::ScriptFactory::Register(agi::make_unique<Automation4::LuaScriptFactory>());
+		Automation4::ScriptFactory::RegisterMany(Automation4::Factories::createAll());
+
+		// Then afterwards restore that path
+		boost::filesystem::current_path(cwd);
+
 		libass::CacheFonts();
 
 		// Load Automation scripts

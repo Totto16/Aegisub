@@ -43,7 +43,7 @@ namespace Automation4 {
 	/// @brief Object wrapping an AssFile object for modification through Lua
 	class LuaAssFile {
 		struct PendingCommit {
-			wxString mesage;
+			wxString message;
 			int modification_type;
 			std::vector<AssEntry*> lines;
 		};

@@ -78,23 +78,18 @@ fi
 
 # CONFIGURE
 
-bash -c "meson setup build -Dbuildtype=$buildtype -Dwx_version=3.2.3 -Dcredit='Totto local build'"
+bash -c "meson setup build -Dbuildtype=$buildtype -Dprefix=/usr -Dwx_version=3.2.0 -Dcredit='Totto local build' -Denable_js_automation=enabled"
 
 if [ $DEBUG == "true" ]; then
-    nodemon --watch src/ -e .cpp,.h --exec "sudo meson compile -C build && ./build/aegisub || exit 1"
+    nodemon --watch src/ -e .cpp,.h,.hpp --exec "meson compile -C build && ./build/aegisub || exit 1"
     exit 0
 fi
 
-# COMPILE
-
-## maybe this has to be done:  git config --global --add safe.directory $PWD
-
+## COMPILE
 meson compile -C build
 
 ## run tests
 meson test -C build --verbose "gtest main"
-
-# PACK into DEB
 
 if [ ! -f "build/aegisub" ]; then
     echo "Failed to build aegisub. Aborting"
@@ -124,7 +119,5 @@ fi
 #TODO make icons for ass work!
 #icons for .ass .ssa
 #mime type,
-
-#TODO create flatpak: https://docs.flatpak.org/en/latest/first-build.html
 
 # TODO compile each dependency local with the newest (stable?) version and then distruibute them as deb, and their also gonna be neede for flatpak support!
