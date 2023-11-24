@@ -80,15 +80,19 @@ jobs:
                   python-version: ${{ matrix.python-version }}
               env:
                   AGENT_TOOLSDIRECTORY: /opt/hostedtoolcache
+            - name: Setup Meson
+              run: |
+                  python -m pip install --upgrade pip setuptools
+                  pip install meson
 
-            # This has issues running on self-hosted. See https://github.com/actions/setup-python/issues/162.
+              # This has issues running on self-hosted. See https://github.com/actions/setup-python/issues/162.
 
-            #- name: Hard Install python3
-            #if: matrix.config.os == 'ubuntu-22.04'
-            #run: |
-            #sudo apt-get update
-            #sudo apt-get install python3 python3-pip -y
-            #sudo ln -s $(which python3) /usr/bin/python
+              #- name: Hard Install python3
+              #if: matrix.config.os == 'ubuntu-22.04'
+              #run: |
+              #sudo apt-get update
+              #sudo apt-get install python3 python3-pip -y
+              #sudo ln -s $(which python3) /usr/bin/python
 
             - name: Setup Meson
               run: |
