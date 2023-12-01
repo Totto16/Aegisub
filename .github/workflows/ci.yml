@@ -1,189 +1,189 @@
 name: Meson CI
 
 on:
-  push:
-    branches: [ master ]
-  pull_request:
-    branches: [ master ]
-  workflow_dispatch:  
+    push:
+        branches: [master]
+    pull_request:
+        branches: [master]
+    workflow_dispatch:
 env:
-  CC: gcc-13
-  CXX: g++-13
+    CC: gcc-13
+    CXX: g++-13
 
 jobs:
-  build:
-    name: ${{ matrix.config.name }}
-    runs-on: ${{ matrix.config.os }}
+    build:
+        name: ${{ matrix.config.name }}
+        runs-on: ${{ matrix.config.os }}
 
-    strategy:
-      fail-fast: false
-      matrix:
-        python-version: [ '3.x' ]   
-        config:
-          #- name: Windows MSVC Release
-            #os: windows-latest
-            #msvc: true
-            #buildtype: release
-            #args: >-
-              #-Ddefault_library=static 
-              #--force-fallback-for=zlib,harfbuzz,freetype2,fribidi,libpng 
-              #-Dfreetype2:harfbuzz=disabled 
-              #-Dharfbuzz:freetype=disabled 
-              #-Dharfbuzz:cairo=disabled 
-              #-Dharfbuzz:glib=disabled 
-              #-Dharfbuzz:gobject=disabled
-              #-Dharfbuzz:tests=disabled
-              #-Dharfbuzz:docs=disabled
-              #-Dfribidi:tests=false
-              #-Dfribidi:docs=false
-              #-Dlibass:fontconfig=disabled
-          #- {
-          #  name: Windows MinGW,
-          #  os: windows-latest,
-          #  msvc: false
-          #}
-          - {
-            name: Ubuntu Debug,
-            os: ubuntu-22.04,
-            buildtype: debugoptimized,
-            args: -Dwx_version=3.2.3
-          }
-          - {
-            name: Ubuntu Release,
-            os: ubuntu-22.04,
-            buildtype: release,
-            args: -Dwx_version=3.2.3
-          }
-          #- {
-          #  name: macOS Debug,
-          #  os: macos-latest,
-          #  buildtype: debugoptimized,
-          #  args: -Ddefault_library=static -Dbuild_osx_bundle=true -Dlocal_boost=true
-          #}
-          #- {
-          #  name: macOS Release,
-          #  os: macos-latest,
-          #  buildtype: release,
-          #  args: -Ddefault_library=static -Dbuild_osx_bundle=true -Dlocal_boost=true
-          #} 
+        strategy:
+            fail-fast: false
+            matrix:
+                python-version: ["3.x"]
+                config:
+                    #- name: Windows MSVC Release
+                    #os: windows-latest
+                    #msvc: true
+                    #buildtype: release
+                    #args: >-
+                    # -Ddefault_library=static
+                    # --force-fallback-for=zlib,harfbuzz,freetype2,fribidi,libpng
+                    # -Dfreetype2:harfbuzz=disabled
+                    # -Dharfbuzz:freetype=disabled
+                    # -Dharfbuzz:cairo=disabled
+                    # -Dharfbuzz:icu=disabled
+                    # -Dharfbuzz:glib=disabled
+                    # -Dharfbuzz:gobject=disabled
+                    # -Dharfbuzz:tests=disabled
+                    # -Dharfbuzz:docs=disabled
+                    # -Dfribidi:tests=false
+                    # -Dfribidi:docs=false
+                    # -Dlibass:fontconfig=disabled
+                    #- {
+                    #  name: Windows MinGW,
+                    #  os: windows-latest,
+                    #  msvc: false
+                    #}
+                    - {
+                          name: Ubuntu Debug,
+                          os: ubuntu-22.04,
+                          buildtype: debugoptimized,
+                          args: -Dwx_version=3.2.3,
+                      }
+                    - {
+                          name: Ubuntu Release,
+                          os: ubuntu-22.04,
+                          buildtype: release,
+                          args: -Dwx_version=3.2.3,
+                      }
+                    #- {
+                    #  name: macOS Debug,
+                    #  os: macos-latest,
+                    #  buildtype: debugoptimized,
+                    #  args: -Ddefault_library=static -Dbuild_osx_bundle=true -Dlocal_boost=true
+                    #}
+                    #- {
+                    #  name: macOS Release,
+                    #  os: macos-latest,
+                    #  buildtype: release,
+                    #  args: -Ddefault_library=static -Dbuild_osx_bundle=true -Dlocal_boost=true
+                    #}
 
-    steps:
-      - uses: actions/checkout@v4
-        with:
-          fetch-depth: '0'
+        steps:
+            - uses: actions/checkout@v4
+              with:
+                  fetch-depth: "0"
 
-      # pre-commit setup
-    
-      - uses: actions/setup-python@v4
-        with:
-          python-version: ${{ matrix.python-version }}
-        env:
-          AGENT_TOOLSDIRECTORY: /opt/hostedtoolcache
+            # pre-commit setup
 
-    # This has issues running on self-hosted. See https://github.com/actions/setup-python/issues/162.
+            - uses: actions/setup-python@v4
+              with:
+                  python-version: ${{ matrix.python-version }}
+              env:
+                  AGENT_TOOLSDIRECTORY: /opt/hostedtoolcache
+            - name: Setup Meson
+              run: |
+                  python -m pip install --upgrade pip setuptools
+                  pip install meson
 
-      #- name: Hard Install python3
-        #if: matrix.config.os == 'ubuntu-22.04'
-        #run: |
-          #sudo apt-get update
-          #sudo apt-get install python3 python3-pip -y
-          #sudo ln -s $(which python3) /usr/bin/python
+              # This has issues running on self-hosted. See https://github.com/actions/setup-python/issues/162.
 
-      - name: Setup Meson
-        run: |
-          python -m pip install --upgrade pip
-          pip install -U meson
+              #- name: Hard Install python3
+              #if: matrix.config.os == 'ubuntu-22.04'
+              #run: |
+              #sudo apt-get update
+              #sudo apt-get install python3 python3-pip -y
+              #sudo ln -s $(which python3) /usr/bin/python
 
-      - name: Setup MSVC
-        if: matrix.config.os == 'windows-latest' && matrix.config.msvc == true
-        uses: ilammy/msvc-dev-cmd@v1
+            - name: Setup MSVC
+              if: matrix.config.os == 'windows-latest' && matrix.config.msvc == true
+              uses: ilammy/msvc-dev-cmd@v1
 
-      - name: Install dependencies (Windows)
-        if: matrix.config.os == 'windows-latest'
-        run: |
-          choco install ninja innosetup
-          $url = "https://github.com/leafo/moonscript/releases/download/win32-v0.5.0/moonscript-187bac54ee5a7450013e9c38e005a0e671b76f45.zip"
-          mkdir moonscript
-          Invoke-WebRequest -Uri $url -OutFile ".\moonscript\moonscript.zip"
-          cd moonscript
-          7z e moonscript.zip
-          Get-Location | Out-File -FilePath $env:GITHUB_PATH -Encoding utf8 -Append
+            - name: Install dependencies (Windows)
+              if: matrix.config.os == 'windows-latest'
+              run: |
+                  choco install ninja innosetup
+                  $url = "https://github.com/leafo/moonscript/releases/download/win32-v0.5.0/moonscript-187bac54ee5a7450013e9c38e005a0e671b76f45.zip"
+                  mkdir moonscript
+                  Invoke-WebRequest -Uri $url -OutFile ".\moonscript\moonscript.zip"
+                  cd moonscript
+                  7z e moonscript.zip
+                  Get-Location | Out-File -FilePath $env:GITHUB_PATH -Encoding utf8 -Append
 
-      - name: Install dependencies (MacOS)
-        if: matrix.config.os == 'macos-latest'
-        run: |
-          brew update
-          brew install luarocks ninja
-          luarocks install luafilesystem 1.8.0
-          luarocks install moonscript --dev
-          brew install libass zlib ffms2 fftw hunspell
-          brew install pulseaudio  # NO OpenAL in github CI
+            - name: Install dependencies (MacOS)
+              if: matrix.config.os == 'macos-latest'
+              run: |
+                  brew update
+                  brew install luarocks ninja
+                  luarocks install luafilesystem 1.8.0
+                  luarocks install moonscript --dev
+                  brew install libass zlib ffms2 fftw hunspell
+                  brew install pulseaudio  # NO OpenAL in github CI
 
-      - name: Install dependencies (Linux)
-        if: matrix.config.os == 'ubuntu-22.04'
-        run: |
-          sudo apt-get update
-          sudo apt-get install ninja-build build-essential libx11-dev gcc-13 g++-13 libwxgtk3.0-gtk3-dev libgtk-3-dev libfreetype6-dev pkg-config libfontconfig1-dev libass-dev libasound2-dev libffms2-dev intltool libboost-all-dev luarocks libcurl4-nss-dev lua5.1* -y
-          sudo luarocks install moonscript
+            - name: Install dependencies (Linux)
+              if: matrix.config.os == 'ubuntu-22.04'
+              run: |
+                  sudo apt-get update
+                  sudo apt-get install ninja-build build-essential libx11-dev gcc-13 g++-13 libwxgtk3.0-gtk3-dev libgtk-3-dev libfreetype6-dev pkg-config libfontconfig1-dev libass-dev libasound2-dev libffms2-dev intltool libboost-all-dev luarocks libcurl4-nss-dev lua5.1* -y
+                  sudo luarocks install moonscript
 
-      - name: Configure
-        run: meson build ${{ matrix.config.args }} -Dbuildtype=${{ matrix.config.buildtype }}
+            - name: Configure
+              run: meson build ${{ matrix.config.args }} -Dbuildtype=${{ matrix.config.buildtype }}
 
-      - name: Build
-        run: meson compile -C build
-      
-      - name: Run test
-        run: meson test -C build --verbose "gtest main"
+            - name: Build
+              run: meson compile -C build
 
-      # Windows artifacts
-      - name: Generate Windows installer
-        if: matrix.config.os == 'windows-latest'
-        run: meson compile win-installer -C build
+            - name: Run test
+              run: meson test -C build --verbose "gtest main"
 
-      - name: Generate Windows portable installer
-        if: matrix.config.os == 'windows-latest'
-        run: cd build && ninja win-portable
+            # Windows artifacts
+            - name: Generate Windows installer
+              if: matrix.config.os == 'windows-latest'
+              run: meson compile win-installer -C build
 
-      - name: Upload artifacts - win_installer
-        uses: actions/upload-artifact@v2
-        if: matrix.config.os == 'windows-latest'
-        with:
-          name: ${{ matrix.config.name }} - installer
-          path: build/Aegisub-*.exe
-      
-      - name: Upload artifacts - portable.zip
-        uses: actions/upload-artifact@v2
-        if: matrix.config.os == 'windows-latest'
-        with:
-          name: ${{ matrix.config.name }} - portable
-          path: build/aegisub-portable-64.zip
-      
-      # macOS artifacts
-      - name: Generate macOS installer
-        if: matrix.config.os == 'macos-latest'
-        run: |
-          meson compile osx-bundle -C build
-          meson compile osx-build-dmg -C build
+            - name: Generate Windows portable installer
+              if: matrix.config.os == 'windows-latest'
+              run: cd build && ninja win-portable
 
-      - name: Upload artifacts - macOS dmg
-        uses: actions/upload-artifact@v3
-        if: matrix.config.os == 'macos-latest'
-        with:
-          name: ${{ matrix.config.name }} - installer
-          path: build/Aegisub-*.dmg
+            - name: Upload artifacts - win_installer
+              uses: actions/upload-artifact@v2
+              if: matrix.config.os == 'windows-latest'
+              with:
+                  name: ${{ matrix.config.name }} - installer
+                  path: build/Aegisub-*.exe
 
-      # linux (ubuntu) artifacts
-      - name: Generate Linux (ubuntu) installer
-        if: matrix.config.os == 'ubuntu-22.04'
-        run: |
-          meson compile -C build linux-dependency-control
-          meson compile -C build aegisub.desktop
-          meson compile -C build ubuntu.aegsiub.deb
-          meson compile -C build ubuntu.assdraw.deb
+            - name: Upload artifacts - portable.zip
+              uses: actions/upload-artifact@v2
+              if: matrix.config.os == 'windows-latest'
+              with:
+                  name: ${{ matrix.config.name }} - portable
+                  path: build/aegisub-portable-64.zip
 
-      - name: Upload artifacts - ubuntu deb
-        uses: actions/upload-artifact@v3
-        if: matrix.config.os == 'ubuntu-22.04' && ${{ !env.ACT }}
-        with:
-          name: ${{ matrix.config.name }} - deb package
-          path: build/*.deb
+            # macOS artifacts
+            - name: Generate macOS installer
+              if: matrix.config.os == 'macos-latest'
+              run: |
+                  meson compile osx-bundle -C build
+                  meson compile osx-build-dmg -C build
+
+            - name: Upload artifacts - macOS dmg
+              uses: actions/upload-artifact@v3
+              if: matrix.config.os == 'macos-latest'
+              with:
+                  name: ${{ matrix.config.name }} - installer
+                  path: build/Aegisub-*.dmg
+
+            # linux (ubuntu) artifacts
+            - name: Generate Linux (ubuntu) installer
+              if: matrix.config.os == 'ubuntu-22.04'
+              run: |
+                  meson compile -C build linux-dependency-control
+                  meson compile -C build aegisub.desktop
+                  meson compile -C build ubuntu.aegsiub.deb
+                  meson compile -C build ubuntu.assdraw.deb
+
+            - name: Upload artifacts - ubuntu deb
+              uses: actions/upload-artifact@v3
+              if: matrix.config.os == 'ubuntu-22.04' && ${{ !env.ACT }}
+              with:
+                  name: ${{ matrix.config.name }} - deb package
+                  path: build/*.deb

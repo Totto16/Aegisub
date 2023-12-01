@@ -393,13 +393,9 @@ else
 endif
 
 if not deps.contains(luajit)
-    luajit_sp = subproject('luajit')
-    luajit_inc = luajit_sp.get_variable('src_inc')
-    deps += luajit_sp.get_variable('luajit_dep')
-else
-    luajit_inc = include_directories(luajit.get_variable('includedir'))
+    deps += subproject('luajit').get_variable('luajit_dep')
 endif
-subdir('vendor/luabins/src')
+deps += subproject('luabins').get_variable('luabins_dep')
 
 dep_gl = dependency('gl', required: false)
 if not dep_gl.found()
@@ -448,26 +444,15 @@ endif
 aegisub_cpp_pch = ['src/include/agi_pre.h']
 aegisub_c_pch = ['src/include/agi_pre_c.h']
 
-aegisub = executable(
-    'aegisub',
-    aegisub_src,
-    version_h,
-    acconf,
-    link_with: [libresrc, libluabins, libaegisub],
-    include_directories: [
-        libaegisub_inc,
-        libresrc_inc,
-        version_inc,
-        deps_inc,
-        include_directories('src'),
-    ],
-    cpp_pch: aegisub_cpp_pch,
-    c_pch: aegisub_c_pch,
-    install: true,
-    install_dir: bindir,
-    dependencies: deps,
-    win_subsystem: 'windows',
-)
+aegisub = executable('aegisub', aegisub_src, version_h, acconf,
+                     link_with: [libresrc, libaegisub],
+                     include_directories: [libaegisub_inc, libresrc_inc, version_inc, deps_inc, include_directories('src')],
+                     cpp_pch: aegisub_cpp_pch,
+                     c_pch: aegisub_c_pch,
+                     install: true,
+                     install_dir: bindir,
+                     dependencies: deps,
+                     win_subsystem: 'windows')
 
 if host_machine.system() == 'windows'
     mt_exe = find_program('mt.exe')
