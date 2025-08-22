@@ -181,6 +181,9 @@ void cli::send_heartbeat(bool isWrite) {
                    (project_info.file_name.empty() ? "Unbenannt.ass"
                                                    : project_info.file_name) +
                    "'");
+
+  buffer.push_back("--entity-type 'file'");
+
   // "--project" gets detected by the folder name! (the manual project name is
   // also the folder name, atm at least!)
   buffer.push_back("--alternate-project '" +
@@ -188,6 +191,8 @@ void cli::send_heartbeat(bool isWrite) {
                         ? "Unbenannt"
                         : project_info.project_name) +
                    "'");
+
+  buffer.push_back("--category 'translating'");
 
   // TODO: if project_info.changed, should --write be enabled?
   if (isWrite) {
@@ -406,7 +411,7 @@ void init() {
     short_type : "ASS",
     long_type : "Advanced SubStation Alpha",
     plugin_version : "1.2.0",
-    aegisub_version : GetAegisubLongVersionString(),
+    aegisub_version : "3.5.0" //TODO: use variant, that conforms to semver GetAegisubLongVersionString(),
   };
 
   wakatime_cli = new cli(plugin_info);
