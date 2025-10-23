@@ -31,7 +31,7 @@ if ! [ -d "ffi-experiments" ]; then
 fi
 
 cd "ffi-experiments" || exit 5
-# weird but necessary, since executning in root :(,
+# weird but necessary, since executing in root :(,
 #TODO FIX THAT
 sudo chmod 777 -R .
 if ! command -v "moonc" &>/dev/null; then

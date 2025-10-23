@@ -1,5 +1,7 @@
 #!/bin/env bash
 
+set -e
+
 cd "${MESON_BUILD_ROOT}" || exit 5
 
 if [ -d "assdraw" ]; then
