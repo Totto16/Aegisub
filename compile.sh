@@ -9,6 +9,9 @@ if [ -z "$1" ]; then
 
 fi
 
+export CC="gcc-15"
+export CXX="g++-15"
+
 buildtype=""
 DEBUG="false"
 
@@ -75,7 +78,7 @@ fi
 
 # CONFIGURE
 
-bash -c "meson setup build -Dbuildtype=$buildtype -Dwx_version=3.2.0 -Dcredit='Totto local build' -Denable_js_automation=enabled -Dlocal_boost=true"
+bash -c "meson setup build -Dbuildtype=$buildtype -Dwx_version=3.2.0 -Dcredit='Totto local build' -Denable_js_automation=enabled -Dsystem_luajit=false -Ddefault_library=static"
 
 if [ $DEBUG == "true" ]; then
     nodemon --watch src/ -e .cpp,.h,.hpp --exec "meson compile -C build && ./build/aegisub || exit 1"
