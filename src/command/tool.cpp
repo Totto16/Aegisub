@@ -279,33 +279,33 @@ struct tool_translation_assistant_insert final : public tool_translation_assista
 
 namespace cmd {
 	void init_tool() {
-		reg(agi::make_unique<tool_export>());
-		reg(agi::make_unique<tool_font_collector>());
-		reg(agi::make_unique<tool_line_select>());
-		reg(agi::make_unique<tool_resampleres>());
-		reg(agi::make_unique<tool_style_assistant>());
-		reg(agi::make_unique<tool_styling_assistant_commit>());
-		reg(agi::make_unique<tool_styling_assistant_preview>());
-		reg(agi::make_unique<tool_style_manager>());
-		reg(agi::make_unique<tool_time_kanji>());
-		reg(agi::make_unique<tool_time_postprocess>());
-		reg(agi::make_unique<tool_translation_assistant>());
+		reg(std::make_unique<tool_export>());
+		reg(std::make_unique<tool_font_collector>());
+		reg(std::make_unique<tool_line_select>());
+		reg(std::make_unique<tool_resampleres>());
+		reg(std::make_unique<tool_style_assistant>());
+		reg(std::make_unique<tool_styling_assistant_commit>());
+		reg(std::make_unique<tool_styling_assistant_preview>());
+		reg(std::make_unique<tool_style_manager>());
+		reg(std::make_unique<tool_time_kanji>());
+		reg(std::make_unique<tool_time_postprocess>());
+		reg(std::make_unique<tool_translation_assistant>());
 #ifdef _WIN32
 		if (agi::fs::FileExists(config::path->Decode("?data/ASSDraw3.exe"))) {
-			reg(agi::make_unique<tool_assdraw>());
+			reg(std::make_unique<tool_assdraw>());
 		}
 #endif
 
 		long returnCode = wxExecute("bash -c \"command -v assdraw > /dev/null\"", wxEXEC_SYNC);
 
 		if (returnCode == 0){
-			reg(agi::make_unique<tool_assdraw>());
+			reg(std::make_unique<tool_assdraw>());
 		}
 
-		reg(agi::make_unique<tool_translation_assistant_commit>());
-		reg(agi::make_unique<tool_translation_assistant_preview>());
-		reg(agi::make_unique<tool_translation_assistant_next>());
-		reg(agi::make_unique<tool_translation_assistant_prev>());
-		reg(agi::make_unique<tool_translation_assistant_insert>());
+		reg(std::make_unique<tool_translation_assistant_commit>());
+		reg(std::make_unique<tool_translation_assistant_preview>());
+		reg(std::make_unique<tool_translation_assistant_next>());
+		reg(std::make_unique<tool_translation_assistant_prev>());
+		reg(std::make_unique<tool_translation_assistant_insert>());
 	}
 }

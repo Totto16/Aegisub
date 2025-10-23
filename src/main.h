@@ -32,7 +32,7 @@
 #include <wx/app.h>
 
 #include "aegisublocale.h"
-#include <libaegisub/fs_fwd.h>
+#include <libaegisub/fs.h>
 
 #include <vector>
 

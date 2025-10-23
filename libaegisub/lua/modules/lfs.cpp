@@ -46,8 +46,8 @@ auto wrap(char **err, Func f) -> decltype(f()) {
 }
 
 template<typename Ret>
-bool setter(const char *path, char **err, Ret (*f)(bfs::path const&)) {
-	return wrap(err, [path,f]{
+bool setter(const char *path, char **err, Ret (*f)(agi::fs::path const&)) {
+	return wrap(err, [=]{
 		f(path);
 		return true;
 	});
@@ -100,23 +100,26 @@ DirectoryIterator *dir_new(const char *path, char **err) {
 
 const char *get_mode(const char *path, char **err) {
 	return wrap(err, [path]() -> const char * {
-		switch (bfs::status(path).type()) {
-			case bfs::file_not_found: return nullptr;         break;
-			case bfs::regular_file:   return "file";          break;
-			case bfs::directory_file: return "directory";     break;
-			case bfs::symlink_file:   return "link";          break;
-			case bfs::block_file:     return "block device";  break;
-			case bfs::character_file: return "char device";   break;
-			case bfs::fifo_file:      return "fifo";          break;
-			case bfs::socket_file:    return "socket";        break;
-			case bfs::reparse_file:   return "reparse point"; break;
-			default:                  return "other";         break;
+		using enum sfs::file_type;
+		switch (sfs::status(path).type()) {
+			case not_found: return nullptr;
+			case regular:   return "file";
+			case directory: return "directory";
+			case symlink:   return "link";
+			case block:     return "block device";
+			case character: return "char device";
+			case fifo:      return "fifo";
+			case socket:    return "socket";
+			default:        return "other";
 		}
 	});
 }
 
 time_t get_mtime(const char *path, char **err) {
-	return wrap(err, [path] { return ModifiedTime(path); });
+return wrap(err, [=]() -> time_t {
+		using namespace std::chrono;
+		return duration_cast<seconds>(ModifiedTime(path).time_since_epoch()).count();
+	});
 }
 
 uintmax_t get_size(const char *path, char **err) {

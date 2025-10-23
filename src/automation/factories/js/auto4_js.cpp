@@ -192,7 +192,7 @@ JavaScriptFactory::Produce(agi::fs::path const &filename) const {
       agi::fs::HasExtension(filename, "mjs")) {
     LOG_D("JavaScriptFactory/load")
         << "Loading JS Filename: " << filename.string();
-    return agi::make_unique<JavaScriptScript>(filename);
+    return std::make_unique<JavaScriptScript>(filename);
   }
   return nullptr;
 }
