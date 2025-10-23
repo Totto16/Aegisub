@@ -374,64 +374,43 @@ endif
 conf_platform = configuration_data()
 conf_platform.set('DEFAULT_PLAYER_AUDIO', def_audio)
 
-# aegisub currently only supports lu 5.1!
-lua_dep = dependency(
-    'lua',
-    version: ['>=5.1.0', '<5.2.0'],
-    required: false,
-)
 
-if not lua_dep.found()
-    lua_dep = dependency(
-        'lua5.1',
-        version: ['>=5.1.0', '<5.2.0'],
-    )
-endif
 
-deps += lua_dep
-
-luajit = dependency(
-    'luajit',
-    version: '>=2.0.0',
-    required: get_option('system_luajit'),
-)
+luajit = dependency('luajit', version: '>=2.0.0', required: get_option('system_luajit'),
+                    allow_fallback: false, method: 'pkg-config',default_options:{
+                                    'default_library':'static',
+                                    'amalgam':true,
+                                    'lua52compat':true,
+                                    'luajit':false,
+                    })
 if luajit.found() and luajit.type_name() != 'internal'
-    luajit_test = cc.run(
-        '''#include <lauxlib.h>
-int main(void)
-{
-    lua_State *L = luaL_newstate();
-    if (!L) return 1;
-    // This is valid in lua 5.2, but a syntax error in 5.1
-    const char testprogram[] = "function foo() while true do break return end end";
-    return luaL_loadstring(L, testprogram) == LUA_ERRSYNTAX;
-}''',
-        dependencies: luajit,
-    )
+    luajit_test = cc.run(files('tests/tests/luajit_52.c'), dependencies: luajit)
 
-    if luajit_test.returncode() == 1
+    if luajit_test.returncode() != 0
         if get_option('system_luajit')
             error('System luajit found but not compiled in 5.2 mode')
         else
-            message(
-                'System luajit found but not compiled in 5.2 mode; using built-in luajit',
-            )
+            message('System luajit found but not compiled in 5.2 mode')
+            luajit = dependency('', required: false)
         endif
     else
         deps += luajit
     endif
-else
-    message('System luajit not found; using built-in luajit')
 endif
 
-if not deps.contains(luajit)
-    luajit_sp = subproject('luajit')
-    luajit_inc = luajit_sp.get_variable('src_inc')
-    deps += luajit_sp.get_variable('luajit_dep')
-else
-    luajit_inc = include_directories(luajit.get_variable('includedir'))
+if not luajit.found()
+    message('Using built-in luajit')
+    subproject('luajit') # Initialize subproject to ignore system luajit
+    luajit = dependency('luajit')
+    assert(luajit.type_name() == 'internal', 'System luajit used instead of built-in luajit')
 endif
-subdir('vendor/luabins/src')
+
+if luajit.type_name() == 'internal'
+    deps += luajit
+endif
+
+deps += subproject('luabins').get_variable('luabins_dep')
+
 
 dep_gl = dependency('gl', required: false)
 if not dep_gl.found()
