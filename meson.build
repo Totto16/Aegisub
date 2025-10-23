@@ -528,7 +528,7 @@ deps += dependency(
 if enable_js_automation
     conf.set('ENABLE_JS_AUTOMATION', true)
 
-    node_js_version = 18
+    node_js_version = 20
 
     if (
         not cpp.compiles(
