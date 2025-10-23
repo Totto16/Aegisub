@@ -77,7 +77,8 @@ public:
 	/// @param new_value New value of the control
 	///
 	/// If new_value is empty, the control will switch to placeholder mode
-	void ChangeValue(wxString new_value) {
+	void ChangeValue(const wxString& value) override {
+		wxString new_value = value;
 		if (new_value.empty() && !this->HasFocus()) {
 			is_placeholder = true;
 			new_value = placeholder;
@@ -95,10 +96,11 @@ public:
 	}
 
 	/// Override GetValue to return empty when in placeholder mode rather than the placeholder text
-	wxString GetValue() const {
-		if (is_placeholder && !this->HasFocus())
+	wxString GetValue() const override {
+		auto baseValue = BaseCtrl::GetValue();
+		if (is_placeholder && !this->HasFocus() && baseValue == placeholder)
 			return "";
-		return BaseCtrl::GetValue();
+		return baseValue;
 	}
 #else
 public:

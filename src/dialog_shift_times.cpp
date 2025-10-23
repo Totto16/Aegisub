@@ -40,7 +40,6 @@
 #include <libaegisub/cajun/reader.h>
 #include <libaegisub/cajun/writer.h>
 
-#include <boost/filesystem/path.hpp>
 #include <wx/dialog.h>
 #include <wx/listbox.h>
 #include <wx/radiobox.h>
@@ -87,11 +86,11 @@ public:
 };
 
 static wxString get_history_string(json::Object &obj) {
-	wxString filename = to_wx(obj["filename"]);
+	auto filename = to_wx(obj["filename"]);
 	if (filename.empty())
 		filename = _("unsaved");
 
-	wxString shift_amount(to_wx(obj["amount"]));
+	auto shift_amount = to_wx(obj["amount"]);
 	if (!obj["is by time"])
 		shift_amount = fmt_tl("%s frames", shift_amount);
 
@@ -117,8 +116,8 @@ static wxString get_history_string(json::Object &obj) {
 		lines += _("sel ");
 		for (auto it = sel.begin(); it != sel.end(); ++it) {
 			json::Object& range = *it;
-			int beg = (int64_t)range["start"];
-			int end = (int64_t)range["end"];
+			int64_t beg = range["start"];
+			int64_t end = range["end"];
 			if (beg == end)
 				lines += std::to_wstring(beg);
 			else
@@ -138,7 +137,7 @@ DialogShiftTimes::DialogShiftTimes(agi::Context *context)
 , timecodes_loaded_slot(context->project->AddTimecodesListener(&DialogShiftTimes::OnTimecodesLoaded, this))
 , selected_set_changed_slot(context->selectionController->AddSelectionListener(&DialogShiftTimes::OnSelectedSetChanged, this))
 {
-	SetIcon(GETICON(shift_times_toolbutton_16));
+	SetIcons(GETICONS(shift_times_toolbutton));
 
 	// Create controls
 	shift_by_time = new wxRadioButton(this, -1, _("&Time: "), wxDefaultPosition, wxDefaultSize, wxRB_GROUP);
@@ -190,11 +189,12 @@ DialogShiftTimes::DialogShiftTimes(agi::Context *context)
 		shift_frames->Disable();
 
 	// Position controls
-	wxSizer *shift_amount_sizer = new wxFlexGridSizer(2, 2, 5, 5);
+	wxFlexGridSizer* shift_amount_sizer = new wxFlexGridSizer(2, 2, 5, 5);
+	shift_amount_sizer->AddGrowableCol(1, 1);
 	shift_amount_sizer->Add(shift_by_time, wxSizerFlags(0).Align(wxALIGN_CENTER_VERTICAL));
-	shift_amount_sizer->Add(shift_time, wxSizerFlags(1));
+	shift_amount_sizer->Add(shift_time, wxSizerFlags().Expand());
 	shift_amount_sizer->Add(shift_by_frames, wxSizerFlags(0).Align(wxALIGN_CENTER_VERTICAL));
-	shift_amount_sizer->Add(shift_frames, wxSizerFlags(1));
+	shift_amount_sizer->Add(shift_frames, wxSizerFlags().Expand());
 
 	wxSizer *shift_direction_sizer = new wxBoxSizer(wxHORIZONTAL);
 	shift_direction_sizer->Add(shift_forward, wxSizerFlags(1).Expand());
@@ -288,12 +288,12 @@ void DialogShiftTimes::OnHistoryClick(wxCommandEvent &evt) {
 
 	json::Object& obj = history[entry];
 	if (obj["is by time"]) {
-		shift_time->SetTime(agi::Time((std::string)obj["amount"]));
+		shift_time->SetTime(agi::Time((std::string&)obj["amount"]));
 		shift_by_time->SetValue(true);
 		OnByTime(evt);
 	}
 	else {
-		shift_frames->SetValue(to_wx(obj["amount"]));
+		shift_frames->SetValue(to_wx((std::string&)obj["amount"]));
 		if (shift_by_frames->IsEnabled()) {
 			shift_by_frames->SetValue(true);
 			OnByFrames(evt);

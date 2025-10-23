@@ -39,7 +39,6 @@
 
 #include <libaegisub/file_mapping.h>
 #include <libaegisub/log.h>
-#include <libaegisub/make_unique.h>
 #include <libaegisub/util.h>
 #include <libaegisub/ycbcr_conv.h>
 
@@ -427,6 +426,6 @@ void YUV4MPEGVideoProvider::GetFrame(int n, VideoFrame &frame) {
 }
 
 namespace agi { class BackgroundRunner; }
-std::unique_ptr<VideoProvider> CreateYUV4MPEGVideoProvider(agi::fs::path const& path, std::string const&, agi::BackgroundRunner *) {
-	return agi::make_unique<YUV4MPEGVideoProvider>(path);
+std::unique_ptr<VideoProvider> CreateYUV4MPEGVideoProvider(agi::fs::path const& path, std::string_view, agi::BackgroundRunner *) {
+	return std::make_unique<YUV4MPEGVideoProvider>(path);
 }

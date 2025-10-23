@@ -1,6 +1,10 @@
-all_test_deps = []
-all_test_dep_libs = []
-all_test_sources = []
+gtest_ver = '>=1.14.0'
+gtest_dep = dependency('gtest', 
+                       fallback : ['gtest', 'gtest_dep'], 
+                       version : gtest_ver)
+gmock_dep = dependency('gmock', 
+                       fallback : ['gtest', 'gmock_dep'], 
+                       version : gtest_ver)
 
 
 gtest_proj = subproject('gtest')
@@ -50,13 +54,15 @@ all_test_sources += [
     'tests/word_split.cpp',
 ]
 
-test_inc = include_directories('support')
+tests_inc = include_directories('support')
+
+tests_args = []
 
 # force UTF8 for MSVC
 if host_machine.system() == 'windows'
-    extra_args = ['/utf-8']
-else
-    extra_args = []
+    tests_args += ['/utf-8']
+elif host_machine.system() == 'darwin'
+    tests_args += ['-DGTEST_HAS_POSIX_RE=0']
 endif
 
 runner = executable(
@@ -69,6 +75,8 @@ runner = executable(
 )
 test('gtest main', runner)
 
+test('gtest main', runner)
+test('luajit-52', executable('luajit-52', 'tests/luajit_52.c', dependencies: luajit))
 
 # setup test env
 if host_machine.system() == 'windows'

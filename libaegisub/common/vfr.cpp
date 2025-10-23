@@ -57,14 +57,14 @@ struct TimecodeRange {
 	int start;
 	int end;
 	double fps;
-	bool operator<(TimecodeRange const& cmp) const { return start < cmp.start; }
+	auto operator<=>(TimecodeRange const& cmp) const { return start <=> cmp.start; }
 };
 
 /// @brief Parse a single line of a v1 timecode file
 /// @param str Line to parse
 /// @return The line in TimecodeRange form, or TimecodeRange() if it's a comment
 TimecodeRange v1_parse_line(std::string const& str) {
-	if (str.empty() || str[0] == '#') return TimecodeRange();
+	if (str.empty() || str[0] == '#') return {};
 
 	boost::interprocess::ibufferstream ss(str.data(), str.size());
 	TimecodeRange range;
@@ -130,7 +130,7 @@ int64_t v1_parse(line_iterator<std::string> file, std::string line, std::vector<
 }
 }
 
-namespace agi { namespace vfr {
+namespace agi::vfr {
 Framerate::Framerate(double fps)
 : denominator(default_denominator)
 , numerator(int64_t(fps * denominator))
@@ -143,7 +143,7 @@ Framerate::Framerate(double fps)
 Framerate::Framerate(int64_t numerator, int64_t denominator, bool drop)
 : denominator(denominator)
 , numerator(numerator)
-, drop(drop && numerator % denominator != 0)
+, drop(drop && denominator != 0 && numerator % denominator != 0)
 {
 	if (numerator <= 0 || denominator <= 0)
 		throw InvalidFramerate("Numerator and denominator must both be greater than zero");
@@ -171,28 +171,28 @@ Framerate::Framerate(std::initializer_list<int> timecodes)
 	SetFromTimecodes();
 }
 
-Framerate::Framerate(fs::path const& filename)
+Framerate::Framerate(agi::fs::path const& filename)
 : denominator(default_denominator)
 {
 	auto file = agi::io::Open(filename);
 	auto encoding = agi::charset::Detect(filename);
-	auto line = *line_iterator<std::string>(*file, encoding);
+	auto line = *line_iterator<std::string>(*file, encoding.c_str());
 	if (line == "# timecode format v2") {
-		copy(line_iterator<int>(*file, encoding), line_iterator<int>(), back_inserter(timecodes));
+		copy(line_iterator<int>(*file, encoding.c_str()), line_iterator<int>(), back_inserter(timecodes));
 		SetFromTimecodes();
 		return;
 	}
 	if (line == "# timecode format v1" || line.substr(0, 7) == "Assume ") {
 		if (line[0] == '#')
-			line = *line_iterator<std::string>(*file, encoding);
-		numerator = v1_parse(line_iterator<std::string>(*file, encoding), line, timecodes, last);
+			line = *line_iterator<std::string>(*file, encoding.c_str());
+		numerator = v1_parse(line_iterator<std::string>(*file, encoding.c_str()), line, timecodes, last);
 		return;
 	}
 
 	throw UnknownFormat(line);
 }
 
-void Framerate::Save(fs::path const& filename, int length) const {
+void Framerate::Save(agi::fs::path const& filename, int length) const {
 	agi::io::Save file(filename);
 	auto &out = file.Get();
 
@@ -225,7 +225,7 @@ int Framerate::FrameAtTime(int ms, Time type) const {
 		return int((ms * numerator / denominator - 999) / 1000);
 
 	if (ms > timecodes.back())
-		return int((ms * numerator - last + denominator - 1) / denominator / 1000) + (int)timecodes.size() - 1;
+		return ((ms + 1) * numerator - last - numerator / 2 + (1000 * denominator - 1)) / (1000 * denominator) + timecodes.size() - 2;
 
 	return (int)distance(lower_bound(timecodes.rbegin(), timecodes.rend(), ms, std::greater<int>()), timecodes.rend()) - 1;
 }
@@ -321,4 +321,4 @@ int Framerate::TimeAtSmpte(int h, int m, int s, int f) const {
 	return TimeAtFrame(FrameAtSmpte(h, m, s, f));
 }
 
-} }
+}

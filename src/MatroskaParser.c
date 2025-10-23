@@ -41,8 +41,6 @@
 #include <setjmp.h>
 
 #ifdef _WIN32
-// MS names some functions differently
-#define	alloca	  _alloca
 #define	inline	  __inline
 
 #include <tchar.h>
@@ -53,6 +51,16 @@
 #endif
 
 #include "MatroskaParser.h"
+
+#ifdef HAVE_ALLOCA_H
+#include <alloca.h>
+#elif defined(HAVE_MALLOC_H)
+#include <malloc.h>
+#endif /* HAVE_ALLOCA_H */
+
+#ifdef HAVE_UNDERLINE_ALLOCA
+#define	alloca	  _alloca
+#endif
 
 #ifdef MATROSKA_COMPRESSION_SUPPORT
 #include <zlib.h>
@@ -1161,7 +1169,7 @@ static void parseVideoInfo(MatroskaFile *mf,uint64_t toplen,struct TrackInfo *ti
       break;
     case 0x54b2: // DisplayUnit
       v = readUInt(mf,(unsigned)len);
-      if (v>2)
+      if (v>4)
 	errorjmp(mf,"Invalid DisplayUnit: %d",(int)v);
       ti->AV.Video.DisplayUnit = (unsigned char)v;
       break;

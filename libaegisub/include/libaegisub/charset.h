@@ -12,12 +12,7 @@
 // ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF
 // OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
 
-/// @file charset.h
-/// @brief Character set detection and manipulation utilities.
-/// @ingroup libaegisub
-
-#include <libaegisub/fs_fwd.h>
-
+#include <libaegisub/fs.h>
 #include <string>
 
 namespace agi {

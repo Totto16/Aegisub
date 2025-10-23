@@ -35,11 +35,9 @@
 #include <libaegisub/color.h>
 #include <libaegisub/exception.h>
 #include <libaegisub/format.h>
-#include <libaegisub/make_unique.h>
+#include <libaegisub/split.h>
+#include <libaegisub/string.h>
 
-#include <boost/algorithm/string/join.hpp>
-#include <boost/algorithm/string/predicate.hpp>
-#include <boost/algorithm/string/trim.hpp>
 #include <boost/range/adaptor/filtered.hpp>
 #include <boost/range/adaptor/transformed.hpp>
 #include <functional>
@@ -58,8 +56,8 @@ template<> std::string AssOverrideParameter::Get<std::string>() const {
 	if (omitted) throw agi::InternalError("AssOverrideParameter::Get() called on omitted parameter");
 	if (block.get()) {
 		std::string str(block->GetText());
-		if (boost::starts_with(str, "{")) str.erase(begin(str));
-		if (boost::ends_with(str, "}")) str.erase(end(str) - 1);
+		if (str.starts_with("{")) str.erase(begin(str));
+		if (str.starts_with("}")) str.erase(end(str) - 1);
 		return str;
 	}
 	return value;
@@ -85,12 +83,12 @@ template<> bool AssOverrideParameter::Get<bool>() const {
 }
 
 template<> agi::Color AssOverrideParameter::Get<agi::Color>() const {
-	return Get<std::string>();
+	return std::string_view(Get<std::string>());
 }
 
 template<> AssDialogueBlockOverride *AssOverrideParameter::Get<AssDialogueBlockOverride*>() const {
 	if (!block) {
-		block = agi::make_unique<AssDialogueBlockOverride>(Get<std::string>());
+		block = std::make_unique<AssDialogueBlockOverride>(Get<std::string>());
 		block->ParseTags();
 	}
 	return block.get();
@@ -183,12 +181,14 @@ static void load_protos() {
 	// Longer tag names must appear before shorter tag names
 
 	proto[0].Set("\\alpha", VariableDataType::TEXT, AssParameterClass::ALPHA); // \alpha&H<aa>&
-	proto[++i].Set("\\bord", VariableDataType::FLOAT, AssParameterClass::ABSOLUTE_SIZE); // \bord<depth>
-	proto[++i].Set("\\xbord", VariableDataType::FLOAT, AssParameterClass::ABSOLUTE_SIZE); // \xbord<depth>
-	proto[++i].Set("\\ybord", VariableDataType::FLOAT, AssParameterClass::ABSOLUTE_SIZE); // \ybord<depth>
-	proto[++i].Set("\\shad", VariableDataType::FLOAT, AssParameterClass::ABSOLUTE_SIZE); // \shad<depth>
-	proto[++i].Set("\\xshad", VariableDataType::FLOAT, AssParameterClass::ABSOLUTE_SIZE); // \xshad<depth>
-	proto[++i].Set("\\yshad", VariableDataType::FLOAT, AssParameterClass::ABSOLUTE_SIZE); // \yshad<depth>
+
+	// FIXME: convert \bord and \shad to \xbord\ybord and \xshad\yshad during anamorphic resampling
+	proto[++i].Set("\\bord", VariableDataType::FLOAT, AssParameterClass::ABSOLUTE_SIZE_Y); // \bord<depth>
+	proto[++i].Set("\\xbord", VariableDataType::FLOAT, AssParameterClass::ABSOLUTE_SIZE_X); // \xbord<depth>
+	proto[++i].Set("\\ybord", VariableDataType::FLOAT, AssParameterClass::ABSOLUTE_SIZE_Y); // \ybord<depth>
+	proto[++i].Set("\\shad", VariableDataType::FLOAT, AssParameterClass::ABSOLUTE_SIZE_Y); // \shad<depth>
+	proto[++i].Set("\\xshad", VariableDataType::FLOAT, AssParameterClass::ABSOLUTE_SIZE_X); // \xshad<depth>
+	proto[++i].Set("\\yshad", VariableDataType::FLOAT, AssParameterClass::ABSOLUTE_SIZE_Y); // \yshad<depth>
 
 	// \fade(<a1>,<a2>,<a3>,<t1>,<t2>,<t3>,<t4>)
 	i++;
@@ -251,17 +251,17 @@ static void load_protos() {
 	// \org(<x>,<y>)
 	i++;
 	proto[i].name = "\\org";
-	proto[i].AddParam(VariableDataType::INT, AssParameterClass::ABSOLUTE_POS_X);
-	proto[i].AddParam(VariableDataType::INT, AssParameterClass::ABSOLUTE_POS_Y);
+	proto[i].AddParam(VariableDataType::FLOAT, AssParameterClass::ABSOLUTE_POS_X);
+	proto[i].AddParam(VariableDataType::FLOAT, AssParameterClass::ABSOLUTE_POS_Y);
 
-	proto[++i].Set("\\pbo", VariableDataType::INT, AssParameterClass::ABSOLUTE_POS_Y); // \pbo<y>
+	proto[++i].Set("\\pbo", VariableDataType::INT, AssParameterClass::ABSOLUTE_SIZE_Y); // \pbo<y>
 	// \fad(<t1>,<t2>)
 	i++;
 	proto[i].name = "\\fad";
 	proto[i].AddParam(VariableDataType::INT, AssParameterClass::RELATIVE_TIME_START);
 	proto[i].AddParam(VariableDataType::INT, AssParameterClass::RELATIVE_TIME_END);
 
-	proto[++i].Set("\\fsp", VariableDataType::FLOAT, AssParameterClass::ABSOLUTE_SIZE); // \fsp<pixels>
+	proto[++i].Set("\\fsp", VariableDataType::FLOAT, AssParameterClass::ABSOLUTE_SIZE_Y); // \fsp<pixels> (affected by \fscx)
 	proto[++i].Set("\\frx", VariableDataType::FLOAT); // \frx<degrees>
 	proto[++i].Set("\\fry", VariableDataType::FLOAT); // \fry<degrees>
 	proto[++i].Set("\\frz", VariableDataType::FLOAT); // \frz<degrees>
@@ -279,12 +279,12 @@ static void load_protos() {
 	proto[++i].Set("\\fe", VariableDataType::TEXT); // \fe<charset>
 	proto[++i].Set("\\ko", VariableDataType::INT, AssParameterClass::KARAOKE); // \ko<duration>
 	proto[++i].Set("\\kf", VariableDataType::INT, AssParameterClass::KARAOKE); // \kf<duration>
-	proto[++i].Set("\\be", VariableDataType::INT, AssParameterClass::ABSOLUTE_SIZE); // \be<strength>
-	proto[++i].Set("\\blur", VariableDataType::FLOAT, AssParameterClass::ABSOLUTE_SIZE); // \blur<strength>
+	proto[++i].Set("\\be", VariableDataType::INT, AssParameterClass::ABSOLUTE_SIZE_XY); // \be<strength>
+	proto[++i].Set("\\blur", VariableDataType::FLOAT, AssParameterClass::ABSOLUTE_SIZE_XY); // \blur<strength>
 	proto[++i].Set("\\fn", VariableDataType::TEXT); // \fn<name>
 	proto[++i].Set("\\fs+", VariableDataType::FLOAT); // \fs+<size>
 	proto[++i].Set("\\fs-", VariableDataType::FLOAT); // \fs-<size>
-	proto[++i].Set("\\fs", VariableDataType::FLOAT, AssParameterClass::ABSOLUTE_SIZE); // \fs<size>
+	proto[++i].Set("\\fs", VariableDataType::FLOAT, AssParameterClass::ABSOLUTE_SIZE_Y); // \fs<size>
 	proto[++i].Set("\\an", VariableDataType::INT); // \an<alignment>
 	proto[++i].Set("\\c", VariableDataType::TEXT, AssParameterClass::COLOR); // \c&H<bbggrr>&
 	proto[++i].Set("\\b", VariableDataType::INT); // \b<0/1/weight>
@@ -307,7 +307,7 @@ static void load_protos() {
 	proto[i].AddParam(VariableDataType::BLOCK);
 }
 
-std::vector<std::string> tokenize(const std::string &text) {
+std::vector<std::string> tokenize(std::string_view text) {
 	std::vector<std::string> paramList;
 	paramList.reserve(6);
 
@@ -317,7 +317,7 @@ std::vector<std::string> tokenize(const std::string &text) {
 	if (text[0] != '(') {
 		// There's just one parameter (because there's no parentheses)
 		// This means text is all our parameters
-		paramList.emplace_back(boost::trim_copy(text));
+		paramList.emplace_back(agi::Trim(text));
 		return paramList;
 	}
 
@@ -344,7 +344,7 @@ std::vector<std::string> tokenize(const std::string &text) {
 			i++;
 		}
 		// i now points to the first character not member of this parameter
-		paramList.emplace_back(boost::trim_copy(text.substr(start, i - start)));
+		paramList.emplace_back(agi::Trim(text.substr(start, i - start)));
 	}
 
 	if (i+1 < textlen) {
@@ -355,7 +355,7 @@ std::vector<std::string> tokenize(const std::string &text) {
 	return paramList;
 }
 
-void parse_parameters(AssOverrideTag *tag, const std::string &text, AssOverrideTagProto::iterator proto_it) {
+void parse_parameters(AssOverrideTag *tag, std::string_view text, AssOverrideTagProto::iterator proto_it) {
 	tag->Clear();
 
 	// Tokenize text, attempting to find all parameters
@@ -412,7 +412,7 @@ void AssDialogueBlockOverride::AddTag(std::string const& tag) {
 
 static std::string tag_str(AssOverrideTag const& t) { return t; }
 std::string AssDialogueBlockOverride::GetText() {
-	text = "{" + join(Tags | transformed(tag_str), std::string()) + "}";
+	text = agi::Str("{", agi::Join("", Tags | transformed(tag_str)), "}");
 	return text;
 }
 
@@ -443,7 +443,7 @@ void AssOverrideTag::Clear() {
 void AssOverrideTag::SetText(const std::string &text) {
 	load_protos();
 	for (auto cur = proto.begin(); cur != proto.end(); ++cur) {
-		if (boost::starts_with(text, cur->name)) {
+		if (text.starts_with(cur->name)) {
 			Name = cur->name;
 			parse_parameters(this, text.substr(Name.size()), cur);
 			valid = true;
@@ -465,10 +465,9 @@ AssOverrideTag::operator std::string() const {
 	if (parentheses) result += "(";
 
 	// Add parameters
-	result += join(Params
+	result += agi::Join(",", Params
 		| filtered([](AssOverrideParameter const& p) { return !p.omitted; } )
-		| transformed(param_str),
-		",");
+		| transformed(param_str));
 
 	if (parentheses) result += ")";
 	return result;

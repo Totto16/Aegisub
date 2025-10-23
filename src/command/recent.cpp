@@ -36,16 +36,15 @@
 #include "../project.h"
 #include "../subs_controller.h"
 
-#include <libaegisub/make_unique.h>
 
 namespace {
 	using cmd::Command;
 
-COMMAND_GROUP(recent_audio,     "recent/audio",     _("Recent"), _("Recent"), _("Open recent audio"));
-COMMAND_GROUP(recent_keyframes, "recent/keyframe",  _("Recent"), _("Recent"), _("Open recent keyframes"));
-COMMAND_GROUP(recent_subtitle,  "recent/subtitle",  _("Recent"), _("Recent"), _("Open recent subtitles"));
-COMMAND_GROUP(recent_timecodes, "recent/timecodes", _("Recent"), _("Recent"), _("Open recent timecodes"));
-COMMAND_GROUP(recent_video,     "recent/video",     _("Recent"), _("Recent"), _("Open recent video"));
+COMMAND_GROUP(recent_audio,     "recent/audio",     "Recent", "Recent", "Open recent audio");
+COMMAND_GROUP(recent_keyframes, "recent/keyframe",  "Recent", "Recent", "Open recent keyframes");
+COMMAND_GROUP(recent_subtitle,  "recent/subtitle",  "Recent", "Recent", "Open recent subtitles");
+COMMAND_GROUP(recent_timecodes, "recent/timecodes", "Recent", "Recent", "Open recent timecodes");
+COMMAND_GROUP(recent_video,     "recent/video",     "Recent", "Recent", "Open recent video");
 
 struct recent_audio_entry : public Command {
 	CMD_NAME("recent/audio/")
@@ -122,18 +121,18 @@ public:
 
 namespace cmd {
 	void init_recent() {
-		reg(agi::make_unique<recent_audio>());
-		reg(agi::make_unique<recent_keyframes>());
-		reg(agi::make_unique<recent_subtitle>());
-		reg(agi::make_unique<recent_timecodes>());
-		reg(agi::make_unique<recent_video>());
+		reg(std::make_unique<recent_audio>());
+		reg(std::make_unique<recent_keyframes>());
+		reg(std::make_unique<recent_subtitle>());
+		reg(std::make_unique<recent_timecodes>());
+		reg(std::make_unique<recent_video>());
 
 		for (int i = 0; i < 16; ++i) {
-			reg(agi::make_unique<mru_wrapper<recent_audio_entry>>(i));
-			reg(agi::make_unique<mru_wrapper<recent_keyframes_entry>>(i));
-			reg(agi::make_unique<mru_wrapper<recent_subtitle_entry>>(i));
-			reg(agi::make_unique<mru_wrapper<recent_timecodes_entry>>(i));
-			reg(agi::make_unique<mru_wrapper<recent_video_entry>>(i));
+			reg(std::make_unique<mru_wrapper<recent_audio_entry>>(i));
+			reg(std::make_unique<mru_wrapper<recent_keyframes_entry>>(i));
+			reg(std::make_unique<mru_wrapper<recent_subtitle_entry>>(i));
+			reg(std::make_unique<mru_wrapper<recent_timecodes_entry>>(i));
+			reg(std::make_unique<mru_wrapper<recent_video_entry>>(i));
 		}
 	}
 }

@@ -15,19 +15,20 @@
 #include <algorithm>
 #include <boost/range/irange.hpp>
 #include <string>
+#include <string_view>
 #include <vector>
 
 struct tm;
 
-namespace agi { namespace util {
+namespace agi::util {
 	/// Clamp `b` to the range [`a`,`c`]
 	template<typename T>
 	static inline T mid(T a, T b, T c) {
 		return std::max(a, std::min(b, c));
 	}
 
-	bool try_parse(std::string const& str, double *out);
-	bool try_parse(std::string const& str, int *out);
+	bool try_parse(std::string_view str, double *out);
+	bool try_parse(std::string_view str, int *out);
 
 	/// strftime, but on std::string rather than a fixed buffer
 	/// @param fmt strftime format string
@@ -65,7 +66,7 @@ namespace agi { namespace util {
 
 	/// A thin wrapper around this_thread::sleep_for that uses std::thread on
 	/// Windows (to avoid having to compile boost.thread) and boost::thread
-	/// elsewhere (because libstcc++ 4.7 is missing it).
+	/// elsewhere (because libstdc++ 4.7 is missing it).
 	void sleep_for(int ms);
 
 	// boost.range doesn't have wrappers for the C++11 stuff
@@ -75,9 +76,10 @@ namespace agi { namespace util {
 	}
 
 	std::string ErrorString(int error);
+	void InitLocale();
 
 	template<typename Integer>
 	auto range(Integer end) -> decltype(boost::irange<Integer>(0, end)) {
 		return boost::irange<Integer>(0, end);
 	}
-} } // namespace agi::util
+} // namespace agi::util

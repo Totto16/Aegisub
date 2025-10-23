@@ -23,20 +23,18 @@
 #include "subtitle_format.h"
 
 #include <libaegisub/ass/uuencode.h>
-#include <libaegisub/make_unique.h>
 #include <libaegisub/util.h>
 
 #include <algorithm>
 #include <boost/algorithm/string/case_conv.hpp>
-#include <boost/algorithm/string/predicate.hpp>
 #include <boost/algorithm/string/trim.hpp>
 #include <boost/lexical_cast.hpp>
 #include <boost/regex.hpp>
-#include <boost/variant.hpp>
 #include <unordered_map>
+#include <variant>
 
 class AssParser::HeaderToProperty {
-	using field = boost::variant<
+	using field = std::variant<
 		std::string ProjectProperties::*,
 		int ProjectProperties::*,
 		double ProjectProperties::*
@@ -81,11 +79,11 @@ public:
 				void operator()(int ProjectProperties::*f)         const { try_parse(value, &(obj.*f)); }
 				void operator()(double ProjectProperties::*f)      const { try_parse(value, &(obj.*f)); }
 			} visitor {target->Properties, value};
-			boost::apply_visitor(visitor, it->second);
+			std::visit(visitor, it->second);
 			return true;
 		}
 
-		if (boost::starts_with(key, "Automation Settings ")) {
+		if (key.starts_with("Automation Settings ")) {
 			target->Properties.automation_settings[key.substr(strlen("Automation Settings"))] = value;
 			return true;
 		}
@@ -95,18 +93,17 @@ public:
 };
 
 AssParser::AssParser(AssFile *target, int version)
-: property_handler(agi::make_unique<HeaderToProperty>())
+: property_handler(std::make_unique<HeaderToProperty>())
 , target(target)
 , version(version)
 , state(&AssParser::ParseScriptInfoLine)
 {
 }
 
-AssParser::~AssParser() {
-}
+AssParser::~AssParser() = default;
 
 void AssParser::ParseAttachmentLine(std::string const& data) {
-	bool is_filename = boost::starts_with(data, "fontname: ") || boost::starts_with(data, "filename: ");
+	bool is_filename = data.starts_with("fontname: ") || data.starts_with("filename: ");
 
 	bool valid_data = data.size() > 0 && data.size() <= 80;
 	for (auto byte : data) {
@@ -131,13 +128,13 @@ void AssParser::ParseAttachmentLine(std::string const& data) {
 }
 
 void AssParser::ParseScriptInfoLine(std::string const& data) {
-	if (boost::starts_with(data, ";")) {
+	if (data.starts_with(";")) {
 		// Skip stupid comments added by other programs
 		// Of course, we'll add our own in place later... ;)
 		return;
 	}
 
-	if (boost::starts_with(data, "ScriptType:")) {
+	if (data.starts_with("ScriptType:")) {
 		std::string version_str = data.substr(11);
 		boost::trim(version_str);
 		boost::to_lower(version_str);
@@ -151,7 +148,7 @@ void AssParser::ParseScriptInfoLine(std::string const& data) {
 
 	// Nothing actually supports the Collisions property and malformed values
 	// crash VSFilter, so just remove it entirely
-	if (boost::starts_with(data, "Collisions:"))
+	if (data.starts_with("Collisions:"))
 		return;
 
 	size_t pos = data.find(':');
@@ -177,23 +174,23 @@ void AssParser::ParseMetadataLine(std::string const& data) {
 }
 
 void AssParser::ParseEventLine(std::string const& data) {
-	if (boost::starts_with(data, "Dialogue:") || boost::starts_with(data, "Comment:"))
+	if (data.starts_with("Dialogue:") || data.starts_with("Comment:"))
 		target->Events.push_back(*new AssDialogue(data));
 }
 
 void AssParser::ParseStyleLine(std::string const& data) {
-	if (boost::starts_with(data, "Style:"))
+	if (data.starts_with("Style:"))
 		target->Styles.push_back(*new AssStyle(data, version));
 }
 
 void AssParser::ParseFontLine(std::string const& data) {
-	if (boost::starts_with(data, "fontname: "))
-		attach = agi::make_unique<AssAttachment>(data, AssEntryGroup::FONT);
+	if (data.starts_with("fontname: "))
+		attach = std::make_unique<AssAttachment>(data, AssEntryGroup::FONT);
 }
 
 void AssParser::ParseGraphicsLine(std::string const& data) {
-	if (boost::starts_with(data, "filename: "))
-		attach = agi::make_unique<AssAttachment>(data, AssEntryGroup::GRAPHIC);
+	if (data.starts_with("filename: "))
+		attach = std::make_unique<AssAttachment>(data, AssEntryGroup::GRAPHIC);
 }
 
 void AssParser::ParseExtradataLine(std::string const &data) {

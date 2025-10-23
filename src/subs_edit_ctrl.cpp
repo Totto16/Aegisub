@@ -44,7 +44,6 @@
 #include <libaegisub/ass/dialogue_parser.h>
 #include <libaegisub/calltip_provider.h>
 #include <libaegisub/character_count.h>
-#include <libaegisub/make_unique.h>
 #include <libaegisub/spellchecker.h>
 
 #include <boost/algorithm/string/predicate.hpp>
@@ -61,8 +60,9 @@
 #define LANGS_MAX 1000
 
 /// Event ids
+// Check menu.h for id range allocation before editing this enum
 enum {
-	EDIT_MENU_SPLIT_PRESERVE = 1400,
+	EDIT_MENU_SPLIT_PRESERVE = (wxID_HIGHEST + 1) + 4000,
 	EDIT_MENU_SPLIT_ESTIMATE,
 	EDIT_MENU_SPLIT_VIDEO,
 	EDIT_MENU_CUT,
@@ -73,9 +73,9 @@ enum {
 	EDIT_MENU_REMOVE_FROM_DICT,
 	EDIT_MENU_SUGGESTION,
 	EDIT_MENU_SUGGESTIONS,
-	EDIT_MENU_THESAURUS = 1450,
+	EDIT_MENU_THESAURUS = (wxID_HIGHEST + 1) + 5000,
 	EDIT_MENU_THESAURUS_SUGS,
-	EDIT_MENU_DIC_LANGUAGE = 1600,
+	EDIT_MENU_DIC_LANGUAGE = (wxID_HIGHEST + 1) + 6000,
 	EDIT_MENU_DIC_LANGS,
 	EDIT_MENU_THES_LANGUAGE = EDIT_MENU_DIC_LANGUAGE + LANGS_MAX,
 	EDIT_MENU_THES_LANGS
@@ -84,13 +84,13 @@ enum {
 SubsTextEditCtrl::SubsTextEditCtrl(wxWindow* parent, wxSize wsize, long style, agi::Context *context)
 : wxStyledTextCtrl(parent, -1, wxDefaultPosition, wsize, style)
 , spellchecker(SpellCheckerFactory::GetSpellChecker())
-, thesaurus(agi::make_unique<Thesaurus>())
+, thesaurus(std::make_unique<Thesaurus>())
 , context(context)
 {
 	// Set properties
 	SetWrapMode(wxSTC_WRAP_WORD);
 	SetMarginWidth(1,0);
-	UsePopUp(false);
+	UsePopUp(wxSTC_POPUP_NEVER);
 	SetStyles();
 
 	// Set hotkeys
@@ -124,11 +124,11 @@ SubsTextEditCtrl::SubsTextEditCtrl(wxWindow* parent, wxSize wsize, long style, a
 	Bind(wxEVT_CONTEXT_MENU, &SubsTextEditCtrl::OnContextMenu, this);
 	Bind(wxEVT_IDLE, std::bind(&SubsTextEditCtrl::UpdateCallTip, this));
 	Bind(wxEVT_STC_DOUBLECLICK, &SubsTextEditCtrl::OnDoubleClick, this);
-	Bind(wxEVT_STC_STYLENEEDED, [=,  this](wxStyledTextEvent&) {
+	Bind(wxEVT_STC_STYLENEEDED, [this](wxStyledTextEvent&) {
 		{
 			std::string text = GetTextRaw().data();
 			if (text == line_text) return;
-			line_text = move(text);
+			line_text = std::move(text);
 		}
 
 		UpdateStyle();
@@ -138,7 +138,10 @@ SubsTextEditCtrl::SubsTextEditCtrl(wxWindow* parent, wxSize wsize, long style, a
 	OPT_SUB("Subtitle/Edit Box/Font Size", &SubsTextEditCtrl::SetStyles, this);
 	Subscribe("Normal");
 	Subscribe("Comment");
-	Subscribe("Drawing");
+	Subscribe("Drawing Command");
+	Subscribe("Drawing X");
+	Subscribe("Drawing Y");
+	OPT_SUB("Colour/Subtitle/Syntax/Underline/Drawing Endpoint", &SubsTextEditCtrl::SetStyles, this);
 	Subscribe("Brackets");
 	Subscribe("Slashes");
 	Subscribe("Tags");
@@ -152,13 +155,13 @@ SubsTextEditCtrl::SubsTextEditCtrl(wxWindow* parent, wxSize wsize, long style, a
 	OPT_SUB("Subtitle/Highlight/Syntax", &SubsTextEditCtrl::UpdateStyle, this);
 	OPT_SUB("App/Call Tips", &SubsTextEditCtrl::UpdateCallTip, this);
 
-	Bind(wxEVT_MENU, [=,  this](wxCommandEvent&) {
+s	Bind(wxEVT_MENU, [this](wxCommandEvent&) {
 		if (spellchecker) spellchecker->AddWord(currentWord);
 		UpdateStyle();
 		SetFocus();
 	}, EDIT_MENU_ADD_TO_DICT);
 
-	Bind(wxEVT_MENU, [=,  this](wxCommandEvent&) {
+	Bind(wxEVT_MENU, [this](wxCommandEvent&) {
 		if (spellchecker) spellchecker->RemoveWord(currentWord);
 		UpdateStyle();
 		SetFocus();
@@ -198,7 +201,7 @@ void SubsTextEditCtrl::OnKeyDown(wxKeyEvent &event) {
 		auto sel_start = GetSelectionStart(), sel_end = GetSelectionEnd();
 		wxCharBuffer old = GetTextRaw();
 		std::string data(old.data(), sel_start);
-		data.append("\\N");
+		data.append(OPT_GET("Subtitle/Edit Box/Soft Line Break")->GetBool() ? "\\n" : "\\N");
 		data.append(old.data() + sel_end, old.length() - sel_end);
 		SetTextRaw(data.c_str());
 
@@ -230,7 +233,13 @@ void SubsTextEditCtrl::SetStyles() {
 	namespace ss = agi::ass::SyntaxStyle;
 	SetSyntaxStyle(ss::NORMAL, font, "Normal", default_background);
 	SetSyntaxStyle(ss::COMMENT, font, "Comment", default_background);
-	SetSyntaxStyle(ss::DRAWING, font, "Drawing", default_background);
+	SetSyntaxStyle(ss::DRAWING_CMD, font, "Drawing Command", default_background);
+	SetSyntaxStyle(ss::DRAWING_X, font, "Drawing X", default_background);
+	SetSyntaxStyle(ss::DRAWING_Y, font, "Drawing Y", default_background);
+	SetSyntaxStyle(ss::DRAWING_ENDPOINT_X, font, "Drawing X", default_background);
+	SetSyntaxStyle(ss::DRAWING_ENDPOINT_Y, font, "Drawing Y", default_background);
+	StyleSetUnderline(ss::DRAWING_ENDPOINT_X, OPT_GET("Colour/Subtitle/Syntax/Underline/Drawing Endpoint")->GetBool());
+	StyleSetUnderline(ss::DRAWING_ENDPOINT_Y, OPT_GET("Colour/Subtitle/Syntax/Underline/Drawing Endpoint")->GetBool());
 	SetSyntaxStyle(ss::OVERRIDE, font, "Brackets", default_background);
 	SetSyntaxStyle(ss::PUNCTUATION, font, "Slashes", default_background);
 	SetSyntaxStyle(ss::TAG, font, "Tags", default_background);
@@ -258,11 +267,7 @@ void SubsTextEditCtrl::UpdateStyle() {
 	cursor_pos = -1;
 	UpdateCallTip();
 
-#if wxVERSION_NUMBER >= 3100
 	StartStyling(0);
-#else
-	StartStyling(0, 255);
-#endif
 
 	if (!OPT_GET("Subtitle/Highlight/Syntax")->GetBool()) {
 		SetStyling(line_text.size(), 0);
@@ -316,7 +321,7 @@ void SubsTextEditCtrl::SetTextTo(std::string const& text) {
 	auto insertion_point = GetInsertionPoint();
 	if (static_cast<size_t>(insertion_point) > line_text.size())
 		line_text = GetTextRaw().data();
-	auto old_pos = agi::CharacterCount(line_text.begin(), line_text.begin() + insertion_point, 0);
+	auto old_pos = agi::CharacterCount(std::string_view(line_text).substr(0, insertion_point), 0);
 	line_text.clear();
 
 	if (context) {

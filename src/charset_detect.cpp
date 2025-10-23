@@ -27,11 +27,6 @@
 //
 // Aegisub Project http://www.aegisub.org/
 
-/// @file charset_detect.cpp
-/// @brief Wrapper around text encoding detection library
-/// @ingroup utility
-///
-
 #include "charset_detect.h"
 
 #include "compat.h"

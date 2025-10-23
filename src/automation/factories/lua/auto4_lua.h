@@ -78,6 +78,8 @@ namespace Automation4 {
 		std::deque<PendingCommit> pending_commits;
 		/// Lines to delete once processing complete successfully
 		std::vector<std::unique_ptr<AssEntry>> lines_to_delete;
+		/// Lines that were allocated here and need to be deleted if the script is cancelled.
+		std::vector<AssEntry *> allocated_lines;
 
 		/// Create copies of all of the lines in the script info section if it
 		/// hasn't already happened. This is done lazily, since it only needs
@@ -118,10 +120,12 @@ namespace Automation4 {
 		/// assumes a Lua representation of AssEntry on the top of the stack, and creates an AssEntry object of it
 		static std::unique_ptr<AssEntry> LuaToAssEntry(lua_State *L, AssFile *ass=nullptr);
 
+		std::unique_ptr<AssEntry> LuaToTrackedAssEntry(lua_State *L);
+
 		/// @brief Signal that the script using this file is now done running
-		/// @param set_undo If there's any uncommitted changes to the file,
-		///                 they will be automatically committed with this
-		///                 description
+		/// @param undo_description If there's any uncommitted changes to the
+		///                         file, they will be automatically committed
+		///                         with this description
 		std::vector<AssEntry *> ProcessingComplete(wxString const& undo_description = wxString());
 
 		/// End processing without applying any changes made
@@ -183,7 +187,7 @@ namespace Automation4 {
 		virtual std::string SerialiseValue() const { return ""; }
 
 		/// Restore the control's value from a saved value in the script
-		virtual void UnserialiseValue(const std::string &serialised) { }
+		virtual void UnserialiseValue(std::string_view serialised) { }
 
 		LuaDialogControl(lua_State *L);
 
@@ -201,7 +205,7 @@ namespace Automation4 {
 		/// Does the dialog contain any buttons
 		bool use_buttons;
 
-		/// Id of the button pushed (once a button has been pushed)
+		/// ID of the button pushed (once a button has been pushed)
 		int button_pushed = -1;
 
 		wxWindow *window = nullptr;

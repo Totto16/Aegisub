@@ -27,21 +27,15 @@
 //
 // Aegisub Project http://www.aegisub.org/
 
-/// @file auto4_base.h
-/// @see auto4_base.cpp
-/// @ingroup scripting
-///
-
 #pragma once
-
-#include <libaegisub/background_runner.h>
-#include <libaegisub/exception.h>
-#include <libaegisub/fs_fwd.h>
-#include <libaegisub/signal.h>
 
 #include "ass_export_filter.h"
 
-#include <boost/filesystem/path.hpp>
+#include <libaegisub/background_runner.h>
+#include <libaegisub/exception.h>
+#include <libaegisub/fs.h>
+#include <libaegisub/signal.h>
+
 #include <memory>
 #include <vector>
 
@@ -132,7 +126,6 @@ namespace Automation4 {
 		/// Show the passed dialog on the GUI thread, blocking the calling
 		/// thread until it closes
 		void ShowDialog(ScriptDialog *config_dialog);
-		int ShowDialog(wxDialog *dialog);
 		wxWindow *GetParentWindow() const { return bsr->GetParentWindow(); }
 
 		/// Get the current automation trace level

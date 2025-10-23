@@ -19,7 +19,6 @@
 #include <libaegisub/exception.h>
 #include <libaegisub/util_osx.h>
 
-#include <boost/filesystem/operations.hpp>
 #include <pwd.h>
 
 #ifndef __APPLE__
@@ -91,7 +90,7 @@ void Path::FillPlatformSpecificPaths() {
 	SetToken("?data", agi::util::GetBundleSharedSupportDirectory());
 	SetToken("?dictionary", Decode("?data/dictionaries"));
 #endif
-	SetToken("?temp", boost::filesystem::temp_directory_path());
+	SetToken("?temp", agi::fs::path(std::filesystem::temp_directory_path()));
 }
 
 }

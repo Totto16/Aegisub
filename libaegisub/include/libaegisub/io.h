@@ -12,35 +12,28 @@
 // ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF
 // OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
 
-/// @file io.h
-/// @brief Public interface for IO methods.
-/// @ingroup libaegisub
-
 #include <libaegisub/exception.h>
-#include <libaegisub/fs_fwd.h>
+#include <libaegisub/fs.h>
 
-#include <boost/filesystem/path.hpp>
 #include <iosfwd>
 #include <memory>
 
-namespace agi {
-	namespace io {
+namespace agi::io {
 
 DEFINE_EXCEPTION(IOError, Exception);
 DEFINE_EXCEPTION(IOFatal, IOError);
 
-std::unique_ptr<std::istream> Open(fs::path const& file, bool binary = false);
+std::unique_ptr<std::istream> Open(agi::fs::path const& file, bool binary = false);
 
 class Save {
 	std::unique_ptr<std::ostream> fp;
-	const fs::path file_name;
-	const fs::path tmp_name;
+	const agi::fs::path file_name;
+	const agi::fs::path tmp_name;
 
 public:
-	Save(fs::path const& file, bool binary = false);
+	Save(agi::fs::path const& file, bool binary = false);
 	~Save() noexcept(false);
 	std::ostream& Get() { return *fp; }
 };
 
-	} // namespace io
-} // namespace agi
+} // namespace agi::io

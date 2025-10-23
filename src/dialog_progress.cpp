@@ -42,10 +42,6 @@ using agi::dispatch::Main;
 namespace {
 	void set_taskbar_progress(int progress) {
 #ifdef _MSC_VER
-		int major, minor;
-		wxGetOsVersion(&major, &minor);
-		if (major < 6 || (major == 6 && minor < 1)) return;
-
 		ITaskbarList3 *taskbar;
 		auto hr = ::CoCreateInstance(CLSID_TaskbarList, NULL, CLSCTX_INPROC_SERVER,
 			__uuidof(ITaskbarList3), (LPVOID *)&taskbar);
@@ -79,23 +75,23 @@ public:
 	DialogProgressSink(DialogProgress *dialog) : dialog(dialog) { }
 
 	void SetTitle(std::string const& title) override {
-		Main().Async([=,  this]{ dialog->title->SetLabelText(to_wx(title)); });
+		Main().Async([=, this]{ dialog->title->SetLabelText(to_wx(title)); });
 	}
 
 	void SetMessage(std::string const& msg) override {
-		Main().Async([=,  this]{ dialog->text->SetLabelText(to_wx(msg)); });
+		Main().Async([=, this]{ dialog->text->SetLabelText(to_wx(msg)); });
 	}
 
 	void SetProgress(int64_t cur, int64_t max) override {
 		int new_progress = mid<int>(0, double(cur) / max * 300, 300);
 		if (new_progress != progress) {
 			progress = new_progress;
-			Main().Async([=,  this]{ dialog->SetProgress(new_progress); });
+			Main().Async([=, this]{ dialog->SetProgress(new_progress); });
 		}
 	}
 
 	void Log(std::string const& str) override {
-		Main().Async([=,  this]{ dialog->pending_log += to_wx(str); });
+		Main().Async([=, this]{ dialog->pending_log += to_wx(str); });
 	}
 
 	bool IsCancelled() override {
@@ -107,7 +103,7 @@ public:
 	}
 
 	void SetIndeterminate() override {
-		Main().Async([=,  this]{ dialog->pulse_timer.Start(1000); });
+		Main().Async([this]{ dialog->pulse_timer.Start(1000); });
 	}
 };
 
@@ -140,7 +136,7 @@ DialogProgress::DialogProgress(wxWindow *parent, wxString const& title_text, wxS
 	CenterOnParent();
 
 	Bind(wxEVT_SHOW, &DialogProgress::OnShow, this);
-	Bind(wxEVT_TIMER, [=,  this](wxTimerEvent&) { gauge->Pulse(); });
+	Bind(wxEVT_TIMER, [this](wxTimerEvent&) { gauge->Pulse(); });
 }
 
 void DialogProgress::Run(std::function<void(agi::ProgressSink*)> task) {
@@ -148,7 +144,7 @@ void DialogProgress::Run(std::function<void(agi::ProgressSink*)> task) {
 	this->ps = &ps;
 
 	auto current_title = from_wx(title->GetLabelText());
-	agi::dispatch::Background().Async([=,  this]{
+	agi::dispatch::Background().Async([=, this]{
 		agi::osx::AppNapDisabler app_nap_disabler(current_title);
 		try {
 			task(this->ps);
@@ -246,6 +242,8 @@ void DialogProgress::OnCancel(wxCommandEvent &) {
 }
 
 void DialogProgress::SetProgress(int target) {
+	pulse_timer.Stop();
+
 	if (target == progress_target) return;
 	using namespace std::chrono;
 

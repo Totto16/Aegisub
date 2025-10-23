@@ -48,8 +48,9 @@
 
 #define TimeEditWindowStyle
 
+// Check menu.h for id range allocation before editing this enum
 enum {
-	Time_Edit_Copy = 1320,
+	Time_Edit_Copy = (wxID_HIGHEST + 1) + 3000,
 	Time_Edit_Paste
 };
 
@@ -63,7 +64,7 @@ TimeEdit::TimeEdit(wxWindow* parent, wxWindowID id, agi::Context *c, const std::
 	// Set validator
 	wxTextValidator val(wxFILTER_INCLUDE_CHAR_LIST);
 	wxString includes[] = {"0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "0", ".", ":", ","};
-	val.SetIncludes(wxArrayString(countof(includes), includes));
+	val.SetIncludes(wxArrayString(std::size(includes), includes));
 	SetValidator(val);
 
 	// Other stuff
@@ -108,7 +109,7 @@ void TimeEdit::OnModified(wxCommandEvent &event) {
 		time = c->project->Timecodes().TimeAtFrame(temp, isEnd ? agi::vfr::END : agi::vfr::START);
 	}
 	else if (insert)
-		time = from_wx(GetValue());
+		time = agi::Time(GetValue().utf8_str().data());
 }
 
 void TimeEdit::UpdateText() {
@@ -173,7 +174,7 @@ void TimeEdit::OnChar(wxKeyEvent &event) {
 	event.Skip(false);
 
 	long start = GetInsertionPoint();
-	std::string text = from_wx(GetValue());
+	auto text = from_wx(GetValue());
 	// Cursor is at the end so do nothing
 	if (start >= (long)text.size()) return;
 
@@ -189,7 +190,7 @@ void TimeEdit::OnChar(wxKeyEvent &event) {
 
 	// Overwrite the digit
 	text[start] = (char)key;
-	time = text;
+	time = agi::Time(text);
 	SetValue(to_wx(time.GetAssFormatted()));
 	SetInsertionPoint(start + 1);
 }

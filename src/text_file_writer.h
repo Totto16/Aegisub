@@ -14,15 +14,9 @@
 //
 // Aegisub Project http://www.aegisub.org/
 
-/// @file text_file_writer.h
-/// @see text_file_writer.cpp
-/// @ingroup utility
-///
-
+#include <libaegisub/fs.h>
 #include <memory>
 #include <string>
-
-#include <libaegisub/fs_fwd.h>
 
 namespace agi {
 	namespace charset { class IconvWrapper; }
@@ -42,5 +36,5 @@ public:
 	TextFileWriter(agi::fs::path const& filename, std::string encoding="");
 	~TextFileWriter();
 
-	void WriteLineToFile(std::string const& line, bool addLineBreak=true);
+	void WriteLineToFile(std::string_view line, bool addLineBreak=true);
 };

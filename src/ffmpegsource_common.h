@@ -37,7 +37,7 @@
 
 #include <ffms.h>
 
-#include <libaegisub/fs_fwd.h>
+#include <libaegisub/fs.h>
 #include <libaegisub/scoped_ptr.h>
 
 namespace agi { class BackgroundRunner; }

@@ -14,12 +14,12 @@
 //
 // Aegisub Project http://www.aegisub.org/
 
+#include <libaegisub/line_iterator.h>
+#include <libaegisub/fs.h>
+
 #include <iosfwd>
 #include <memory>
 #include <string>
-
-#include <libaegisub/fs_fwd.h>
-#include <libaegisub/line_iterator.h>
 
 namespace agi { class read_file_mapping; }
 
@@ -34,9 +34,9 @@ class TextFileReader {
 public:
 	/// @brief Constructor
 	/// @param filename File to open
-	/// @param enc      Encoding to use, or empty to autodetect
+	/// @param encoding Encoding to use, or empty to autodetect
 	/// @param trim     Whether to trim whitespace from lines read
-	TextFileReader(agi::fs::path const& filename, std::string encoding, bool trim=true);
+	TextFileReader(agi::fs::path const& filename, const char *encoding, bool trim=true);
 	/// @brief Destructor
 	~TextFileReader();
 

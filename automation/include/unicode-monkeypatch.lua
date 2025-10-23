@@ -100,7 +100,7 @@ function io.open(fname, mode)
 	local file = assert(orig_open("nul", "rb"))
 	if ffi.C._wfreopen(wfname, wmode, file) == nil then
 		local msg, errno = select(2, file:close())
-		return nil, fname .. ": " .. msg, errno
+		return nil, fname .. ": " .. tostring(msg), errno
 	end
 
 	return file
@@ -125,7 +125,7 @@ function os.execute(command)
 	local wcommand = command
 	if command then
 		wcommand = widen(command)
-    		local stat = ffi.C._wsystem(wcommand)
+		local stat = ffi.C._wsystem(wcommand)
 		return execresult(stat)
 	end
 

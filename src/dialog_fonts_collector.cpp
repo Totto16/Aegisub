@@ -30,7 +30,6 @@
 #include <libaegisub/format_path.h>
 #include <libaegisub/fs.h>
 #include <libaegisub/path.h>
-#include <libaegisub/make_unique.h>
 
 #include <wx/button.h>
 #include <wx/dialog.h>
@@ -94,7 +93,14 @@ void FontsCollectorThread(AssFile *subs, agi::fs::path const& destination, FcMod
 			collector->AddPendingEvent(ValueEvent<color_str_pair>(EVT_ADD_TEXT, -1, {colour, text.Clone()}));
 		};
 
-		auto paths = FontCollector(AppendText).GetFontPaths(subs);
+		std::vector<agi::fs::path> paths;
+		try {
+			paths = FontCollector(AppendText).GetFontPaths(subs);
+		}
+		catch (agi::EnvironmentError const& err) {
+			AppendText(fmt_tl("* An error occurred when enumerating the used fonts: %s.\n", err.GetMessage()), 2);
+		}
+
 		if (paths.empty()) {
 			collector->AddPendingEvent(wxThreadEvent(EVT_COLLECTION_DONE));
 			return;
@@ -131,9 +137,9 @@ void FontsCollectorThread(AssFile *subs, agi::fs::path const& destination, FcMod
 				return;
 			}
 
-			out = agi::make_unique<wxFFileOutputStream>(destination.wstring());
+			out = std::make_unique<wxFFileOutputStream>(destination.wstring());
 			if (out->IsOk())
-				zip = agi::make_unique<wxZipOutputStream>(*out);
+				zip = std::make_unique<wxZipOutputStream>(*out);
 
 			if (!out->IsOk() || !zip || !zip->IsOk()) {
 				AppendText(fmt_tl("* Failed to open %s.\n", destination), 2);
@@ -221,7 +227,7 @@ DialogFontsCollector::DialogFontsCollector(agi::Context *c)
 , subs(c->ass.get())
 , path(*c->path)
 {
-	SetIcon(GETICON(font_collector_button_16));
+	SetIcons(GETICONS(font_collector_button));
 
 	wxString modes[] = {
 		 _("Check fonts for availability")
@@ -233,8 +239,8 @@ DialogFontsCollector::DialogFontsCollector(agi::Context *c)
 #endif
 	};
 
-	mode = static_cast<FcMode>(mid<int>(0, OPT_GET("Tool/Fonts Collector/Action")->GetInt(), countof(modes)));
-	collection_mode = new wxRadioBox(this, -1, _("Action"), wxDefaultPosition, wxDefaultSize, countof(modes), modes, 1);
+	mode = static_cast<FcMode>(mid<int>(0, OPT_GET("Tool/Fonts Collector/Action")->GetInt(), std::size(modes)));
+	collection_mode = new wxRadioBox(this, -1, _("Action"), wxDefaultPosition, wxDefaultSize, std::size(modes), modes, 1);
 	collection_mode->SetSelection(static_cast<int>(mode));
 
 	if (c->path->Decode("?script") == "?script")
@@ -400,11 +406,7 @@ void DialogFontsCollector::OnAddText(ValueEvent<color_str_pair> &event) {
 	auto const& utf8 = str.second.utf8_str();
 	collection_log->AppendTextRaw(utf8.data(), utf8.length());
 	if (str.first) {
-#if wxVERSION_NUMBER >= 3100
 		collection_log->StartStyling(pos);
-#else
-		collection_log->StartStyling(pos, 255);
-#endif
 		collection_log->SetStyling(utf8.length(), str.first);
 	}
 	collection_log->GotoPos(pos + utf8.length());

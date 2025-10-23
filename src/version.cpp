@@ -72,7 +72,11 @@ const char *GetAegisubBuildCredit() {
 #endif
 
 bool GetIsOfficialRelease() {
+#ifdef AEGI_OFFICIAL_RELEASE
+	return AEGI_OFFICIAL_RELEASE;
+#else
 	return false;
+#endif
 }
 
 const char *GetVersionNumber() {

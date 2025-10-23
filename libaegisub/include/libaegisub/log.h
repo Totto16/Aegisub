@@ -12,8 +12,7 @@
 // ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF
 // OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
 
-#include <libaegisub/fs_fwd.h>
-
+#include <libaegisub/fs.h>
 #include <boost/interprocess/streams/bufferstream.hpp>
 #include <cstdint>
 #include <memory>
@@ -96,7 +95,7 @@ public:
 	std::vector<SinkMessage> GetMessages() const;
 };
 
-/// An emitter to produce human readable output for a log sink.
+/// An emitter to produce human-readable output for a log sink.
 class Emitter {
 public:
 	/// Destructor
@@ -113,7 +112,7 @@ class JsonEmitter final : public Emitter {
 public:
 	/// Constructor
 	/// @param directory Directory to write the log file in
-	JsonEmitter(fs::path const& directory);
+	JsonEmitter(agi::fs::path const& directory);
 
 	void log(SinkMessage const&) override;
 };

@@ -17,15 +17,13 @@
 #include "text_file_reader.h"
 
 #include <libaegisub/file_mapping.h>
-#include <libaegisub/make_unique.h>
 
-#include <boost/algorithm/string/predicate.hpp>
 #include <boost/algorithm/string/trim.hpp>
 #include <boost/interprocess/streams/bufferstream.hpp>
 
-TextFileReader::TextFileReader(agi::fs::path const& filename, std::string encoding, bool trim)
-: file(agi::make_unique<agi::read_file_mapping>(filename))
-, stream(agi::make_unique<boost::interprocess::ibufferstream>(file->read(), file->size()))
+TextFileReader::TextFileReader(agi::fs::path const& filename, const char *encoding, bool trim)
+: file(std::make_unique<agi::read_file_mapping>(filename))
+, stream(std::make_unique<boost::interprocess::ibufferstream>(file->read(), file->size()))
 , trim(trim)
 , iter(agi::line_iterator<std::string>(*stream, encoding))
 {
@@ -39,7 +37,7 @@ std::string TextFileReader::ReadLineFromFile() {
 	++iter;
 	if (trim)
 		boost::trim(str);
-	if (boost::starts_with(str, "\xEF\xBB\xBF"))
+	if (str.starts_with("\xEF\xBB\xBF"))
 		str.erase(0, 3);
 	return str;
 }

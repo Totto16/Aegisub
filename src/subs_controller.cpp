@@ -152,9 +152,9 @@ SubsController::SubsController(agi::Context *context)
 , autosave_queue(agi::dispatch::Create())
 {
 	autosave_timer_changed(&autosave_timer);
-	OPT_SUB("App/Auto/Save", [=,  this] { autosave_timer_changed(&autosave_timer); });
-	OPT_SUB("App/Auto/Save Every Seconds", [=,  this] { autosave_timer_changed(&autosave_timer); });
-	autosave_timer.Bind(wxEVT_TIMER, [=,  this](wxTimerEvent&) { AutoSave(); });
+	OPT_SUB("App/Auto/Save", [this] { autosave_timer_changed(&autosave_timer); });
+	OPT_SUB("App/Auto/Save Every Seconds", [this] { autosave_timer_changed(&autosave_timer); });
+	autosave_timer.Bind(wxEVT_TIMER, [this](wxTimerEvent&) { AutoSave(); });
 }
 
 SubsController::~SubsController() {
@@ -167,7 +167,7 @@ void SubsController::SetSelectionController(SelectionController *selection_contr
 	selection_connection = context->selectionController->AddSelectionListener(&SubsController::OnSelectionChanged, this);
 }
 
-ProjectProperties SubsController::Load(agi::fs::path const& filename, std::string charset) {
+ProjectProperties SubsController::Load(agi::fs::path const& filename, const char *charset) {
 	AssFile temp;
 
 	SubtitleFormat::GetReader(filename, charset)->ReadFile(&temp, filename, context->project->Timecodes(), charset);
@@ -392,11 +392,11 @@ void SubsController::Redo() {
 }
 
 wxString SubsController::GetUndoDescription() const {
-	return IsUndoStackEmpty() ? "" : undo_stack.back().undo_description;
+	return IsUndoStackEmpty() ? wxString() : undo_stack.back().undo_description;
 }
 
 wxString SubsController::GetRedoDescription() const {
-	return IsRedoStackEmpty() ? "" : redo_stack.back().undo_description;
+	return IsRedoStackEmpty() ? wxString() : redo_stack.back().undo_description;
 }
 
 agi::fs::path SubsController::Filename() const {
@@ -404,8 +404,8 @@ agi::fs::path SubsController::Filename() const {
 
 	// Apple HIG says "untitled" should not be capitalised
 #ifndef __WXMAC__
-	return _("Untitled").wx_str();
+	return from_wx(_("Untitled"));
 #else
-	return _("untitled").wx_str();
+	return from_wx(_("untitled"));
 #endif
 }

@@ -38,13 +38,11 @@
 #include "../dialogs.h"
 #include "../include/aegisub/context.h"
 #include "../libresrc/libresrc.h"
-#include "../options.h"
 #include "../resolution_resampler.h"
 #include "../video_controller.h"
 
 #include <libaegisub/fs.h>
 #include <libaegisub/path.h>
-#include <libaegisub/make_unique.h>
 
 #include <wx/msgdlg.h>
 #include <wx/utils.h>

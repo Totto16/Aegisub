@@ -14,13 +14,8 @@
 //
 // Aegisub Project http://www.aegisub.org/
 
-/// @file mkv_wrap.h
-/// @see mkv_wrap.cpp
-/// @ingroup video_input
-///
-
 #include <libaegisub/exception.h>
-#include <libaegisub/fs_fwd.h>
+#include <libaegisub/fs.h>
 
 DEFINE_EXCEPTION(MatroskaException, agi::Exception);
 

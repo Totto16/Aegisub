@@ -34,6 +34,8 @@
 #include "aegisublocale.h"
 #include <libaegisub/fs_fwd.h>
 
+#include <vector>
+
 #ifndef wxUSE_EXCEPTIONS
 #error wxWidgets is compiled without exceptions support. Aegisub requires exceptions support in wxWidgets to run safely.
 #endif

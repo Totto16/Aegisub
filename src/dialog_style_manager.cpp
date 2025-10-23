@@ -46,14 +46,12 @@
 #include "subtitle_format.h"
 
 #include <libaegisub/fs.h>
-#include <libaegisub/make_unique.h>
 #include <libaegisub/path.h>
 #include <libaegisub/signal.h>
 #include <libaegisub/split.h>
 #include <libaegisub/vfr.h>
 
 #include <algorithm>
-#include <boost/algorithm/string/trim.hpp>
 #include <functional>
 #include <future>
 #include <memory>
@@ -175,7 +173,7 @@ public:
 	DialogStyleManager(agi::Context *context);
 };
 
-wxBitmapButton *add_bitmap_button(wxWindow *parent, wxSizer *sizer, wxBitmap const& img, wxString const& tooltip) {
+wxBitmapButton *add_bitmap_button(wxWindow *parent, wxSizer *sizer, wxBitmapBundle const& img, wxString const& tooltip) {
 	wxBitmapButton *btn = new wxBitmapButton(parent, -1, img);
 	btn->SetToolTip(tooltip);
 	sizer->Add(btn, wxSizerFlags().Expand());
@@ -186,11 +184,11 @@ wxSizer *make_move_buttons(wxWindow *parent, wxButton **up, wxButton **down, wxB
 	wxSizer *sizer = new wxBoxSizer(wxVERTICAL);
 	sizer->AddStretchSpacer(1);
 
-	*up     = add_bitmap_button(parent, sizer, GETIMAGE(arrow_up_24), _("Move style up"));
-	*down   = add_bitmap_button(parent, sizer, GETIMAGE(arrow_down_24), _("Move style down"));
-	*top    = add_bitmap_button(parent, sizer, GETIMAGE(arrow_up_stop_24), _("Move style to top"));
-	*bottom = add_bitmap_button(parent, sizer, GETIMAGE(arrow_down_stop_24), _("Move style to bottom"));
-	*sort   = add_bitmap_button(parent, sizer, GETIMAGE(arrow_sort_24), _("Sort styles alphabetically"));
+	*up     = add_bitmap_button(parent, sizer, GETBUNDLE(arrow_up, 24), _("Move style up"));
+	*down   = add_bitmap_button(parent, sizer, GETBUNDLE(arrow_down, 24), _("Move style down"));
+	*top    = add_bitmap_button(parent, sizer, GETBUNDLE(arrow_up_stop, 24), _("Move style to top"));
+	*bottom = add_bitmap_button(parent, sizer, GETBUNDLE(arrow_down_stop, 24), _("Move style to bottom"));
+	*sort   = add_bitmap_button(parent, sizer, GETBUNDLE(arrow_sort, 24), _("Sort styles alphabetically"));
 
 	sizer->AddStretchSpacer(1);
 	return sizer;
@@ -229,10 +227,10 @@ void add_styles(Func1 name_checker, Func2 style_adder) {
 	auto cb = GetClipboard();
 	int failed_to_parse = 0;
 	for (auto tok : agi::Split(cb, '\n')) {
-		tok = boost::trim_copy(tok);
+		tok = agi::Trim(tok);
 		if (tok.empty()) continue;
 		try {
-			AssStyle *s = new AssStyle(agi::str(tok));
+			AssStyle *s = new AssStyle(tok);
 			s->name = unique_name(name_checker, s->name);
 			style_adder(s);
 		}
@@ -278,7 +276,7 @@ static int DisplayStyleOverrideDialog(int remainingEntries, wxString styleName){
 		}
 
 		return 0b00;
-	}	
+	}
 }
 
 
@@ -294,7 +292,7 @@ DialogStyleManager::DialogStyleManager(agi::Context *context)
 }))
 {
 	using std::bind;
-	SetIcon(GETICON(style_toolbutton_16));
+	SetIcons(GETICONS(style_toolbutton));
 
 	// Catalog
 	wxSizer *CatalogBox = new wxStaticBoxSizer(wxHORIZONTAL,this,_("Catalog of available storages"));
@@ -353,7 +351,7 @@ DialogStyleManager::DialogStyleManager(agi::Context *context)
 	SetSizerAndFit(MainSizer);
 
 	// Position window
-	persist = agi::make_unique<PersistLocation>(this, "Tool/Style Manager");
+	persist = std::make_unique<PersistLocation>(this, "Tool/Style Manager");
 
 	// Populate lists
 	LoadCatalog();
@@ -364,43 +362,43 @@ DialogStyleManager::DialogStyleManager(agi::Context *context)
 	StorageList->Bind(wxEVT_KEY_DOWN, &DialogStyleManager::OnKeyDown, this);
 	CurrentList->Bind(wxEVT_KEY_DOWN, &DialogStyleManager::OnKeyDown, this);
 
-	StorageMoveUp->Bind(wxEVT_BUTTON, [=,  this](wxCommandEvent&) { MoveStyles(true, 0); });
-	StorageMoveTop->Bind(wxEVT_BUTTON, [=,  this](wxCommandEvent&) { MoveStyles(true, 1); });
-	StorageMoveDown->Bind(wxEVT_BUTTON, [=,  this](wxCommandEvent&) { MoveStyles(true, 2); });
-	StorageMoveBottom->Bind(wxEVT_BUTTON, [=,  this](wxCommandEvent&) { MoveStyles(true, 3); });
-	StorageSort->Bind(wxEVT_BUTTON, [=,  this](wxCommandEvent&) { MoveStyles(true, 4); });
+	StorageMoveUp->Bind(wxEVT_BUTTON, [this](wxCommandEvent&) { MoveStyles(true, 0); });
+	StorageMoveTop->Bind(wxEVT_BUTTON, [this](wxCommandEvent&) { MoveStyles(true, 1); });
+	StorageMoveDown->Bind(wxEVT_BUTTON, [this](wxCommandEvent&) { MoveStyles(true, 2); });
+	StorageMoveBottom->Bind(wxEVT_BUTTON, [this](wxCommandEvent&) { MoveStyles(true, 3); });
+	StorageSort->Bind(wxEVT_BUTTON, [this](wxCommandEvent&) { MoveStyles(true, 4); });
 
-	CurrentMoveUp->Bind(wxEVT_BUTTON, [=,  this](wxCommandEvent&) { MoveStyles(false, 0); });
-	CurrentMoveTop->Bind(wxEVT_BUTTON, [=,  this](wxCommandEvent&) { MoveStyles(false, 1); });
-	CurrentMoveDown->Bind(wxEVT_BUTTON, [=,  this](wxCommandEvent&) { MoveStyles(false, 2); });
-	CurrentMoveBottom->Bind(wxEVT_BUTTON, [=,  this](wxCommandEvent&) { MoveStyles(false, 3); });
-	CurrentSort->Bind(wxEVT_BUTTON, [=,  this](wxCommandEvent&) { MoveStyles(false, 4); });
+	CurrentMoveUp->Bind(wxEVT_BUTTON, [this](wxCommandEvent&) { MoveStyles(false, 0); });
+	CurrentMoveTop->Bind(wxEVT_BUTTON, [this](wxCommandEvent&) { MoveStyles(false, 1); });
+	CurrentMoveDown->Bind(wxEVT_BUTTON, [this](wxCommandEvent&) { MoveStyles(false, 2); });
+	CurrentMoveBottom->Bind(wxEVT_BUTTON, [this](wxCommandEvent&) { MoveStyles(false, 3); });
+	CurrentSort->Bind(wxEVT_BUTTON, [this](wxCommandEvent&) { MoveStyles(false, 4); });
 
-	CatalogNew->Bind(wxEVT_BUTTON, [=,  this](wxCommandEvent&) { OnCatalogNew(); });
-	CatalogDelete->Bind(wxEVT_BUTTON, [=,  this](wxCommandEvent&) { OnCatalogDelete(); });
+	CatalogNew->Bind(wxEVT_BUTTON, [this](wxCommandEvent&) { OnCatalogNew(); });
+	CatalogDelete->Bind(wxEVT_BUTTON, [this](wxCommandEvent&) { OnCatalogDelete(); });
 
-	StorageNew->Bind(wxEVT_BUTTON, [=,  this](wxCommandEvent&) { OnStorageNew(); });
-	StorageEdit->Bind(wxEVT_BUTTON, [=,  this](wxCommandEvent&) { OnStorageEdit(); });
-	StorageCopy->Bind(wxEVT_BUTTON, [=,  this](wxCommandEvent&) { OnStorageCopy(); });
-	StorageDelete->Bind(wxEVT_BUTTON, [=,  this](wxCommandEvent&) { OnStorageDelete(); });
+	StorageNew->Bind(wxEVT_BUTTON, [this](wxCommandEvent&) { OnStorageNew(); });
+	StorageEdit->Bind(wxEVT_BUTTON, [this](wxCommandEvent&) { OnStorageEdit(); });
+	StorageCopy->Bind(wxEVT_BUTTON, [this](wxCommandEvent&) { OnStorageCopy(); });
+	StorageDelete->Bind(wxEVT_BUTTON, [this](wxCommandEvent&) { OnStorageDelete(); });
 
-	CurrentNew->Bind(wxEVT_BUTTON, [=,  this](wxCommandEvent&) { OnCurrentNew(); });
-	CurrentEdit->Bind(wxEVT_BUTTON, [=,  this](wxCommandEvent&) { OnCurrentEdit(); });
-	CurrentCopy->Bind(wxEVT_BUTTON, [=,  this](wxCommandEvent&) { OnCurrentCopy(); });
-	CurrentDelete->Bind(wxEVT_BUTTON, [=,  this](wxCommandEvent&) { OnCurrentDelete(); });
+	CurrentNew->Bind(wxEVT_BUTTON, [this](wxCommandEvent&) { OnCurrentNew(); });
+	CurrentEdit->Bind(wxEVT_BUTTON, [this](wxCommandEvent&) { OnCurrentEdit(); });
+	CurrentCopy->Bind(wxEVT_BUTTON, [this](wxCommandEvent&) { OnCurrentCopy(); });
+	CurrentDelete->Bind(wxEVT_BUTTON, [this](wxCommandEvent&) { OnCurrentDelete(); });
 
-	CurrentImport->Bind(wxEVT_BUTTON, [=,  this](wxCommandEvent&) { OnCurrentImport(); });
+	CurrentImport->Bind(wxEVT_BUTTON, [this](wxCommandEvent&) { OnCurrentImport(); });
 
-	MoveToLocal->Bind(wxEVT_BUTTON, [=,  this](wxCommandEvent&) { OnCopyToCurrent(); });
-	MoveToStorage->Bind(wxEVT_BUTTON, [=,  this](wxCommandEvent&) { OnCopyToStorage(); });
+	MoveToLocal->Bind(wxEVT_BUTTON, [this](wxCommandEvent&) { OnCopyToCurrent(); });
+	MoveToStorage->Bind(wxEVT_BUTTON, [this](wxCommandEvent&) { OnCopyToStorage(); });
 
-	CatalogList->Bind(wxEVT_COMBOBOX, [=,  this](wxCommandEvent&) { OnChangeCatalog(); });
+	CatalogList->Bind(wxEVT_COMBOBOX, [this](wxCommandEvent&) { OnChangeCatalog(); });
 
-	StorageList->Bind(wxEVT_LISTBOX, [=,  this](wxCommandEvent&) { UpdateButtons(); });
-	StorageList->Bind(wxEVT_LISTBOX_DCLICK, [=,  this](wxCommandEvent&) { OnStorageEdit(); });
+	StorageList->Bind(wxEVT_LISTBOX, [this](wxCommandEvent&) { UpdateButtons(); });
+	StorageList->Bind(wxEVT_LISTBOX_DCLICK, [this](wxCommandEvent&) { OnStorageEdit(); });
 
-	CurrentList->Bind(wxEVT_LISTBOX, [=,  this](wxCommandEvent&) { UpdateButtons(); });
-	CurrentList->Bind(wxEVT_LISTBOX_DCLICK, [=,  this](wxCommandEvent&) { OnCurrentEdit(); });
+	CurrentList->Bind(wxEVT_LISTBOX, [this](wxCommandEvent&) { UpdateButtons(); });
+	CurrentList->Bind(wxEVT_LISTBOX_DCLICK, [this](wxCommandEvent&) { OnCurrentEdit(); });
 }
 
 void DialogStyleManager::LoadCurrentStyles(int commit_type) {
@@ -461,7 +459,7 @@ void DialogStyleManager::LoadCatalog() {
 	// Create a default storage if there are none
 	if (CatalogList->IsListEmpty()) {
 		Store.LoadCatalog("Default");
-		Store.push_back(agi::make_unique<AssStyle>());
+		Store.push_back(std::make_unique<AssStyle>());
 		Store.Save();
 		CatalogList->Append("Default");
 	}
@@ -549,7 +547,7 @@ void DialogStyleManager::OnCopyToStorage() {
 			}
 		}
 		else {
-			Store.push_back(agi::make_unique<AssStyle>(*styleMap.at(selections[i])));
+			Store.push_back(std::make_unique<AssStyle>(*styleMap.at(selections[i])));
 			copied.push_back(styleName);
 		}
 	}
@@ -617,16 +615,16 @@ void DialogStyleManager::CopyToClipboard(wxListBox *list, T const& v) {
 
 void DialogStyleManager::PasteToCurrent() {
 	add_styles(
-		[=,  this](std::string const& str) { return c->ass->GetStyle(str); },
-		[=,  this](AssStyle *s) { c->ass->Styles.push_back(*s); });
+		[this](std::string const& str) { return c->ass->GetStyle(str); },
+		[this](AssStyle *s) { c->ass->Styles.push_back(*s); });
 
 	c->ass->Commit(_("style paste"), AssFile::COMMIT_STYLES);
 }
 
 void DialogStyleManager::PasteToStorage() {
 	add_styles(
-		[=,  this](std::string const& str) { return Store.GetStyle(str); },
-		[=,  this](AssStyle *s) { Store.push_back(std::unique_ptr<AssStyle>(s)); });
+		[this](std::string const& str) { return Store.GetStyle(str); },
+		[this](AssStyle *s) { Store.push_back(std::unique_ptr<AssStyle>(s)); });
 
 	UpdateStorage();
 	StorageList->SetStringSelection(to_wx(Store.back()->name));
@@ -657,7 +655,7 @@ void DialogStyleManager::OnStorageCopy() {
 	if (sel == -1) return;
 
 	ShowStorageEditor(Store[sel], unique_name(
-		[=,  this](std::string const& str) { return Store.GetStyle(str); }, Store[sel]->name));
+		[this](std::string const& str) { return Store.GetStyle(str); }, Store[sel]->name));
 }
 
 void DialogStyleManager::OnStorageDelete() {
@@ -695,7 +693,7 @@ void DialogStyleManager::OnCurrentCopy() {
 	if (sel == -1) return;
 
 	ShowCurrentEditor(styleMap[sel], unique_name(
-		[=,  this](std::string const& str) { return c->ass->GetStyle(str); },
+		[this](std::string const& str) { return c->ass->GetStyle(str); },
 		styleMap[sel]->name));
 }
 
@@ -725,11 +723,12 @@ void DialogStyleManager::OnCurrentImport() {
 
 	AssFile temp;
 	try {
-		auto reader = SubtitleFormat::GetReader(filename, charset);
-		if (!reader)
+		auto reader = SubtitleFormat::GetReader(filename, charset.c_str());
+		if (!reader) {
 			wxMessageBox("Unsupported subtitle format", "Error", wxOK | wxICON_ERROR | wxCENTER, this);
-		else
-			reader->ReadFile(&temp, filename, 0, charset);
+			return;
+		}
+		reader->ReadFile(&temp, filename, 0, charset.c_str());
 	}
 	catch (agi::Exception const& err) {
 		wxMessageBox(to_wx(err.GetMessage()), "Error", wxOK | wxICON_ERROR | wxCENTER, this);
@@ -758,10 +757,10 @@ void DialogStyleManager::OnCurrentImport() {
 	for (int i =0; i < n; ++i) {
 		auto const& sel = selections[i];
 		auto const styleName =  styles[sel];
-		
+
 		// Check if there is already a style with that name
 		if (AssStyle *existing = c->ass->GetStyle(styleName)) {
-			
+
 			bool overwriteThis = false;
 			if(!overwriteAll){
 				// TODO: Is the placement of the "Yes all" button in the middle or is it better to be on the right site?

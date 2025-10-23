@@ -42,7 +42,6 @@
 
 #include <libaegisub/audio/provider.h>
 #include <libaegisub/log.h>
-#include <libaegisub/make_unique.h>
 
 #include <atomic>
 #include <algorithm>
@@ -54,7 +53,7 @@
 #include <mutex>
 #include <thread>
 
-// X11 is the bestest
+// X11 is the best
 #undef None
 
 namespace {
@@ -349,7 +348,7 @@ int64_t AlsaPlayer::GetCurrentPosition()
 
 std::unique_ptr<AudioPlayer> CreateAlsaPlayer(agi::AudioProvider *provider, wxWindow *)
 {
-	return agi::make_unique<AlsaPlayer>(provider);
+	return std::make_unique<AlsaPlayer>(provider);
 }
 
 #endif // WITH_ALSA

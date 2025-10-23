@@ -26,7 +26,6 @@
 #include "options.h"
 
 #include <libaegisub/charset_conv.h>
-#include <libaegisub/make_unique.h>
 
 #include <boost/lexical_cast.hpp>
 #include <boost/regex.hpp>
@@ -110,6 +109,7 @@ int ShowEbuExportConfigurationDialog(wxWindow *owner, EbuExportSettings &s) {
 	wxRadioBox *tv_standard_box = new wxRadioBox(&d, -1, _("TV standard"), wxDefaultPosition, wxDefaultSize, 6, tv_standards, 0, wxRA_SPECIFY_ROWS);
 
 	wxTextCtrl *timecode_offset_entry = new wxTextCtrl(&d, -1, "00:00:00:00");
+	timecode_offset_entry->SetInitialSize(timecode_offset_entry->GetSizeFromText(timecode_offset_entry->GetValue()));
 	wxCheckBox *inclusive_end_times_check = new wxCheckBox(&d, -1, _("Out-times are inclusive"));
 
 	wxString text_encodings[] = {
@@ -129,11 +129,9 @@ int ShowEbuExportConfigurationDialog(wxWindow *owner, EbuExportSettings &s) {
 		_("Skip lines that are too long")
 	};
 
-	wxSpinCtrl *max_line_length_ctrl = new wxSpinCtrl(&d, -1, wxString(), wxDefaultPosition, wxSize(65, -1));
+	wxSpinCtrl *max_line_length_ctrl = new wxSpinCtrl(&d, -1, wxString(), wxDefaultPosition, wxDefaultSize, wxSP_ARROW_KEYS, 10, 99);
 	wxComboBox *wrap_mode_ctrl = new wxComboBox(&d, -1, wrap_modes[0], wxDefaultPosition, wxDefaultSize, 4, wrap_modes, wxCB_DROPDOWN | wxCB_READONLY);
 	wxCheckBox *translate_alignments_check = new wxCheckBox(&d, -1, _("Translate alignments"));
-
-	max_line_length_ctrl->SetRange(10, 99);
 
 	wxString display_standards[] = {
 		_("Open subtitles"),
@@ -216,16 +214,16 @@ agi::vfr::Framerate EbuExportSettings::GetFramerate() const {
 }
 
 std::unique_ptr<agi::charset::IconvWrapper> EbuExportSettings::GetTextEncoder() const {
-	using namespace agi;
+	const char *encoding = "ISO-8859-1";
 	switch (text_encoding) {
-		case iso6937_2: return make_unique<charset::IconvWrapper>("utf-8", "ISO-6937-2");
-		case iso8859_5: return make_unique<charset::IconvWrapper>("utf-8", "ISO-8859-5");
-		case iso8859_6: return make_unique<charset::IconvWrapper>("utf-8", "ISO-8859-6");
-		case iso8859_7: return make_unique<charset::IconvWrapper>("utf-8", "ISO-8859-7");
-		case iso8859_8: return make_unique<charset::IconvWrapper>("utf-8", "ISO-8859-8");
-		case utf8:      return make_unique<charset::IconvWrapper>("utf-8", "utf-8");
-		default:        return make_unique<charset::IconvWrapper>("utf-8", "ISO-8859-1");
+		case iso6937_2: encoding = "ISO-6937-2"; break;
+		case iso8859_5: encoding = "ISO-8859-5"; break;
+		case iso8859_6: encoding = "ISO-8859-6"; break;
+		case iso8859_7: encoding = "ISO-8859-7"; break;
+		case iso8859_8: encoding = "ISO-8859-8"; break;
+		case utf8:      encoding = "utf-8"; break;
 	}
+	return std::make_unique<agi::charset::IconvWrapper>("utf-8", encoding);
 }
 
 EbuExportSettings::EbuExportSettings(std::string const& prefix)

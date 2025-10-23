@@ -42,11 +42,9 @@
 #include <libaegisub/fs.h>
 #include <libaegisub/keyframe.h>
 #include <libaegisub/log.h>
-#include <libaegisub/make_unique.h>
 #include <libaegisub/path.h>
 
 #include <boost/algorithm/string/case_conv.hpp>
-#include <boost/filesystem/operations.hpp>
 #include <wx/msgdlg.h>
 
 Project::Project(agi::Context *c) : context(c) {
@@ -64,10 +62,11 @@ Project::Project(agi::Context *c) : context(c) {
 Project::~Project() { }
 
 void Project::UpdateRelativePaths() {
-	context->ass->Properties.audio_file     = context->path->MakeRelative(audio_file, "?script").generic_string();
-	context->ass->Properties.video_file     = context->path->MakeRelative(video_file, "?script").generic_string();
-	context->ass->Properties.timecodes_file = context->path->MakeRelative(timecodes_file, "?script").generic_string();
-	context->ass->Properties.keyframes_file = context->path->MakeRelative(keyframes_file, "?script").generic_string();
+	using namespace std::string_view_literals;
+	context->ass->Properties.audio_file     = context->path->MakeRelative(audio_file, "?script"sv).generic_string();
+	context->ass->Properties.video_file     = context->path->MakeRelative(video_file, "?script"sv).generic_string();
+	context->ass->Properties.timecodes_file = context->path->MakeRelative(timecodes_file, "?script"sv).generic_string();
+	context->ass->Properties.keyframes_file = context->path->MakeRelative(keyframes_file, "?script"sv).generic_string();
 }
 
 void Project::ReloadAudio() {
@@ -123,7 +122,7 @@ bool Project::DoLoadSubtitles(agi::fs::path const& path, std::string encoding, P
 	}
 
 	try {
-		properties = context->subsController->Load(path, encoding);
+		properties = context->subsController->Load(path, encoding.c_str());
 	}
 	catch (agi::UserCancelException const&) { return false; }
 	catch (agi::fs::FileNotFound const&) {
@@ -289,7 +288,7 @@ bool Project::DoLoadVideo(agi::fs::path const& path) {
 
 	try {
 		auto old_matrix = context->ass->GetScriptInfo("YCbCr Matrix");
-		video_provider = agi::make_unique<AsyncVideoProvider>(path, old_matrix, context->videoController.get(), progress);
+		video_provider = std::make_unique<AsyncVideoProvider>(path, old_matrix, context->videoController.get(), progress);
 	}
 	catch (agi::UserCancelException const&) { return false; }
 	catch (agi::fs::FileSystemError const& err) {
@@ -429,7 +428,7 @@ void Project::LoadList(std::vector<agi::fs::path> const& files) {
 		".rm",
 		".rmvb",
 		".ts",
-		".webm"
+		".webm",
 		".wmv",
 		".y4m",
 		".yuv"
@@ -472,13 +471,8 @@ void Project::LoadList(std::vector<agi::fs::path> const& files) {
 	agi::fs::path currentWorkingDir = ! AegisubApp::startCwd.empty() ? AegisubApp::startCwd : boost::filesystem::current_path();
 
 	for (auto file : files) {
-				if (file.is_relative()) {
-			file = boost::filesystem::absolute(file, currentWorkingDir);
-		}
-
-		if (!agi::fs::FileExists(file)){
-			continue;
-		}
+		if (file.is_relative()) file = agi::fs::Absolute(file);
+		if (!agi::fs::FileExists(file)) continue;
 
 		auto ext = file.extension().string();
 		boost::to_lower(ext);

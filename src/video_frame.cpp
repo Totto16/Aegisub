@@ -16,11 +16,7 @@
 
 #include "video_frame.h"
 
-#if BOOST_VERSION >= 106900
 #include <boost/gil.hpp>
-#else
-#include <boost/gil/gil_all.hpp>
-#endif
 #include <wx/image.h>
 
 namespace {
@@ -46,5 +42,19 @@ wxImage GetImage(VideoFrame const& frame) {
 	if (frame.flipped)
 		src = flipped_up_down_view(src);
 	copy_and_convert_pixels(src, dst, color_converter());
+	return img;
+}
+
+wxImage GetImageWithAlpha(VideoFrame const &frame) {
+	wxImage img = GetImage(frame);
+	img.InitAlpha();
+	uint8_t *dst = img.GetAlpha();
+	const uint8_t *src = frame.data.data() + 3;
+	for (int y = 0; y < frame.height; y++) {
+		for (int x = 0; x < frame.width; x++) {
+			*(dst++) = *src;
+			src += 4;
+		}
+	}
 	return img;
 }

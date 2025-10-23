@@ -68,7 +68,7 @@ DialogAttachments::DialogAttachments(wxWindow *parent, AssFile *ass)
 : d(parent, -1, _("Attachment List"))
 , ass(ass)
 {
-	d.SetIcon(GETICON(attach_button_16));
+	d.SetIcons(GETICONS(attach_button));
 
 	listView = new wxListView(&d, -1, wxDefaultPosition, wxSize(500, 200));
 	UpdateList();
@@ -153,7 +153,7 @@ void DialogAttachments::OnAttachGraphics(wxCommandEvent &) {
 }
 
 void DialogAttachments::OnExtract(wxCommandEvent &) {
-	int i = listView->GetFirstSelected();
+	long i = listView->GetFirstSelected();
 	if (i == -1) return;
 
 	agi::fs::path path;
@@ -161,7 +161,7 @@ void DialogAttachments::OnExtract(wxCommandEvent &) {
 
 	// Multiple or single?
 	if (listView->GetNextSelected(i) != -1)
-		path = wxDirSelector(_("Select the path to save the files to:"), to_wx(OPT_GET("Path/Fonts Collector Destination")->GetString())).ToStdString();
+		path = wxDirSelector(_("Select the path to save the files to:"), to_wx(OPT_GET("Path/Fonts Collector Destination")->GetString())).utf8_str().data();
 	else {
 		path = SaveFileSelector(
 			_("Select the path to save the file to:"),

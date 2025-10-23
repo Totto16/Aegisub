@@ -14,10 +14,6 @@
 //
 // Aegisub Project http://www.aegisub.org/
 
-/// @file visual_tool.h
-/// @see visual_tool.cpp
-/// @ingroup visual_ts
-
 #pragma once
 
 #include "gl_wrap.h"
@@ -74,7 +70,7 @@ class VisualToolBase {
 	virtual void OnLineChanged() { DoRefresh(); }
 
 	/// Generic refresh to simplify tools which have no interesting state and
-	/// can simply do do the same thing for any external change (i.e. most of
+	/// can simply do the same thing for any external change (i.e. most of
 	/// them). Called only by the above virtual methods.
 	virtual void DoRefresh() { }
 
@@ -146,6 +142,8 @@ public:
 	virtual void Draw()=0;
 	virtual void SetDisplayArea(int x, int y, int w, int h);
 	virtual void SetToolbar(wxToolBar *) { }
+	virtual void SetSubTool(int subtool) { }
+	virtual int GetSubTool() { return 0; }
 	virtual ~VisualToolBase() = default;
 };
 

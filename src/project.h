@@ -14,11 +14,10 @@
 //
 // Aegisub Project http://www.aegisub.org/
 
-#include <libaegisub/fs_fwd.h>
+#include <libaegisub/fs.h>
 #include <libaegisub/signal.h>
 #include <libaegisub/vfr.h>
 
-#include <boost/filesystem/path.hpp>
 #include <memory>
 #include <vector>
 

@@ -59,7 +59,6 @@
 #include <libaegisub/lua/modules.h>
 #include <libaegisub/lua/script_reader.h>
 #include <libaegisub/lua/utils.h>
-#include <libaegisub/make_unique.h>
 #include <libaegisub/path.h>
 
 #include <algorithm>
@@ -119,13 +118,14 @@ namespace {
 	int get_translation(lua_State *L)
 	{
 		wxString str(check_wxstring(L, 1));
-		push_value(L, _(str).ToStdString());
+		push_value(L, wxGetTranslation(str).utf8_str());
 		return 1;
 	}
 
 	const char *clipboard_get()
 	{
-		std::string data = GetClipboard();
+		std::string data;
+		agi::dispatch::Main().Sync([&] { data = GetClipboard(); });
 		if (data.empty())
 			return nullptr;
 		return strndup(data);
@@ -135,18 +135,14 @@ namespace {
 	{
 		bool succeeded = false;
 
-#if wxUSE_OLE
-		// OLE needs to be initialized on each thread that wants to write to
-		// the clipboard, which wx does not handle automatically
-		wxClipboard cb;
-#else
-		wxClipboard &cb = *wxTheClipboard;
-#endif
-		if (cb.Open()) {
-			succeeded = cb.SetData(new wxTextDataObject(wxString::FromUTF8(str)));
-			cb.Close();
-			cb.Flush();
-		}
+		agi::dispatch::Main().Sync([&] {
+			wxClipboard &cb = *wxTheClipboard;
+			if (cb.Open()) {
+				succeeded = cb.SetData(new wxTextDataObject(wxString::FromUTF8(str)));
+				cb.Close();
+				cb.Flush();
+			}
+		});
 
 		return succeeded;
 	}
@@ -521,6 +517,7 @@ namespace {
 		if (lua_isnumber(L, -1) && lua_tointeger(L, -1) == 3) {
 			lua_pop(L, 1); // just to avoid tripping the stackcheck in debug
 			description = "Attempted to load an Automation 3 script as an Automation 4 Lua script. Automation 3 is no longer supported.";
+			stackcheck.check_stack(0);
 			return;
 		}
 
@@ -533,6 +530,7 @@ namespace {
 			name = GetPrettyFilename().string();
 
 		lua_pop(L, 1);
+		stackcheck.check_stack(0);
 		// if we got this far, the script should be ready
 		loaded = true;
 	}
@@ -624,27 +622,38 @@ namespace {
 	{
 		bool failed = false;
 		BackgroundScriptRunner bsr(parent, title);
-		bsr.Run([&](ProgressSink *ps) {
-			LuaProgressSink lps(L, ps, can_open_config);
+		try {
+			bsr.Run([&](ProgressSink *ps) {
+				LuaProgressSink lps(L, ps, can_open_config);
 
-			// Insert our error handler under the function to call
-			lua_pushcclosure(L, add_stack_trace, 0);
-			lua_insert(L, -nargs - 2);
+				// Insert our error handler under the function to call
+				lua_pushcclosure(L, add_stack_trace, 0);
+				lua_insert(L, -nargs - 2);
 
-			if (lua_pcall(L, nargs, nresults, -nargs - 2)) {
-				if (!lua_isnil(L, -1)) {
-					// if the call failed, log the error here
-					ps->Log("\n\nLua reported a runtime error:\n");
-					ps->Log(get_string_or_default(L, -1));
+				if (lua_pcall(L, nargs, nresults, -nargs - 2)) {
+					if (!lua_isnil(L, -1)) {
+						// if the call failed, log the error here
+						ps->Log("\n\nLua reported a runtime error:\n");
+						ps->Log(get_string_or_default(L, -1));
+					}
+					lua_pop(L, 2);
+					failed = true;
 				}
-				lua_pop(L, 2);
-				failed = true;
-			}
-			else
-				lua_remove(L, -nresults - 1);
+				else
+					lua_remove(L, -nresults - 1);
 
-			lua_gc(L, LUA_GCCOLLECT, 0);
-		});
+				lua_gc(L, LUA_GCCOLLECT, 0);
+			});
+		} catch (agi::UserCancelException const&) {
+			// A UserCancelException can be thrown by the background runner after
+			// the above closure ran through.
+			// Below, we want to throw our own UserCancelException when the script throws an error,
+			// in which case we leave the stack empty. Hence, if the script did not throw an error,
+			// we need to pop the return values here to also leave the stack empty.
+			if (!failed)
+				lua_pop(L, nresults);
+			throw;
+		}
 		if (failed)
 			throw agi::UserCancelException("Script threw an error");
 	}
@@ -676,7 +685,7 @@ namespace {
 	int LuaCommand::LuaRegister(lua_State *L)
 	{
 		static std::mutex mutex;
-		auto command = agi::make_unique<LuaCommand>(L);
+		auto command = std::make_unique<LuaCommand>(L);
 		{
 			std::lock_guard<std::mutex> lock(mutex);
 			cmd::reg(std::move(command));
@@ -949,7 +958,7 @@ namespace {
 	int LuaExportFilter::LuaRegister(lua_State *L)
 	{
 		static std::mutex mutex;
-		auto filter = agi::make_unique<LuaExportFilter>(L);
+		auto filter = std::make_unique<LuaExportFilter>(L);
 		{
 			std::lock_guard<std::mutex> lock(mutex);
 			AssExportFilterChain::Register(std::move(filter));
@@ -1033,7 +1042,7 @@ namespace Automation4 {
 	std::unique_ptr<Script> LuaScriptFactory::Produce(agi::fs::path const& filename) const
 	{
 		if (agi::fs::HasExtension(filename, "lua") || agi::fs::HasExtension(filename, "moon"))
-			return agi::make_unique<LuaScript>(filename);
+			return std::make_unique<LuaScript>(filename);
 		return nullptr;
 	}
 }

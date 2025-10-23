@@ -14,6 +14,7 @@
 //
 // Aegisub Project http://www.aegisub.org/
 
+#include <algorithm>
 #include <main.h>
 #include <util.h>
 
@@ -34,8 +35,6 @@ TEST(lagi_fs, exists_does_not_throw) {
 	EXPECT_NO_THROW(Exists("data/file"));
 	EXPECT_NO_THROW(Exists("data/dir"));
 	EXPECT_NO_THROW(Exists("data/nonexistent"));
-	EXPECT_NO_THROW(Exists("data/dir_access_denied"));
-	EXPECT_NO_THROW(Exists("data/file_access_denied"));
 	EXPECT_NO_THROW(Exists("schema://host/file"));
 }
 
@@ -77,7 +76,7 @@ TEST(lagi_fs, touch_creates_file) {
 }
 
 TEST(lagi_fs, touch_updates_modified_time) {
-	time_t mod_time = ModifiedTime("data/touch_mod_time");
+	auto mod_time = ModifiedTime("data/touch_mod_time");
 	Touch("data/touch_mod_time");
 	EXPECT_LT(mod_time, ModifiedTime("data/touch_mod_time"));
 }

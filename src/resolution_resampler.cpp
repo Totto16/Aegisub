@@ -28,7 +28,6 @@
 #include <libaegisub/ycbcr_conv.h>
 
 #include <algorithm>
-#include <boost/algorithm/string/predicate.hpp>
 #include <cmath>
 #include <wx/intl.h>
 
@@ -39,7 +38,7 @@ enum {
 	BOTTOM = 3
 };
 
-static const std::string names[] = {
+static const constexpr std::string_view names[] = {
 	"None",
 	"TV.601", "PC.601",
 	"TV.709", "PC.709",
@@ -47,7 +46,7 @@ static const std::string names[] = {
 	"TV.240M", "PC.240M"
 };
 
-YCbCrMatrix MatrixFromString(std::string const& str) {
+YCbCrMatrix MatrixFromString(std::string_view str) {
 	if (str.empty()) return YCbCrMatrix::tv_709;
 	auto pos = std::find(std::begin(names), std::end(names), str);
 	if (pos == std::end(names))
@@ -55,7 +54,7 @@ YCbCrMatrix MatrixFromString(std::string const& str) {
 	return static_cast<YCbCrMatrix>(std::distance(std::begin(names), pos));
 }
 
-std::string MatrixToString(YCbCrMatrix mat) {
+std::string_view MatrixToString(YCbCrMatrix mat) {
 	return names[static_cast<int>(mat)];
 }
 
@@ -69,14 +68,13 @@ namespace {
 		std::string final;
 		final.reserve(drawing.size());
 
-		for (auto const& cur : agi::Split(drawing, ' ')) {
+		for (auto cur : agi::Split(drawing, ' ')) {
 			double val;
-			if (agi::util::try_parse(agi::str(cur), &val)) {
+			if (agi::util::try_parse(cur, &val)) {
 				if (is_x)
 					val = (val + shift_x) * scale_x;
 				else
 					val = (val + shift_y) * scale_y;
-				val = round(val * 8) / 8.0; // round to eighth-pixels
 				final += float_to_string(val);
 				final += ' ';
 				is_x = !is_x;
@@ -100,6 +98,7 @@ namespace {
 		const int *margin;
 		double rx;
 		double ry;
+		double rm;
 		double ar;
 		agi::ycbcr_converter conv;
 		bool convert_colors;
@@ -112,8 +111,16 @@ namespace {
 		int shift = 0;
 
 		switch (cur->classification) {
-			case AssParameterClass::ABSOLUTE_SIZE:
+			case AssParameterClass::ABSOLUTE_SIZE_X:
+				resizer = state->rx;
+				break;
+
+			case AssParameterClass::ABSOLUTE_SIZE_Y:
 				resizer = state->ry;
+				break;
+
+			case AssParameterClass::ABSOLUTE_SIZE_XY:
+				resizer = state->rm;
 				break;
 
 			case AssParameterClass::ABSOLUTE_POS_X:
@@ -157,7 +164,7 @@ namespace {
 	}
 
 	void resample_line(resample_state *state, AssDialogue &diag) {
-		if (diag.Comment && (boost::starts_with(diag.Effect.get(), "template") || boost::starts_with(diag.Effect.get(), "code")))
+		if (diag.Comment && (diag.Effect.get().starts_with("template") || diag.Effect.get().starts_with("code")))
 			return;
 
 		auto blocks = diag.ParseTags();
@@ -180,7 +187,7 @@ namespace {
 		style.fontsize = int(style.fontsize * state->ry + 0.5);
 		style.outline_w *= state->ry;
 		style.shadow_w *= state->ry;
-		style.spacing *= state->rx;
+		style.spacing *= state->ry;  // gets multiplied by scalex (and hence by ar) during rendering
 		style.scalex *= state->ar;
 		for (int i = 0; i < 3; i++)
 			style.Margin[i] = int((style.Margin[i] + state->margin[i]) * (i < 2 ? state->rx : state->ry) + 0.5);
@@ -262,10 +269,14 @@ void ResampleResolution(AssFile *ass, ResampleSettings settings) {
 		settings.source_matrix != YCbCrMatrix::rgb &&
 		settings.dest_matrix != YCbCrMatrix::rgb;
 
+	double rx = double(settings.dest_x) / double(settings.source_x);
+	double ry = double(settings.dest_y) / double(settings.source_y);
+
 	resample_state state = {
 		settings.margin,
-		double(settings.dest_x) / double(settings.source_x),
-		double(settings.dest_y) / double(settings.source_y),
+		rx,
+		ry,
+		rx == ry ? rx : std::sqrt(rx * ry),
 		horizontal_stretch,
 		agi::ycbcr_converter{
 			matrix(settings.source_matrix),

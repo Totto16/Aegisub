@@ -44,14 +44,12 @@
 #include "include/aegisub/menu.h"
 #include "options.h"
 #include "project.h"
-#include "retina_helper.h"
 #include "spline_curve.h"
 #include "utils.h"
 #include "video_out_gl.h"
 #include "video_controller.h"
 #include "visual_tool.h"
 
-#include <libaegisub/make_unique.h>
 
 #include <algorithm>
 #include <wx/combobox.h>
@@ -86,13 +84,7 @@ VideoDisplay::VideoDisplay(wxToolBar *toolbar, bool freeSize, wxComboBox *zoomBo
 , toolBar(toolbar)
 , zoomBox(zoomBox)
 , freeSize(freeSize)
-, retina_helper(agi::make_unique<RetinaHelper>(this))
-, scale_factor(retina_helper->GetScaleFactor())
-, scale_factor_connection(retina_helper->AddScaleFactorListener([=,  this](int new_scale_factor) {
-	double new_zoom = zoomValue * new_scale_factor / scale_factor;
-	scale_factor = new_scale_factor;
-	SetZoom(new_zoom);
-}))
+, scale_factor(GetContentScaleFactor())
 {
 	zoomBox->SetValue(fmt_wx("%g%%", zoomValue * 100.));
 	zoomBox->Bind(wxEVT_COMBOBOX, &VideoDisplay::SetZoomFromBox, this);
@@ -115,6 +107,13 @@ VideoDisplay::VideoDisplay(wxToolBar *toolbar, bool freeSize, wxComboBox *zoomBo
 	Bind(wxEVT_LEFT_UP, &VideoDisplay::OnMouseEvent, this);
 	Bind(wxEVT_MOTION, &VideoDisplay::OnMouseEvent, this);
 	Bind(wxEVT_MOUSEWHEEL, &VideoDisplay::OnMouseWheel, this);
+
+	Bind(wxEVT_DPI_CHANGED, [this] (wxDPIChangedEvent &e) {
+		double new_zoom = zoomValue * GetContentScaleFactor() / scale_factor;
+		scale_factor = GetContentScaleFactor();
+		SetZoom(new_zoom);
+		e.Skip();
+	});
 
 	SetCursor(wxNullCursor);
 
@@ -140,7 +139,7 @@ bool VideoDisplay::InitContext() {
 		return false;
 
 	if (!glContext)
-		glContext = agi::make_unique<wxGLContext>(this);
+		glContext = std::make_unique<wxGLContext>(this);
 
 	SetCurrent(*glContext);
 	return true;
@@ -156,7 +155,7 @@ void VideoDisplay::Render() try {
 		return;
 
 	if (!videoOut)
-		videoOut = agi::make_unique<VideoOutGL>();
+		videoOut = std::make_unique<VideoOutGL>();
 
 	if (!tool)
 		cmd::call("video/tool/cross", con);
@@ -227,19 +226,19 @@ catch (const agi::Exception &err) {
 }
 
 void VideoDisplay::DrawOverscanMask(float horizontal_percent, float vertical_percent) const {
-	Vector2D v(viewport_width, viewport_height);
-	Vector2D size = Vector2D(horizontal_percent, vertical_percent) / 2 * v;
+	Vector2D v = Vector2D(viewport_width, viewport_height) / scale_factor;
+	Vector2D size = Vector2D(horizontal_percent, vertical_percent) * v;
 
 	// Clockwise from top-left
 	Vector2D corners[] = {
 		size,
-		Vector2D(viewport_width - size.X(), size),
+		Vector2D(viewport_width / scale_factor - size.X(), size),
 		v - size,
-		Vector2D(size, viewport_height - size.Y())
+		Vector2D(size, viewport_height  / scale_factor - size.Y())
 	};
 
 	// Shift to compensate for black bars
-	Vector2D pos(viewport_left, viewport_top);
+	Vector2D pos = Vector2D(viewport_left, viewport_top) / scale_factor;
 	for (auto& corner : corners)
 		corner = corner + pos;
 
@@ -261,7 +260,7 @@ void VideoDisplay::DrawOverscanMask(float horizontal_percent, float vertical_per
 
 	std::vector<int> vstart(1, 0);
 	std::vector<int> vcount(1, count);
-	gl.DrawMultiPolygon(points, vstart, vcount, Vector2D(viewport_left, viewport_top), Vector2D(viewport_width, viewport_height), true);
+	gl.DrawMultiPolygon(points, vstart, vcount, pos, v, true);
 }
 
 void VideoDisplay::PositionVideo() {
@@ -369,7 +368,7 @@ void VideoDisplay::OnMouseWheel(wxMouseEvent& event) {
 }
 
 void VideoDisplay::OnContextMenu(wxContextMenuEvent&) {
-	if (!context_menu) context_menu = menu::GetMenu("video_context", con);
+	if (!context_menu) context_menu = menu::GetMenu("video_context", (wxID_HIGHEST + 1) + 9000, con);
 	SetCursor(wxNullCursor);
 	menu::OpenPopupMenu(context_menu.get(), this);
 }

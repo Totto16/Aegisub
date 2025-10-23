@@ -39,7 +39,12 @@ namespace agi {
 				ERROR,
 				COMMENT,
 				WHITESPACE,
-				DRAWING,
+				DRAWING_FULL,
+				DRAWING_CMD,
+				DRAWING_X,
+				DRAWING_Y,
+				DRAWING_ENDPOINT_X,
+				DRAWING_ENDPOINT_Y,
 				KARAOKE_TEMPLATE,
 				KARAOKE_VARIABLE
 			};
@@ -49,7 +54,11 @@ namespace agi {
 			enum {
 				NORMAL = 0,
 				COMMENT,
-				DRAWING,
+				DRAWING_CMD,
+				DRAWING_X,
+				DRAWING_Y,
+				DRAWING_ENDPOINT_X,
+				DRAWING_ENDPOINT_Y,
 				OVERRIDE,
 				PUNCTUATION,
 				TAG,
@@ -69,17 +78,17 @@ namespace agi {
 		};
 
 		/// Tokenize the passed string as the body of a dialogue line
-		std::vector<DialogueToken> TokenizeDialogueBody(std::string const& str, bool karaoke_templater=false);
+		std::vector<DialogueToken> TokenizeDialogueBody(std::string_view str, bool karaoke_templater=false);
 
 		/// Convert the body of drawings to DRAWING tokens
-		void MarkDrawings(std::string const& str, std::vector<DialogueToken> &tokens);
+		void MarkDrawings(std::string_view str, std::vector<DialogueToken> &tokens);
 
 		/// Split the words in the TEXT tokens of the lexed line into their
 		/// own tokens and convert the body of drawings to DRAWING tokens
-		void SplitWords(std::string const& str, std::vector<DialogueToken> &tokens);
+		void SplitWords(std::string_view str, std::vector<DialogueToken> &tokens);
 
-		void SplitWords(std::u8string const& str, std::vector<DialogueToken> &tokens);
-
-		std::vector<DialogueToken> SyntaxHighlight(std::string const& text, std::vector<DialogueToken> const& tokens, SpellChecker *spellchecker);
+		std::vector<DialogueToken> SyntaxHighlight(std::string_view text,
+		                                           std::vector<DialogueToken> const& tokens,
+		                                           SpellChecker *spellchecker);
 	}
 }

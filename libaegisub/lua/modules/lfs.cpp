@@ -17,12 +17,11 @@
 #include "libaegisub/fs.h"
 #include "libaegisub/lua/ffi.h"
 
-#include <boost/filesystem/operations.hpp>
-#include <boost/filesystem/path.hpp>
+#include <chrono>
 
 using namespace agi::fs;
 using namespace agi::lua;
-namespace bfs = boost::filesystem;
+namespace sfs = std::filesystem;
 
 namespace agi {
 AGI_DEFINE_TYPE_NAME(DirectoryIterator);
@@ -55,12 +54,12 @@ bool setter(const char *path, char **err, Ret (*f)(bfs::path const&)) {
 }
 
 bool lfs_chdir(const char *dir, char **err) {
-	return setter(dir, err, &bfs::current_path);
+	return setter(dir, err, CurrentPath);
 }
 
 char *currentdir(char **err) {
 	return wrap(err, []{
-		return strndup(bfs::current_path().string());
+		return strndup(CurrentPath().string());
 	});
 }
 
@@ -85,11 +84,11 @@ char *dir_next(DirectoryIterator &it, char **err) {
 	});
 }
 
-void dir_close(DirectoryIterator &it) {
+void dir_close(DirectoryIterator &it, char **err) {
 	it = DirectoryIterator();
 }
 
-void dir_free(DirectoryIterator *it) {
+void dir_free(DirectoryIterator *it, char **err) {
 	delete it;
 }
 

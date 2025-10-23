@@ -27,12 +27,7 @@
 //
 // Aegisub Project http://www.aegisub.org/
 
-/// @file charset_detect.h
-/// @see charset_detect.cpp
-/// @ingroup utility
-///
-
-#include <libaegisub/fs_fwd.h>
+#include <libaegisub/fs.h>
 #include <string>
 
 namespace CharSetDetect {

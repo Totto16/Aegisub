@@ -25,6 +25,8 @@
 
 #include <libaegisub/dispatch.h>
 
+#include <boost/gil.hpp>
+
 enum {
 	NEW_SUBS_FILE = -1,
 	SUBS_FILE_ALREADY_LOADED = -2
@@ -81,6 +83,55 @@ std::shared_ptr<VideoFrame> AsyncVideoProvider::ProcFrame(int frame_number, doub
 	return frame;
 }
 
+VideoFrame AsyncVideoProvider::GetBlankFrame(bool white) {
+	VideoFrame result;
+	result.width = GetWidth();
+	result.height = GetHeight();
+	result.pitch = result.width * 4;
+	result.flipped = false;
+	result.data.resize(result.pitch * result.height, white ? 255 : 0);
+	return result;
+}
+
+VideoFrame AsyncVideoProvider::GetSubtitles(double time) {
+	// We are looking for an RGBA image for which blending that image is equivalent
+	// to blending the current frame's subtitles (however the subtitle provider does this,
+	// usually by blending many separate small images with alpha).
+	// To do this, draw the subtitles once on a black frame and once on a white frame
+	// and solve for the color and alpha.
+	VideoFrame frame_black = GetBlankFrame(false);
+	if (!subs) return frame_black;
+	VideoFrame frame_white = GetBlankFrame(true);
+
+	subs_provider->LoadSubtitles(subs.get());
+	subs_provider->DrawSubtitles(frame_black, time / 1000.);
+	subs_provider->DrawSubtitles(frame_white, time / 1000.);
+
+	using namespace boost::gil;
+	auto blackview = interleaved_view(frame_black.width, frame_black.height, (bgra8_pixel_t*) frame_black.data.data(), frame_black.width * 4);
+	auto whiteview = interleaved_view(frame_white.width, frame_white.height, (bgra8_pixel_t*) frame_white.data.data(), frame_white.width * 4);
+
+	transform_pixels(blackview, whiteview, blackview, [=](const bgra8_pixel_t black, const bgra8_pixel_t white) -> bgra8_pixel_t {
+		int a = 255 - (white[0] - black[0]);
+
+		bgra8_pixel_t ret;
+		if (a == 0) {
+			ret[0] = 0;
+			ret[1] = 0;
+			ret[2] = 0;
+			ret[3] = 0;
+		} else {
+			ret[0] = black[0] / (a / 255.);
+			ret[1] = black[1] / (a / 255.);
+			ret[2] = black[2] / (a / 255.);
+			ret[3] = a;
+		}
+		return ret;
+	});
+
+	return frame_black;
+}
+
 static std::unique_ptr<SubtitlesProvider> get_subs_provider(wxEvtHandler *evt_handler, agi::BackgroundRunner *br) {
 	try {
 		return SubtitlesProviderFactory::GetProvider(br);
@@ -91,7 +142,7 @@ static std::unique_ptr<SubtitlesProvider> get_subs_provider(wxEvtHandler *evt_ha
 	}
 }
 
-AsyncVideoProvider::AsyncVideoProvider(agi::fs::path const& video_filename, std::string const& colormatrix, wxEvtHandler *parent, agi::BackgroundRunner *br)
+AsyncVideoProvider::AsyncVideoProvider(agi::fs::path const& video_filename, std::string_view colormatrix, wxEvtHandler *parent, agi::BackgroundRunner *br)
 : worker(agi::dispatch::Create())
 , subs_provider(get_subs_provider(parent, br))
 , source_provider(VideoProviderFactory::GetProvider(video_filename, colormatrix, br))
@@ -121,7 +172,7 @@ void AsyncVideoProvider::UpdateSubtitles(const AssFile *new_subs, const AssDialo
 	// Copy just the line which were changed, then replace the line at the
 	// same index in the worker's copy of the file with the new entry
 	auto copy = new AssDialogue(*changed);
-	worker->Async([=,  this]{
+	worker->Async([=, this]{
 		int i = 0;
 		auto it = subs->Events.begin();
 		std::advance(it, copy->Row - i);
@@ -137,7 +188,7 @@ void AsyncVideoProvider::UpdateSubtitles(const AssFile *new_subs, const AssDialo
 void AsyncVideoProvider::RequestFrame(int new_frame, double new_time) throw() {
 	uint_fast32_t req_version = ++version;
 
-	worker->Async([=,  this]{
+	worker->Async([=, this]{
 		time = new_time;
 		frame_number = new_frame;
 		ProcAsync(req_version, false);
@@ -192,7 +243,7 @@ void AsyncVideoProvider::ProcAsync(uint_fast32_t req_version, bool check_updated
 	last_rendered = frame_number;
 
 	try {
-		FrameReadyEvent *evt = new FrameReadyEvent(ProcFrame(frame_number, time), time);
+		auto evt = new FrameReadyEvent(ProcFrame(frame_number, time), time);
 		evt->SetEventType(EVT_FRAME_READY);
 		parent->QueueEvent(evt);
 	}
@@ -208,8 +259,10 @@ std::shared_ptr<VideoFrame> AsyncVideoProvider::GetFrame(int frame, double time,
 	return ret;
 }
 
-void AsyncVideoProvider::SetColorSpace(std::string const& matrix) {
-	worker->Async([=,  this] { source_provider->SetColorSpace(matrix); });
+void AsyncVideoProvider::SetColorSpace(std::string_view matrix) {
+	worker->Async([this, matrix = std::string(matrix)]() {
+		source_provider->SetColorSpace(matrix);
+	});
 }
 
 wxDEFINE_EVENT(EVT_FRAME_READY, FrameReadyEvent);
@@ -217,12 +270,12 @@ wxDEFINE_EVENT(EVT_VIDEO_ERROR, VideoProviderErrorEvent);
 wxDEFINE_EVENT(EVT_SUBTITLES_ERROR, SubtitlesProviderErrorEvent);
 
 VideoProviderErrorEvent::VideoProviderErrorEvent(VideoProviderError const& err)
-: agi::Exception(err.GetMessage())
+: agi::Exception(std::string(err.GetMessage()))
 {
 	SetEventType(EVT_VIDEO_ERROR);
 }
 SubtitlesProviderErrorEvent::SubtitlesProviderErrorEvent(std::string const& err)
-: agi::Exception(err)
+: agi::Exception(std::string(err))
 {
 	SetEventType(EVT_SUBTITLES_ERROR);
 }

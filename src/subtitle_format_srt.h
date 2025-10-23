@@ -32,9 +32,30 @@
 /// @ingroup subtitle_io
 ///
 
+#include <string>
+
 #include "subtitle_format.h"
 
+#include <boost/regex.hpp>
+
 class AssDialogue;
+
+class SrtTagParser {
+	struct FontAttribs {
+		std::string face;
+		std::string size;
+		std::string color;
+	};
+
+	const boost::regex tag_matcher;
+	const boost::regex attrib_matcher;
+	const boost::regex is_quoted;
+
+public:
+	SrtTagParser();
+
+	std::string ToAss(std::string srt);
+};
 
 class SRTSubtitleFormat final : public SubtitleFormat {
 	std::string ConvertTags(const AssDialogue *diag) const;
@@ -45,6 +66,6 @@ public:
 
 	bool CanSave(const AssFile *file) const override;
 
-	void ReadFile(AssFile *target, agi::fs::path const& filename, agi::vfr::Framerate const& fps, std::string const& forceEncoding) const override;
-	void WriteFile(const AssFile *src, agi::fs::path const& filename, agi::vfr::Framerate const& fps, std::string const& encoding) const override;
+	void ReadFile(AssFile *target, agi::fs::path const& filename, agi::vfr::Framerate const& fps, const char *forceEncoding) const override;
+	void WriteFile(const AssFile *src, agi::fs::path const& filename, agi::vfr::Framerate const& fps, const char *encoding) const override;
 };

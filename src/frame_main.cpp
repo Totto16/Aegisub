@@ -62,13 +62,13 @@
 
 #include <libaegisub/dispatch.h>
 #include <libaegisub/log.h>
-#include <libaegisub/make_unique.h>
 
 #include <wx/dnd.h>
 #include <wx/msgdlg.h>
 #include <wx/sizer.h>
 #include <wx/statline.h>
 #include <wx/sysopt.h>
+#include <wx/toolbar.h>
 
 enum {
 	ID_APP_TIMER_STATUSCLEAR = 12002
@@ -89,14 +89,14 @@ public:
 		std::vector<agi::fs::path> files;
 		for (wxString const& fn : filenames)
 			files.push_back(from_wx(fn));
-		agi::dispatch::Main().Async([=,  this] { context->project->LoadList(files); });
+		agi::dispatch::Main().Async([=, this] { context->project->LoadList(files); });
 		return true;
 	}
 };
 
 FrameMain::FrameMain()
 : wxFrame(nullptr, -1, "", wxDefaultPosition, wxSize(920,700), wxDEFAULT_FRAME_STYLE | wxCLIP_CHILDREN)
-, context(agi::make_unique<agi::Context>())
+, context(std::make_unique<agi::Context>())
 {
 	StartupLog("Entering FrameMain constructor");
 
@@ -132,7 +132,7 @@ FrameMain::FrameMain()
 	EnableToolBar(*OPT_GET("App/Show Toolbar"));
 
 	StartupLog("Initialize menu bar");
-	menu::GetMenuBar("main", this, context.get());
+	menu::GetMenuBar("main", this, (wxID_HIGHEST + 1) + 10000, context.get());
 
 	StartupLog("Create status bar");
 	CreateStatusBar(2);
@@ -357,7 +357,7 @@ void FrameMain::OnSubtitlesOpen() {
 void FrameMain::OnKeyDown(wxKeyEvent &event) {
 	// could use that context information, but not necessary
 	//const_cast<agi::fs::path const*>(context.get()->subsController.get()->Filename())
-	
+
 	wakatime::update(false);
 	hotkey::check("Main Frame", context.get(), event);
 }

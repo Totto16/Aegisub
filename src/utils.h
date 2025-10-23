@@ -29,7 +29,7 @@
 
 #pragma once
 
-#include <libaegisub/fs_fwd.h>
+#include <libaegisub/fs.h>
 
 #include <cstdint>
 #include <string>
@@ -37,14 +37,16 @@
 #include <wx/bitmap.h>
 #include <wx/string.h>
 
+class wxFrame;
 class wxKeyEvent;
+class wxMenu;
 class wxMouseEvent;
 class wxStyledTextCtrl;
 class wxWindow;
 
 wxString PrettySize(int bytes);
 
-std::string float_to_string(double val);
+std::string float_to_string(double val, int precision = 3);
 
 /// @brief Get the smallest power of two that is greater or equal to x
 ///
@@ -89,8 +91,6 @@ std::string GetClipboard();
 /// Try to set the clipboard to the given string
 void SetClipboard(std::string const& new_value);
 void SetClipboard(wxBitmap const& new_value);
-
-#define countof(array) (sizeof(array) / sizeof(array[0]))
 
 wxString FontFace(std::string opt_prefix);
 

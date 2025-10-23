@@ -40,7 +40,6 @@
 
 #include <libaegisub/audio/provider.h>
 #include <libaegisub/log.h>
-#include <libaegisub/make_unique.h>
 
 #include <cstdio>
 #include <pulse/pulseaudio.h>
@@ -259,7 +258,7 @@ int64_t PulseAudioPlayer::GetCurrentPosition()
 	if (!is_playing) return 0;
 
 	// FIXME: this should be based on not duration played but actual sample being heard
-	// (during vidoeo playback, cur_frame might get changed to resync)
+	// (during video playback, cur_frame might get changed to resync)
 
 	// Calculation duration we have played, in microseconds
 	pa_usec_t play_cur_time;
@@ -322,6 +321,6 @@ void PulseAudioPlayer::pa_stream_notify(pa_stream *p, PulseAudioPlayer *thread)
 }
 
 std::unique_ptr<AudioPlayer> CreatePulseAudioPlayer(agi::AudioProvider *provider, wxWindow *) {
-	return agi::make_unique<PulseAudioPlayer>(provider);
+	return std::make_unique<PulseAudioPlayer>(provider);
 }
 #endif // WITH_LIBPULSE

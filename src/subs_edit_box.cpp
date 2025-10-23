@@ -47,7 +47,6 @@
 #include "options.h"
 #include "placeholder_ctrl.h"
 #include "project.h"
-#include "retina_helper.h"
 #include "selection_controller.h"
 #include "subs_edit_ctrl.h"
 #include "text_selection_controller.h"
@@ -56,7 +55,6 @@
 #include "validators.h"
 
 #include <libaegisub/character_count.h>
-#include <libaegisub/make_unique.h>
 #include <libaegisub/util.h>
 
 #include <functional>
@@ -106,7 +104,6 @@ const auto AssDialogue_Effect = &AssDialogue::Effect;
 SubsEditBox::SubsEditBox(wxWindow *parent, agi::Context *context)
 : wxPanel(parent, -1, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL | wxRAISED_BORDER, "SubsEditBox")
 , c(context)
-, retina_helper(agi::make_unique<RetinaHelper>(parent))
 , undo_timer(GetEventHandler())
 {
 	using std::bind;
@@ -126,7 +123,7 @@ SubsEditBox::SubsEditBox(wxWindow *parent, agi::Context *context)
 
 	style_edit_button = new wxButton(this, -1, _("Edit"), wxDefaultPosition,
 		wxSize(GetTextExtent(_("Edit")).GetWidth() + 20, -1));
-	style_edit_button->Bind(wxEVT_BUTTON, [=,  this](wxCommandEvent&) {
+	style_edit_button->Bind(wxEVT_BUTTON, [this](wxCommandEvent&) {
 		if (active_style) {
 			wxArrayString font_list = wxFontEnumerator::GetFacenames();
 			font_list.Sort();
@@ -145,14 +142,15 @@ SubsEditBox::SubsEditBox(wxWindow *parent, agi::Context *context)
 	Bind(wxEVT_COMBOBOX, &SubsEditBox::OnEffectChange, this, effect_box->GetId());
 	top_sizer->Add(effect_box, 3, wxALIGN_CENTER, 5);
 
-	char_count = new wxTextCtrl(this, -1, "0", wxDefaultPosition, wxSize(30, -1), wxTE_READONLY | wxTE_CENTER);
+	char_count = new wxTextCtrl(this, -1, "0", wxDefaultPosition, wxDefaultSize, wxTE_READONLY | wxTE_CENTER);
+	char_count->SetInitialSize(char_count->GetSizeFromText(wxS("000")));
 	char_count->SetToolTip(_("Number of characters in the longest line of this subtitle."));
 	top_sizer->Add(char_count, 0, wxALIGN_CENTER, 5);
 
 	// Middle controls
 	middle_left_sizer = new wxBoxSizer(wxHORIZONTAL);
 
-	layer = new wxSpinCtrl(this,-1,"",wxDefaultPosition,wxSize(50,-1), wxSP_ARROW_KEYS | wxTE_PROCESS_ENTER,0,0x7FFFFFFF,0);
+	layer = new wxSpinCtrl(this,-1,"",wxDefaultPosition, wxDefaultSize, wxSP_ARROW_KEYS | wxTE_PROCESS_ENTER,0,999,0);
 	layer->SetToolTip(_("Layer number"));
 	middle_left_sizer->Add(layer, wxSizerFlags().Center());
 	middle_left_sizer->AddSpacer(5);
@@ -200,10 +198,10 @@ SubsEditBox::SubsEditBox(wxWindow *parent, agi::Context *context)
 	main_sizer->Add(middle_right_sizer,0,wxEXPAND | wxLEFT | wxRIGHT | wxBOTTOM,3);
 
 	// Text editor
-	edit_ctrl = new SubsTextEditCtrl(this, wxSize(300,50), wxBORDER_SUNKEN, c);
+	edit_ctrl = new SubsTextEditCtrl(this, FromDIP(wxSize(300,50)), wxBORDER_SUNKEN, c);
 	edit_ctrl->Bind(wxEVT_CHAR_HOOK, &SubsEditBox::OnKeyDown, this);
 
-	secondary_editor = new wxTextCtrl(this, -1, "", wxDefaultPosition, wxSize(300,50), wxBORDER_SUNKEN | wxTE_MULTILINE | wxTE_READONLY);
+	secondary_editor = new wxTextCtrl(this, -1, "", wxDefaultPosition, FromDIP(wxSize(300,50)), wxBORDER_SUNKEN | wxTE_MULTILINE | wxTE_READONLY);
 
 	main_sizer->Add(secondary_editor,1,wxEXPAND | wxLEFT | wxRIGHT | wxBOTTOM,3);
 	main_sizer->Add(edit_ctrl,1,wxEXPAND | wxLEFT | wxRIGHT | wxBOTTOM,3);
@@ -228,7 +226,7 @@ SubsEditBox::SubsEditBox(wxWindow *parent, agi::Context *context)
 
 	Bind(wxEVT_CHAR_HOOK, &SubsEditBox::OnKeyDown, this);
 	Bind(wxEVT_SIZE, &SubsEditBox::OnSize, this);
-	Bind(wxEVT_TIMER, [=,  this](wxTimerEvent&) { commit_id = -1; });
+	Bind(wxEVT_TIMER, [this](wxTimerEvent&) { commit_id = -1; });
 
 	wxSizeEvent evt;
 	OnSize(evt);
@@ -243,6 +241,12 @@ SubsEditBox::SubsEditBox(wxWindow *parent, agi::Context *context)
 
 	context->textSelectionController->SetControl(edit_ctrl);
 	edit_ctrl->SetFocus();
+
+	bool show_original = OPT_GET("Subtitle/Show Original")->GetBool();
+	if (show_original) {
+		split_box->SetValue(true);
+		DoOnSplit(true);
+	}
 }
 
 SubsEditBox::~SubsEditBox() {
@@ -250,12 +254,13 @@ SubsEditBox::~SubsEditBox() {
 }
 
 wxTextCtrl *SubsEditBox::MakeMarginCtrl(wxString const& tooltip, int margin, wxString const& commit_msg) {
-	wxTextCtrl *ctrl = new wxTextCtrl(this, -1, "", wxDefaultPosition, wxSize(40,-1), wxTE_CENTRE | wxTE_PROCESS_ENTER, IntValidator(0, true));
+	wxTextCtrl *ctrl = new wxTextCtrl(this, -1, "", wxDefaultPosition, wxDefaultSize, wxTE_CENTRE | wxTE_PROCESS_ENTER, IntValidator(0, true));
+	ctrl->SetInitialSize(ctrl->GetSizeFromText(wxS("0000")));
 	ctrl->SetMaxLength(5);
 	ctrl->SetToolTip(tooltip);
 	middle_left_sizer->Add(ctrl, wxSizerFlags().Center());
 
-	Bind(wxEVT_TEXT, [=,  this](wxCommandEvent&) {
+	Bind(wxEVT_TEXT, [=, this](wxCommandEvent&) {
 		int value = agi::util::mid(-9999, atoi(ctrl->GetValue().utf8_str()), 99999);
 		SetSelectedRows([&](AssDialogue *d) { d->Margin[margin] = value; },
 			commit_msg, AssFile::COMMIT_DIAG_META);
@@ -265,9 +270,10 @@ wxTextCtrl *SubsEditBox::MakeMarginCtrl(wxString const& tooltip, int margin, wxS
 }
 
 TimeEdit *SubsEditBox::MakeTimeCtrl(wxString const& tooltip, TimeField field) {
-	TimeEdit *ctrl = new TimeEdit(this, -1, c, "", wxSize(GetTextExtent(wxS(" 0:00:00.000 ")).GetWidth(),-1), field == TIME_END);
+	TimeEdit *ctrl = new TimeEdit(this, -1, c, "", wxDefaultSize, field == TIME_END);
+	ctrl->SetInitialSize(ctrl->GetSizeFromText(wxS(" 0:00:00.000 ")));
 	ctrl->SetToolTip(tooltip);
-	Bind(wxEVT_TEXT, [=,  this](wxCommandEvent&) { CommitTimes(field); }, ctrl->GetId());
+	Bind(wxEVT_TEXT, [=, this](wxCommandEvent&) { CommitTimes(field); }, ctrl->GetId());
 	ctrl->Bind(wxEVT_CHAR_HOOK, time_edit_char_hook);
 	middle_left_sizer->Add(ctrl, wxSizerFlags().Center());
 	return ctrl;
@@ -275,7 +281,7 @@ TimeEdit *SubsEditBox::MakeTimeCtrl(wxString const& tooltip, TimeField field) {
 
 void SubsEditBox::MakeButton(const char *cmd_name) {
 	cmd::Command *command = cmd::get(cmd_name);
-	wxBitmapButton *btn = new wxBitmapButton(this, -1, command->Icon(16, retina_helper->GetScaleFactor()));
+	wxBitmapButton *btn = new wxBitmapButton(this, -1, command->Icon());
 	ToolTipManager::Bind(btn, command->StrHelp(), "Subtitle Edit Box", cmd_name);
 
 	middle_right_sizer->Add(btn, wxSizerFlags().Expand());
@@ -575,16 +581,23 @@ void SubsEditBox::SetControlsState(bool state) {
 }
 
 void SubsEditBox::OnSplit(wxCommandEvent&) {
+	bool show_original = split_box->IsChecked();
+	DoOnSplit(show_original);
+	OPT_SET("Subtitle/Show Original")->SetBool(show_original);
+}
+
+void SubsEditBox::DoOnSplit(bool show_original) {
 	Freeze();
-	GetSizer()->Show(secondary_editor, split_box->IsChecked());
-	GetSizer()->Show(bottom_sizer, split_box->IsChecked());
+	if (show_original)
+		secondary_editor->SetValue(to_wx(c->initialLineState->GetInitialText()));
+
+	GetSizer()->Show(secondary_editor, show_original);
+	GetSizer()->Show(bottom_sizer, show_original);
 	Fit();
 	SetMinSize(GetSize());
-	GetParent()->GetSizer()->Layout();
+	wxSizer* parent_sizer = GetParent()->GetSizer();
+	if (parent_sizer) parent_sizer->Layout();
 	Thaw();
-
-	if (split_box->IsChecked())
-		secondary_editor->SetValue(to_wx(c->initialLineState->GetInitialText()));
 }
 
 void SubsEditBox::OnStyleChange(wxCommandEvent &evt) {

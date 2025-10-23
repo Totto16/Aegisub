@@ -14,10 +14,6 @@
 //
 // Aegisub Project http://www.aegisub.org/
 
-/// @file visual_tool.cpp
-/// @brief Base class for visual typesetting functions
-/// @ingroup visual_ts
-
 #include "visual_tool.h"
 
 #include "ass_dialogue.h"
@@ -36,6 +32,7 @@
 #include <libaegisub/ass/time.h>
 #include <libaegisub/format.h>
 #include <libaegisub/of_type_adaptor.h>
+#include <libaegisub/string.h>
 
 #include <algorithm>
 
@@ -504,11 +501,11 @@ std::string VisualToolBase::GetLineVectorClip(AssDialogue *diag, int &scale, boo
 		tag = find_tag(blocks, "\\clip");
 
 	if (tag && tag->size() == 4) {
-		return agi::format("m %d %d l %d %d %d %d %d %d"
-			, (*tag)[0].Get<int>(), (*tag)[1].Get<int>()
-			, (*tag)[2].Get<int>(), (*tag)[1].Get<int>()
-			, (*tag)[2].Get<int>(), (*tag)[3].Get<int>()
-			, (*tag)[0].Get<int>(), (*tag)[3].Get<int>());
+		return agi::format("m %.2f %.2f l %.2f %.2f %.2f %.2f %.2f %.2f"
+			, (*tag)[0].Get<double>(), (*tag)[1].Get<double>()
+			, (*tag)[2].Get<double>(), (*tag)[1].Get<double>()
+			, (*tag)[2].Get<double>(), (*tag)[3].Get<double>()
+			, (*tag)[0].Get<double>(), (*tag)[3].Get<double>());
 	}
 	if (tag) {
 		scale = std::max((*tag)[0].Get(scale), 1);
@@ -553,7 +550,7 @@ void VisualToolBase::SetOverride(AssDialogue* line, std::string const& tag, std:
 		line->UpdateText(blocks);
 	}
 	else
-		line->Text = "{" + tag + value + "}" + line->Text.get();
+		line->Text = agi::Str("{", tag, value, "}", line->Text.get());
 }
 
 // If only export worked

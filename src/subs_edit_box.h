@@ -38,12 +38,11 @@
 
 #include <libaegisub/signal.h>
 
-namespace agi { namespace vfr { class Framerate; } }
+namespace agi::vfr { class Framerate; }
 namespace agi { struct Context; }
 namespace agi { class Time; }
 class AssDialogue;
 class AssStyle;
-class RetinaHelper;
 class SubsTextEditCtrl;
 class TimeEdit;
 class wxButton;
@@ -104,8 +103,6 @@ class SubsEditBox final : public wxPanel {
 	wxSizer *middle_left_sizer;
 	wxSizer *bottom_sizer;
 
-	std::unique_ptr<RetinaHelper> retina_helper;
-
 	void SetControlsState(bool state);
 	/// @brief Update times of selected lines
 	/// @param field Field which changed
@@ -155,6 +152,7 @@ class SubsEditBox final : public wxPanel {
 	void OnEffectChange(wxCommandEvent &);
 	void OnSize(wxSizeEvent &event);
 	void OnSplit(wxCommandEvent&);
+	void DoOnSplit(bool show_original);
 
 	void SetPlaceholderCtrl(wxControl *ctrl, wxString const& value);
 

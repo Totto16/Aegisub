@@ -43,10 +43,10 @@
 #include <libaegisub/background_runner.h>
 #include <libaegisub/fs.h>
 #include <libaegisub/path.h>
+#include <libaegisub/string.h>
 
 #include <boost/algorithm/string/case_conv.hpp>
 #include <boost/crc.hpp>
-#include <boost/filesystem/path.hpp>
 #include <wx/intl.h>
 #include <wx/choicdlg.h>
 
@@ -187,7 +187,8 @@ agi::fs::path FFmpegSourceProvider::GetCacheFilename(agi::fs::path const& filena
 	hash.process_bytes(filename.string().c_str(), filename.string().size());
 
 	// Generate the filename
-	auto result = config::path->Decode("?local/ffms2cache/" + std::to_string(hash.checksum()) + "_" + std::to_string(len) + "_" + std::to_string(agi::fs::ModifiedTime(filename)) + ".ffindex");
+	auto modified_time = std::chrono::duration_cast<std::chrono::seconds>(agi::fs::ModifiedTime(filename).time_since_epoch()).count();
+	auto result = config::path->Decode(agi::Str("?local/ffms2cache/", std::to_string(hash.checksum()), "_", std::to_string(len), "_", std::to_string(modified_time), ".ffindex"));
 
 	// Ensure that folder exists
 	agi::fs::CreateDirectory(result.parent_path());

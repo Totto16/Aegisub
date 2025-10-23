@@ -20,10 +20,10 @@
 #include <string>
 #include <vector>
 #include <unordered_map>
+#include <wx/string.h>
 
 class AssDialogue;
 class wxDC;
-class wxString;
 namespace agi { struct Context; }
 
 class WidthHelper {
@@ -41,6 +41,7 @@ class WidthHelper {
 public:
 	void SetDC(wxDC *dc) { this->dc = dc; }
 	void Age();
+	void ClearCache() { widths.clear(); };
 
 	int operator()(boost::flyweight<std::string> const& str);
 	int operator()(std::string const& str);

@@ -14,9 +14,7 @@
 //
 // Aegisub Project http://www.aegisub.org/
 
-#include <libaegisub/fs_fwd.h>
-
-#include <boost/filesystem/path.hpp>
+#include <libaegisub/fs.h>
 
 namespace agi {
 // Default version quotes the path

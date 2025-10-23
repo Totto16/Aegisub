@@ -1,5 +1,6 @@
 libaegisub_src = [
     'ass/dialogue_parser.cpp',
+    'ass/karaoke.cpp',
     'ass/time.cpp',
     'ass/uuencode.cpp',
 
@@ -34,6 +35,7 @@ libaegisub_src = [
     'common/parser.cpp',
     'common/path.cpp',
     'common/thesaurus.cpp',
+    'common/unicode.cpp',
     'common/util.cpp',
     'common/vfr.cpp',
     'common/ycbcr_conv.cpp',
@@ -84,12 +86,10 @@ libaegisub_c_pch = ['include/lagi_pre_c.h']
 
 libaegisub_inc = include_directories('include')
 
-libaegisub = static_library(
-    'aegisub',
-    libaegisub_src,
-    acconf,
-    include_directories: [libaegisub_inc, deps_inc],
-    cpp_pch: libaegisub_cpp_pch,
-    c_pch: libaegisub_c_pch,
-    dependencies: deps,
-)
+libaegisub = static_library('aegisub', libaegisub_src, aegisub_order_dep,
+                            c_args: aegisub_defines,
+                            cpp_args: aegisub_defines,
+                            include_directories: libaegisub_inc,
+                            cpp_pch: libaegisub_cpp_pch,
+                            c_pch: libaegisub_c_pch,
+                            dependencies: deps)

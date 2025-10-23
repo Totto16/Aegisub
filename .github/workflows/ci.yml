@@ -3,12 +3,13 @@ name: Meson CI
 on:
   push:
     branches: [ master ]
+    tags: [ 'v*' ]
   pull_request:
     branches: [ master ]
   workflow_dispatch:  
 env:
-  CC: gcc-13
-  CXX: g++-13
+  CC: gcc-14
+  CXX: g++-14
 
 jobs:
   build:
@@ -46,13 +47,25 @@ jobs:
             name: Ubuntu Debug,
             os: ubuntu-22.04,
             buildtype: debugoptimized,
-            args: -Dwx_version=3.2.0
+            args: -Db_pch=false
           }
           - {
             name: Ubuntu Release,
             os: ubuntu-22.04,
             buildtype: release,
-            args: -Dwx_version=3.2.0
+            args: -Db_pch=false
+          }
+          - {
+            name: macOS Debug,
+            os: macos-13,
+            buildtype: debugoptimized,
+            args: -Ddefault_library=static -Dbuild_osx_bundle=true -Dlocal_boost=true --force-fallback-for=ffms2
+          }
+          - {
+            name: macOS Release,
+            os: macos-13,
+            buildtype: release,
+            args: -Ddefault_library=static -Dbuild_osx_bundle=true -Dlocal_boost=true --force-fallback-for=ffms2
           }
           #- {
           #  name: macOS Debug,
@@ -72,9 +85,7 @@ jobs:
         with:
           fetch-depth: '0'
 
-      # pre-commit setup
-    
-      - uses: actions/setup-python@v4
+      - uses: actions/setup-python@v5
         with:
           python-version: ${{ matrix.python-version }}
         env:
@@ -91,8 +102,8 @@ jobs:
 
       - name: Setup Meson
         run: |
-          python -m pip install --upgrade pip
-          pip install -U meson
+          python -m pip install --upgrade pip setuptools
+          pip install meson
 
       - name: Setup MSVC
         if: matrix.config.os == 'windows-latest' && matrix.config.msvc == true
@@ -102,65 +113,79 @@ jobs:
         if: matrix.config.os == 'windows-latest'
         run: |
           choco install ninja innosetup
-          $url = "https://github.com/leafo/moonscript/releases/download/win32-v0.5.0/moonscript-187bac54ee5a7450013e9c38e005a0e671b76f45.zip"
+
+          $moonscripturl = "https://github.com/leafo/moonscript/releases/download/win32-v0.5.0/moonscript-187bac54ee5a7450013e9c38e005a0e671b76f45.zip"
           mkdir moonscript
-          Invoke-WebRequest -Uri $url -OutFile ".\moonscript\moonscript.zip"
-          cd moonscript
+          Invoke-WebRequest -Uri $moonscripturl -OutFile ".\moonscript\moonscript.zip"
+          pushd moonscript
           7z e moonscript.zip
           Get-Location | Out-File -FilePath $env:GITHUB_PATH -Encoding utf8 -Append
+          popd
+
+          $gettexturl = "https://github.com/mlocati/gettext-iconv-windows/releases/download/v0.21-v1.16/gettext0.21-iconv1.16-static-64.zip"
+          Invoke-WebRequest -Uri $gettexturl -OutFile ".\gettext.zip"
+          Expand-Archive ".\gettext.zip" -DestinationPath gettext
+          pushd gettext/bin
+          Get-Location | Out-File -FilePath $env:GITHUB_PATH -Encoding utf8 -Append
+          popd
 
       - name: Install dependencies (MacOS)
-        if: matrix.config.os == 'macos-latest'
+        if: startsWith(matrix.config.os, 'macos-')
         run: |
-          brew update
-          brew install luarocks ninja
-          luarocks install luafilesystem 1.8.0
-          luarocks install moonscript --dev
+          export HOMEBREW_NO_INSTALL_CLEANUP=1
+          export HOMEBREW_NO_INSTALLED_DEPENDENTS_CHECK=1
+          # Skip brew update for now, see https://github.com/actions/setup-python/issues/577
+          # brew update
+          brew install ninja
           brew install libass zlib ffms2 fftw hunspell
           brew install pulseaudio  # NO OpenAL in github CI
 
       - name: Install dependencies (Linux)
-        if: matrix.config.os == 'ubuntu-22.04'
+        if: startsWith(matrix.config.os, 'ubuntu-')
         run: |
           sudo apt-get update
           sudo apt-get install ninja-build build-essential libx11-dev gcc-13 g++-13 libwxgtk3.0-gtk3-dev libgtk-3-dev libfreetype6-dev pkg-config libfontconfig1-dev libass-dev libasound2-dev libffms2-dev intltool libboost-all-dev luarocks libcurl4-nss-dev lua5.1* -y
           sudo luarocks install moonscript
 
       - name: Configure
-        run: meson build ${{ matrix.config.args }} -Dbuildtype=${{ matrix.config.buildtype }}
+        run: meson setup build ${{ matrix.config.args }} -Dbuildtype=${{ matrix.config.buildtype }} ${{ github.ref_type == 'tag' && '-Dofficial_release=true' || '' }}
 
       - name: Build
         run: meson compile -C build
-      
+
       - name: Run test
         run: meson test -C build --verbose "gtest main"
 
       # Windows artifacts
       - name: Generate Windows installer
         if: matrix.config.os == 'windows-latest'
-        run: meson compile win-installer -C build
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run:
+          meson compile win-installer -C build
 
       - name: Generate Windows portable installer
         if: matrix.config.os == 'windows-latest'
         run: cd build && ninja win-portable
 
       - name: Upload artifacts - win_installer
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v4
         if: matrix.config.os == 'windows-latest'
         with:
           name: ${{ matrix.config.name }} - installer
           path: build/Aegisub-*.exe
-      
+          if-no-files-found: error
+
       - name: Upload artifacts - portable.zip
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v4
         if: matrix.config.os == 'windows-latest'
         with:
           name: ${{ matrix.config.name }} - portable
           path: build/aegisub-portable-64.zip
-      
+
       # macOS artifacts
       - name: Generate macOS installer
-        if: matrix.config.os == 'macos-latest'
+        if: startsWith(matrix.config.os, 'macos-')
         run: |
           meson compile osx-bundle -C build
           meson compile osx-build-dmg -C build

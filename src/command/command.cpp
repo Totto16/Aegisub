@@ -14,87 +14,101 @@
 
 #include "command.h"
 
-#include "../compat.h"
-#include "../format.h"
+#include "compat.h"
+#include "format.h"
 
 #include <libaegisub/log.h>
+#include <libaegisub/string.h>
+
+#include "include/aegisub/hotkey.h"
 
 #include <wx/intl.h>
 
 namespace cmd {
-	static std::map<std::string, std::unique_ptr<Command>> cmd_map;
-	typedef std::map<std::string, std::unique_ptr<Command>>::iterator iterator;
+using CommandMap = std::map<std::string, std::unique_ptr<Command>, std::less<>>;
+using iterator = CommandMap::iterator;
+static CommandMap cmd_map;
 
-	static iterator find_command(std::string const& name) {
-		auto it = cmd_map.find(name);
-		if (it == cmd_map.end())
-			throw CommandNotFound(agi::format(_("'%s' is not a valid command name"), name));
+static iterator find_command(std::string_view name) {
+	if (auto it = cmd_map.find(name); it != cmd_map.end())
 		return it;
-	}
+	throw CommandNotFound(agi::format(_("'%s' is not a valid command name"), name));
+}
 
-	void reg(std::unique_ptr<Command> cmd) {
-		cmd_map[cmd->name()] = std::move(cmd);
-	}
+wxString Command::GetTooltip(std::string ht_context) const {
+	wxString ret = StrHelp();
 
-	void unreg(std::string const& name) {
-		cmd_map.erase(find_command(name));
-	}
+	std::vector<std::string> hotkeys = hotkey::get_hotkey_strs(ht_context, name());
+	if (!hotkeys.empty())
+		ret += to_wx(" (" + agi::Join("/", hotkeys) + ")");
 
-	Command *get(std::string const& name) {
-		return find_command(name)->second.get();
-	}
+	return ret;
+}
 
-	void call(std::string const& name, agi::Context*c) {
-		Command &cmd = *find_command(name)->second;
-		if (cmd.Validate(c))
-			cmd(c);
-	}
+void reg(std::unique_ptr<Command> cmd) {
+	auto name = cmd->name();
+	cmd_map.emplace(name, std::move(cmd));
+}
 
-	std::vector<std::string> get_registered_commands() {
-		std::vector<std::string> ret;
-		ret.reserve(cmd_map.size());
-		for (auto const& it : cmd_map)
-			ret.push_back(it.first);
-		return ret;
-	}
+void unreg(std::string_view name) {
+	cmd_map.erase(find_command(name));
+}
 
-	// These forward declarations exist here since we don't want to expose
-	// them in a header, they're strictly internal-use.
-	void init_app();
-	void init_audio();
-	void init_automation();
-	void init_command();
-	void init_edit();
-	void init_grid();
-	void init_help();
-	void init_keyframe();
-	void init_recent();
-	void init_subtitle();
-	void init_time();
-	void init_timecode();
-	void init_tool();
-	void init_video();
-	void init_visual_tools();
+Command *get(std::string_view name) {
+	return find_command(name)->second.get();
+}
 
-	void init_builtin_commands() {
-		LOG_D("command/init") << "Populating command map";
-		init_app();
-		init_audio();
-		init_automation();
-		init_edit();
-		init_grid();
-		init_help();
-		init_keyframe();
-		init_recent();
-		init_subtitle();
-		init_time();
-		init_timecode();
-		init_tool();
-		init_video();
-		init_visual_tools();
-	}
+void call(std::string_view name, agi::Context *c) {
+	Command &cmd = *find_command(name)->second;
+	if (cmd.Validate(c))
+		cmd(c);
+}
 
-	void clear() {
-		cmd_map.clear();
-	}
+std::vector<std::string_view> get_registered_commands() {
+	std::vector<std::string_view> ret;
+	ret.reserve(cmd_map.size());
+	for (auto const& it : cmd_map)
+		ret.push_back(it.first);
+	return ret;
+}
+
+// These forward declarations exist here since we don't want to expose
+// them in a header, they're strictly internal-use.
+void init_app();
+void init_audio();
+void init_automation();
+void init_command();
+void init_edit();
+void init_grid();
+void init_help();
+void init_keyframe();
+void init_recent();
+void init_subtitle();
+void init_time();
+void init_timecode();
+void init_tool();
+void init_video();
+void init_visual_tools();
+
+void init_builtin_commands() {
+	LOG_D("command/init") << "Populating command map";
+	init_app();
+	init_audio();
+	init_automation();
+	init_edit();
+	init_grid();
+	init_help();
+	init_keyframe();
+	init_recent();
+	init_subtitle();
+	init_time();
+	init_timecode();
+	init_tool();
+	init_video();
+	init_visual_tools();
+}
+
+void clear() {
+	cmd_map.clear();
+}
 }

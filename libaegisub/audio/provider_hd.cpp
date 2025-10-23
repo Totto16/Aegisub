@@ -20,9 +20,7 @@
 #include <libaegisub/format.h>
 #include <libaegisub/fs.h>
 #include <libaegisub/path.h>
-#include <libaegisub/make_unique.h>
 
-#include <boost/filesystem/path.hpp>
 #include <boost/interprocess/detail/os_thread_functions.hpp>
 #include <ctime>
 #include <thread>
@@ -49,7 +47,7 @@ class HDAudioProvider final : public AudioProviderWrapper {
 		}
 	}
 
-	fs::path CacheFilename(fs::path const& dir) {
+  fs::path CacheFilename(fs::path const& dir) {
 		// Check free space
 		if ((uint64_t)num_samples * bytes_per_sample > fs::FreeSpace(dir))
 			throw AudioProviderError("Not enough free disk space in " + dir.string() + " to cache the audio");
@@ -59,7 +57,7 @@ class HDAudioProvider final : public AudioProviderWrapper {
 	}
 
 public:
-	HDAudioProvider(std::unique_ptr<AudioProvider> src, agi::fs::path const& dir)
+	HDAudioProvider(std::unique_ptr<AudioProvider> src, fs::path const& dir)
 	: AudioProviderWrapper(std::move(src))
 	, file(dir / CacheFilename(dir), num_samples * bytes_per_sample)
 	{
@@ -75,7 +73,7 @@ public:
 		});
 	}
 
-	~HDAudioProvider() {
+	~HDAudioProvider() override {
 		cancelled = true;
 		decoder.join();
 	}
@@ -84,6 +82,6 @@ public:
 
 namespace agi {
 std::unique_ptr<AudioProvider> CreateHDAudioProvider(std::unique_ptr<AudioProvider> src, agi::fs::path const& dir) {
-	return agi::make_unique<HDAudioProvider>(std::move(src), dir);
+	return std::make_unique<HDAudioProvider>(std::move(src), dir);
 }
 }

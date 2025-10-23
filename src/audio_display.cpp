@@ -46,7 +46,6 @@
 
 #include <libaegisub/ass/time.h>
 #include <libaegisub/audio/provider.h>
-#include <libaegisub/make_unique.h>
 
 #include <algorithm>
 
@@ -573,10 +572,10 @@ AudioDisplay::AudioDisplay(wxWindow *parent, AudioController *controller, agi::C
 : wxWindow(parent, -1, wxDefaultPosition, wxDefaultSize, wxWANTS_CHARS|wxBORDER_SIMPLE)
 , audio_open_connection(context->project->AddAudioProviderListener(&AudioDisplay::OnAudioOpen, this))
 , context(context)
-, audio_renderer(agi::make_unique<AudioRenderer>())
+, audio_renderer(std::make_unique<AudioRenderer>())
 , controller(controller)
-, scrollbar(agi::make_unique<AudioDisplayScrollbar>(this))
-, timeline(agi::make_unique<AudioDisplayTimeline>(this))
+, scrollbar(std::make_unique<AudioDisplayScrollbar>(this))
+, timeline(std::make_unique<AudioDisplayTimeline>(this))
 , style_ranges({{0, 0}})
 {
 	audio_renderer->SetAmplitudeScale(scale_amplitude);
@@ -743,7 +742,7 @@ void AudioDisplay::ReloadRenderingSettings()
 	if (OPT_GET("Audio/Spectrum")->GetBool())
 	{
 		colour_scheme_name = OPT_GET("Colour/Audio Display/Spectrum")->GetString();
-		auto audio_spectrum_renderer = agi::make_unique<AudioSpectrumRenderer>(colour_scheme_name);
+		auto audio_spectrum_renderer = std::make_unique<AudioSpectrumRenderer>(colour_scheme_name);
 
 		int64_t spectrum_quality = OPT_GET("Audio/Renderer/Spectrum/Quality")->GetInt();
 #ifdef WITH_FFTW3
@@ -760,12 +759,21 @@ void AudioDisplay::ReloadRenderingSettings()
 			spectrum_width[spectrum_quality],
 			spectrum_distance[spectrum_quality]);
 
+		// Frequency curve
+		int64_t spectrum_freq_curve = OPT_GET("Audio/Renderer/Spectrum/FreqCurve")->GetInt();
+		spectrum_freq_curve = mid<int64_t>(0, spectrum_freq_curve, 4);
+		const float spectrum_fref_pos [] = { 0.001f, 0.125f, 0.333f, 0.425f, 0.999f };
+
+		audio_spectrum_renderer->set_reference_frequency_position (
+			spectrum_fref_pos [spectrum_freq_curve]
+		);
+
 		audio_renderer_provider = std::move(audio_spectrum_renderer);
 	}
 	else
 	{
 		colour_scheme_name = OPT_GET("Colour/Audio Display/Waveform")->GetString();
-		audio_renderer_provider = agi::make_unique<AudioWaveformRenderer>(colour_scheme_name);
+		audio_renderer_provider = std::make_unique<AudioWaveformRenderer>(colour_scheme_name);
 	}
 
 	audio_renderer->SetRenderer(audio_renderer_provider.get());
@@ -1106,7 +1114,7 @@ void AudioDisplay::OnMouseEvent(wxMouseEvent& event)
 		if (markers.size())
 		{
 			RemoveTrackCursor();
-			audio_marker = agi::make_unique<AudioMarkerInteractionObject>(markers, timing, this, (wxMouseButton)event.GetButton());
+			audio_marker = std::make_unique<AudioMarkerInteractionObject>(markers, timing, this, (wxMouseButton)event.GetButton());
 			SetDraggedObject(audio_marker.get());
 			return;
 		}
@@ -1229,6 +1237,7 @@ void AudioDisplay::OnAudioOpen(agi::AudioProvider *provider)
 				OPT_SUB("Colour/Audio Display/Spectrum", &AudioDisplay::ReloadRenderingSettings, this),
 				OPT_SUB("Colour/Audio Display/Waveform", &AudioDisplay::ReloadRenderingSettings, this),
 				OPT_SUB("Audio/Renderer/Spectrum/Quality", &AudioDisplay::ReloadRenderingSettings, this),
+				OPT_SUB("Audio/Renderer/Spectrum/FreqCurve", &AudioDisplay::ReloadRenderingSettings, this),
 			});
 			OnTimingController();
 		}

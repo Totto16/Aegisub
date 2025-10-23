@@ -62,14 +62,10 @@
 #include <libaegisub/fs.h>
 #include <libaegisub/io.h>
 #include <libaegisub/log.h>
-#include <libaegisub/make_unique.h>
 #include <libaegisub/path.h>
 #include <libaegisub/util.h>
 
 #include <boost/interprocess/streams/bufferstream.hpp>
-#include <boost/filesystem/operations.hpp>
-#include <boost/locale.hpp>
-#include <locale>
 #include <wx/clipbrd.h>
 #include <wx/msgdlg.h>
 #include <wx/stackwalk.h>
@@ -93,13 +89,25 @@ static const char *LastStartupState = nullptr;
 #endif
 
 void AegisubApp::OnAssertFailure(const wxChar *file, int line, const wxChar *func, const wxChar *cond, const wxChar *msg) {
-	LOG_A("wx/assert") <<  wxString(file) << ":" << line << ":" << wxString(func) << "() " << wxString(cond) << ": " << wxString(msg);
+	LOG_A("wx/assert") << wxString(file) << ":" << line << ":" << wxString(func) << "() " << wxString(cond) << ": " << wxString(msg);
 	wxApp::OnAssertFailure(file, line, func, cond, msg);
 }
 
 AegisubApp::AegisubApp() {
 	//https://github.com/wxWidgets/wxWidgets/issues/14302
 	wxSetEnv("UBUNTU_MENUPROXY", "0");
+
+	// Fallback to X11 if wxGTK implementation is build without Wayland EGL support
+	// Fix https://github.com/TypesettingTools/Aegisub/issues/233
+	#if defined(__WXGTK__) && !wxUSE_GLCANVAS_EGL
+		wxString xdg_session_type = wxGetenv("XDG_SESSION_TYPE");
+		wxString wayland_display  = wxGetenv("WAYLAND_DISPLAY");
+
+		if (xdg_session_type == "wayland" || wayland_display.Contains("wayland")) {
+			wxSetEnv("GDK_BACKEND", "x11");
+		}
+	#endif
+
 }
 
 namespace {
@@ -125,33 +133,7 @@ bool AegisubApp::OnInit() {
 	// be created now
 	(void)wxLog::GetActiveTarget();
 
-	{
-		// Try to get the UTF-8 version of the current locale
-		auto locale = boost::locale::generator().generate("");
-
-		// Check if we actually got a UTF-8 locale
-		using codecvt = std::codecvt<wchar_t, char, std::mbstate_t>;
-		int result = std::codecvt_base::error;
-		if (std::has_facet<codecvt>(locale)) {
-			wchar_t test[] = L"\xFFFE";
-			char buff[8];
-			auto mb = std::mbstate_t();
-			const wchar_t* from_next;
-			char* to_next;
-			result = std::use_facet<codecvt>(locale).out(mb,
-				test, std::end(test), from_next,
-				buff, std::end(buff), to_next);
-		}
-
-		// If we didn't get a UTF-8 locale, force it to a known one
-		if (result != std::codecvt_base::ok)
-			locale = boost::locale::generator().generate("en_US.UTF-8");
-		std::locale::global(locale);
-	}
-
-	boost::filesystem::path::imbue (std::locale());
-
-	AegisubApp::startCwd = boost::filesystem::current_path();
+	agi::util::InitLocale();
 
 	AegisubApp::startCwd = boost::filesystem::current_path();
 
@@ -175,7 +157,7 @@ bool AegisubApp::OnInit() {
 
 	agi::log::log = new agi::log::LogSink;
 #ifdef _DEBUG
-	agi::log::log->Subscribe(agi::make_unique<agi::log::EmitSTDOUT>());
+	agi::log::log->Subscribe(std::make_unique<agi::log::EmitSTDOUT>());
 #endif
 
 	// Set config file
@@ -200,15 +182,13 @@ bool AegisubApp::OnInit() {
 	StartupLog("Create log writer");
 	auto path_log = config::path->Decode("?user/log/");
 	agi::fs::CreateDirectory(path_log);
-	agi::log::log->Subscribe(agi::make_unique<agi::log::JsonEmitter>(path_log));
+	agi::log::log->Subscribe(std::make_unique<agi::log::JsonEmitter>(path_log));
 	CleanCache(path_log, "*.json", 10, 100);
 
 	StartupLog("Load user configuration");
 	try {
 		if (!config::opt)
 			config::opt = new agi::Options(config::path->Decode("?user/config.json"), GET_DEFAULT_CONFIG(default_config));
-		boost::interprocess::ibufferstream stream((const char *)default_config_platform, sizeof(default_config_platform));
-		config::opt->ConfigNext(stream);
 	} catch (agi::Exception& e) {
 		LOG_E("config/init") << "Caught exception: " << e.GetMessage();
 	}
@@ -304,8 +284,8 @@ bool AegisubApp::OnInit() {
 
 		// Load export filters
 		StartupLog("Register export filters");
-		AssExportFilterChain::Register(agi::make_unique<AssFixStylesFilter>());
-		AssExportFilterChain::Register(agi::make_unique<AssTransformFramerateFilter>());
+		AssExportFilterChain::Register(std::make_unique<AssFixStylesFilter>());
+		AssExportFilterChain::Register(std::make_unique<AssTransformFramerateFilter>());
 
 		StartupLog("Install PNG handler");
 		wxImage::AddHandler(new wxPNGHandler);
@@ -391,7 +371,7 @@ int AegisubApp::OnExit() {
 
 agi::Context& AegisubApp::NewProjectContext() {
 	auto frame = new FrameMain;
-	frame->Bind(wxEVT_DESTROY, [=,  this](wxWindowDestroyEvent& evt) {
+	frame->Bind(wxEVT_DESTROY, [=, this](wxWindowDestroyEvent& evt) {
 		if (evt.GetWindow() != frame) {
 			evt.Skip();
 			return;

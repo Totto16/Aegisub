@@ -40,8 +40,8 @@ namespace agi {
 	///
 	/// However, there are no public constructors for this class, it should
 	/// not be instantiated and thrown directly. Throw instances of a
-	/// relevant sub class, declare a new one if necessary. It is allowed to
-	/// declare sub classes of Exception and derivates in private headers
+	/// relevant subclass, declare a new one if necessary. It is allowed to
+	/// declare subclasses of Exception and derivatives in private headers
 	/// and even inside source files, as long as a caller has a chance to
 	/// catch the exception thrown.
 	///
@@ -90,7 +90,7 @@ namespace agi {
 		///
 		/// Deriving classes should always use this constructor for initialising
 		/// the base class.
-		Exception(std::string msg) : message(std::move(msg)) { }
+		Exception(std::string&& msg) : message(std::move(msg)) { }
 
 	public:
 		/// @brief Get the outer exception error message
@@ -128,7 +128,7 @@ public:                                                        \
 	DEFINE_EXCEPTION(UserCancelException, Exception);
 
 	/// @class agi::InternalError
-	/// @extends agi:Exception
+	/// @extends agi::Exception
 	/// @brief Errors that should never happen and point to some invalid assumption in the code
 	///
 	/// Throw an internal error when a sanity check fails, and the insanity should have
@@ -139,7 +139,7 @@ public:                                                        \
 	DEFINE_EXCEPTION(InternalError, Exception);
 
 	/// @class agi::EnvironmentError
-	/// @extends agi:Exception
+	/// @extends agi::Exception
 	/// @brief The execution environment is broken in some fundamental way
 	///
 	/// Throw an environment error when a call to the platform API has failed
