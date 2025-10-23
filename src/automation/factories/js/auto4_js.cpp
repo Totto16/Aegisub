@@ -60,7 +60,6 @@
 #include <libaegisub/dispatch.h>
 #include <libaegisub/format.h>
 #include <libaegisub/log.h>
-#include <libaegisub/make_unique.h>
 #include <libaegisub/path.h>
 
 #include <algorithm>

@@ -98,7 +98,7 @@ void Queue::Async(Thunk&& thunk) {
 		}
 		catch (...) {
 			auto e = std::current_exception();
-			invoke_main([=,  this] { std::rethrow_exception(e); });
+			invoke_main([=] { std::rethrow_exception(e); });
 		}
 	});
 }

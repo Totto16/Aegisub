@@ -39,7 +39,7 @@
 #include <wx/string.h>
 #include <wx/utils.h>
 
-namespace wakatime {
+namespace agi::wakatime {
 
 std::string StringArrayToString(std::vector<std::string> &input,
                                 const char *const delimiter = " ") {
@@ -96,7 +96,7 @@ wxString *ReadInputStream(wxInputStream *input, bool trimLastNewLine = false) {
   return output;
 }
 
-std::ostream &operator<<(std::ostream &os, const wakatime::CLIResponse &arg) {
+std::ostream &operator<<(std::ostream &os, const agi::wakatime::CLIResponse &arg) {
   os << "CLIResponse: isOk: " << (arg.ok() ? "yes" : "no") << "\n\tstreams:\n"
      << "\t\terror: '" << (arg.error_string.empty() ? "NULL" : arg.error_string)
      << "'\n"
@@ -105,7 +105,7 @@ std::ostream &operator<<(std::ostream &os, const wakatime::CLIResponse &arg) {
   return os;
 }
 
-std::ostream &operator<<(std::ostream &os, const wakatime::CLIResponse *arg) {
+std::ostream &operator<<(std::ostream &os, const agi::wakatime::CLIResponse *arg) {
   os << (*arg);
   return os;
 }
@@ -402,7 +402,7 @@ void cli::invoke_cli_async(std::vector<std::string> &options,
   }
 }
 
-wakatime::cli *wakatime_cli = nullptr;
+agi::wakatime::cli *wakatime_cli = nullptr;
 void init() {
 
   Plugin plugin_info = {
@@ -458,4 +458,4 @@ void update(bool isWrite, agi::fs::path const &filename) {
   wakatime_cli->send_heartbeat(isWrite);
 }
 
-} // namespace wakatime
+} // namespace agi::wakatime

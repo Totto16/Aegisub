@@ -43,7 +43,6 @@
 
 #include <libaegisub/log.h>
 #include <libaegisub/lua/utils.h>
-#include <libaegisub/make_unique.h>
 #include <libaegisub/split.h>
 
 #include <boost/algorithm/string/case_conv.hpp>

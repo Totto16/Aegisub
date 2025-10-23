@@ -30,7 +30,7 @@
 #include <wx/arrstr.h>
 #include <wx/string.h>
 
-namespace wakatime {
+namespace agi::wakatime {
 
 void init();
 
@@ -62,9 +62,9 @@ typedef struct {
 
 } CLIResponse;
 
-std::ostream &operator<<(std::ostream &os, const wakatime::CLIResponse &arg);
+std::ostream &operator<<(std::ostream &os, const agi::wakatime::CLIResponse &arg);
 
-std::ostream &operator<<(std::ostream &os, const wakatime::CLIResponse *arg);
+std::ostream &operator<<(std::ostream &os, const agi::wakatime::CLIResponse *arg);
 
 typedef struct {
   std::string project_name;
@@ -111,4 +111,4 @@ private:
   void invoke_cli_async(std::vector<std::string> &options,
                         std::function<void(CLIResponse response)> callback);
 };
-} // namespace wakatime
+} // agi::namespace wakatime

@@ -421,11 +421,13 @@ if get_option('enable_js_automation').allowed()
     if not found_include_dirs and get_option('enable_js_automation').enabled()
         error('Not all headers could be found!')
     endif
-
+    
     if all_deps_found and found_include_dirs
         enable_js_automation = true
         js_include_dirs = include_directories(js_include_dirs)
         deps += js_deps
+    else
+        error('not all deps of js found!')
     endif
 endif
 
@@ -509,7 +511,7 @@ aegisub = executable('aegisub', aegisub_src, version_h, resrc, aegisub_order_dep
                      link_with: [libresrc, libaegisub],
                      link_args: link_args,
                      link_depends: link_depends,
-                     include_directories: [general_inc,libaegisub_inc, libresrc_inc, version_inc, include_directories('src')],
+                     include_directories: [general_inc, js_include_dirs, libaegisub_inc, libresrc_inc, version_inc, include_directories('src')],
                      cpp_pch: aegisub_cpp_pch,
                      c_pch: aegisub_c_pch,
                      install: true,

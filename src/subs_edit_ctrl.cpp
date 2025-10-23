@@ -155,7 +155,7 @@ SubsTextEditCtrl::SubsTextEditCtrl(wxWindow* parent, wxSize wsize, long style, a
 	OPT_SUB("Subtitle/Highlight/Syntax", &SubsTextEditCtrl::UpdateStyle, this);
 	OPT_SUB("App/Call Tips", &SubsTextEditCtrl::UpdateCallTip, this);
 
-s	Bind(wxEVT_MENU, [this](wxCommandEvent&) {
+	Bind(wxEVT_MENU, [this](wxCommandEvent&) {
 		if (spellchecker) spellchecker->AddWord(currentWord);
 		UpdateStyle();
 		SetFocus();

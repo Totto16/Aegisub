@@ -135,7 +135,7 @@ bool AegisubApp::OnInit() {
 
 	agi::util::InitLocale();
 
-	AegisubApp::startCwd = boost::filesystem::current_path();
+	AegisubApp::startCwd = agi::fs::path{std::filesystem::current_path()};
 
 	// Pointless `this` capture required due to http://gcc.gnu.org/bugzilla/show_bug.cgi?id=51494
 	agi::dispatch::Init([this](agi::dispatch::Thunk f) {
@@ -219,7 +219,7 @@ bool AegisubApp::OnInit() {
 	hotkey::init();
 
 	// Init wakatime
-	wakatime::init();
+	agi::wakatime::init();
 
 
 	StartupLog("Load MRU");
@@ -268,13 +268,13 @@ bool AegisubApp::OnInit() {
 		exception_message = _("Oops, Aegisub has crashed!\n\nAn attempt has been made to save a copy of your file to:\n\n%s\n\nAegisub will now close.");
 
 		// Before Loading Plugins, save the current path, that could be changed by lua
-		auto cwd = boost::filesystem::current_path();
+		auto cwd = std::filesystem::current_path();
 
 		// Load plugins
 		Automation4::ScriptFactory::RegisterMany(Automation4::Factories::createAll());
 
 		// Then afterwards restore that path
-		boost::filesystem::current_path(cwd);
+		std::filesystem::current_path(cwd);
 
 		libass::CacheFonts();
 
@@ -355,7 +355,7 @@ int AegisubApp::OnExit() {
 	delete config::opt;
 	delete config::mru;
 	hotkey::clear();
-	wakatime::clear();
+	agi::wakatime::clear();
 	cmd::clear();
 
 	delete config::global_scripts;

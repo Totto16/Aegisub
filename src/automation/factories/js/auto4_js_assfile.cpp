@@ -46,7 +46,7 @@
 #include <libaegisub/exception.h>
 #include <libaegisub/log.h>
 #include <libaegisub/lua/utils.h>
-#include <libaegisub/make_unique.h>
+#include <libaegisub/string.h>
 
 #include <algorithm>
 #include <boost/algorithm/string/case_conv.hpp>

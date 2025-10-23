@@ -11,7 +11,6 @@
 #include "auto4_js_factory.h"
 #endif
 
-#include <libaegisub/make_unique.h>
 
 namespace Automation4 {
 

@@ -115,7 +115,7 @@ FrameMain::FrameMain()
 	context->subsController->AddFileSaveListener(&FrameMain::UpdateTitle, this);
 	context->project->AddAudioProviderListener(&FrameMain::OnAudioOpen, this);
 	context->project->AddVideoProviderListener(&FrameMain::OnVideoOpen, this);
-	wakatime::setUpdateFunction([this]()->void{
+	agi::wakatime::setUpdateFunction([this]()->void{
 		this->UpdateTitle();
 	});
 
@@ -256,7 +256,7 @@ void FrameMain::UpdateTitle() {
 	newTitle << context->subsController->Filename().filename().wstring();
 
 #ifndef __WXMAC__
-	newTitle << " - Aegisub " << GetAegisubLongVersionString() << wakatime::getTime();
+	newTitle << " - Aegisub " << GetAegisubLongVersionString() << agi::wakatime::getTime();
 #endif
 
 #if defined(__WXMAC__)
@@ -358,18 +358,18 @@ void FrameMain::OnKeyDown(wxKeyEvent &event) {
 	// could use that context information, but not necessary
 	//const_cast<agi::fs::path const*>(context.get()->subsController.get()->Filename())
 
-	wakatime::update(false);
+	agi::wakatime::update(false);
 	hotkey::check("Main Frame", context.get(), event);
 }
 
 void FrameMain::OnMouseEvent(wxMouseEvent &event) {
-	wakatime::update(false);
+	agi::wakatime::update(false);
 	// pass it on, so that it can be used later!
 	event.Skip();
 }
 
 
 void FrameMain::OnMouseWheel(wxMouseEvent &evt) {
-	wakatime::update(false);
+	agi::wakatime::update(false);
 	ForwardMouseWheelEvent(this, evt);
 }

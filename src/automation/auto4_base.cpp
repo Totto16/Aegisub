@@ -307,13 +307,13 @@ namespace Automation4 {
 	: path(std::move(path))
 	{
 		// Before Loading Plugins, save the current path, that could be changed by lua or any factory
-		auto cwd = boost::filesystem::current_path();
+		auto cwd = std::filesystem::current_path();
 
 		Reload();
 
 
 		// Then afterwards restore that path
-		boost::filesystem::current_path(cwd);
+		std::filesystem::current_path(cwd);
 
 	}
 

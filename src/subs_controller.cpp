@@ -176,7 +176,7 @@ ProjectProperties SubsController::Load(agi::fs::path const& filename, const char
 	auto props = context->ass->Properties;
 
 	SetFileName(filename);
-	wakatime::update(true, filename);
+	agi::wakatime::update(true, filename);
 	// Push the initial state of the file onto the undo stack
 	undo_stack.clear();
 	redo_stack.clear();
@@ -199,8 +199,8 @@ ProjectProperties SubsController::Load(agi::fs::path const& filename, const char
 	return props;
 }
 
-void SubsController::Save(agi::fs::path const& filename, std::string const& encoding) {
-	wakatime::update(true, filename);
+void SubsController::Save(agi::fs::path const& filename, const char * encoding) {
+	agi::wakatime::update(true, filename);
 	const SubtitleFormat *writer = SubtitleFormat::GetWriter(filename);
 	if (!writer)
 		throw agi::InvalidInputException("Unknown file type.");

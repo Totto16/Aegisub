@@ -101,7 +101,7 @@ public:
 	/// @brief Save to a file
 	/// @param file Path to save to
 	/// @param encoding Encoding to use, or empty to let the writer decide (which usually means "App/Save Charset")
-	void Save(agi::fs::path const& file, const char *encoding="");
+	void Save(agi::fs::path const& filename, const char *encoding="");
 
 	/// Close the currently open file (i.e. open a new blank file)
 	void Close();
