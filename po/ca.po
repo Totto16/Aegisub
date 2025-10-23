@@ -4,7 +4,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ca\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-02-02 21:53+0100\n"
+"POT-Creation-Date: 2025-10-24 00:16+0200\n"
 "PO-Revision-Date: 2025-10-14 18:52+0000\n"
 "Last-Translator: Eduard Ereza Martínez <eduard@ereza.cat>\n"
 "Language-Team: \n"
@@ -157,7 +157,7 @@ msgstr "els temps"
 msgid "karaoke timing"
 msgstr "els temps del karaoke"
 
-#: ../src/auto4_base.cpp:454
+#: ../src/automation/auto4_base.cpp:469
 #, c-format
 msgid ""
 "Failed to load Automation script '%s':\n"
@@ -166,24 +166,24 @@ msgstr ""
 "No s’ha pogut carregar l’script d’automatització «%s»:\n"
 "%s"
 
-#: ../src/auto4_base.cpp:461
+#: ../src/automation/auto4_base.cpp:476
 #, c-format
 msgid "The file was not recognised as an Automation script: %s"
 msgstr "El fitxer no s’ha reconegut com a script d’automatització: %s"
 
-#: ../src/auto4_base.cpp:490 ../src/command/audio.cpp:84
+#: ../src/automation/auto4_base.cpp:505 ../src/command/audio.cpp:84
 #: ../src/command/keyframe.cpp:76 ../src/command/timecode.cpp:73
 #: ../src/command/timecode.cpp:93 ../src/command/video.cpp:592
 msgid "All Files"
 msgstr "Tots els fitxers"
 
-#: ../src/auto4_base.cpp:496 ../src/command/keyframe.cpp:74
+#: ../src/automation/auto4_base.cpp:511 ../src/command/keyframe.cpp:74
 #: ../src/command/timecode.cpp:73 ../src/command/timecode.cpp:93
 #: ../src/subtitle_format.cpp:318
 msgid "All Supported Formats"
 msgstr "Tots els formats suportats"
 
-#: ../src/auto4_base.cpp:502
+#: ../src/automation/auto4_base.cpp:517
 msgid "File was not recognized as a script"
 msgstr "El fitxer no s’ha reconegut com a script"
 
@@ -311,7 +311,7 @@ msgstr "Obre una nova finestra de l’aplicació"
 msgid "&Options..."
 msgstr "&Opcions..."
 
-#: ../src/command/app.cpp:205 ../src/dialog_properties.cpp:146
+#: ../src/command/app.cpp:205 ../src/dialog_properties.cpp:147
 #: ../src/dialog_timing_processor.cpp:168 ../src/preferences.cpp:129
 #: ../src/preferences.cpp:169
 msgid "Options"
@@ -699,7 +699,7 @@ msgstr ""
 msgid "'%s' is not a valid command name"
 msgstr "«%s» no és un nom d’ordre vàlid"
 
-#: ../src/command/edit.cpp:135 ../src/command/edit.cpp:844
+#: ../src/command/edit.cpp:135 ../src/command/edit.cpp:846
 msgid "paste"
 msgstr "l’enganxat"
 
@@ -707,212 +707,212 @@ msgstr "l’enganxat"
 msgid "set color"
 msgstr "la definició del color"
 
-#: ../src/command/edit.cpp:391
+#: ../src/command/edit.cpp:393
 msgid "Primary Color..."
 msgstr "Color primari..."
 
-#: ../src/command/edit.cpp:392
+#: ../src/command/edit.cpp:394
 msgid "Primary Color"
 msgstr "Color primari"
 
-#: ../src/command/edit.cpp:393
+#: ../src/command/edit.cpp:395
 msgid "Set the primary fill color (\\c) at the cursor position"
 msgstr "Defineix el color d’emplenat primari (\\c) a la posició del cursor"
 
-#: ../src/command/edit.cpp:403
+#: ../src/command/edit.cpp:405
 msgid "Secondary Color..."
 msgstr "Color secundari..."
 
-#: ../src/command/edit.cpp:404
+#: ../src/command/edit.cpp:406
 msgid "Secondary Color"
 msgstr "Color secundari"
 
-#: ../src/command/edit.cpp:405
+#: ../src/command/edit.cpp:407
 msgid "Set the secondary (karaoke) fill color (\\2c) at the cursor position"
 msgstr ""
 "Defineix el color d’emplenat secundari (de karaoke, \\2c) a la posició del "
 "cursor"
 
-#: ../src/command/edit.cpp:415
+#: ../src/command/edit.cpp:417
 msgid "Outline Color..."
 msgstr "Color del contorn..."
 
-#: ../src/command/edit.cpp:416
+#: ../src/command/edit.cpp:418
 msgid "Outline Color"
 msgstr "Color del contorn"
 
-#: ../src/command/edit.cpp:417
+#: ../src/command/edit.cpp:419
 msgid "Set the outline color (\\3c) at the cursor position"
 msgstr "Defineix el color del contorn (\\3c) a la posició del cursor"
 
-#: ../src/command/edit.cpp:427
+#: ../src/command/edit.cpp:429
 msgid "Shadow Color..."
 msgstr "Color de l’ombra..."
 
-#: ../src/command/edit.cpp:428
+#: ../src/command/edit.cpp:430
 msgid "Shadow Color"
 msgstr "Color de l’ombra"
 
-#: ../src/command/edit.cpp:429
+#: ../src/command/edit.cpp:431
 msgid "Set the shadow color (\\4c) at the cursor position"
 msgstr "Defineix el color de l’ombra (\\4c) a la posició del cursor"
 
-#: ../src/command/edit.cpp:439 ../src/command/edit.cpp:440
+#: ../src/command/edit.cpp:441 ../src/command/edit.cpp:442
 msgid "Toggle Bold"
 msgstr "Commuta la negreta"
 
-#: ../src/command/edit.cpp:441
+#: ../src/command/edit.cpp:443
 msgid ""
 "Toggle bold (\\b) for the current selection or at the current cursor position"
 msgstr ""
 "Commuta la negreta (\\b) de la selecció actual o a la posició del cursor"
 
-#: ../src/command/edit.cpp:444
+#: ../src/command/edit.cpp:446
 msgid "toggle bold"
 msgstr "la commutació de la negreta"
 
-#: ../src/command/edit.cpp:451 ../src/command/edit.cpp:452
+#: ../src/command/edit.cpp:453 ../src/command/edit.cpp:454
 msgid "Toggle Italics"
 msgstr "Commuta la cursiva"
 
-#: ../src/command/edit.cpp:453
+#: ../src/command/edit.cpp:455
 msgid ""
 "Toggle italics (\\i) for the current selection or at the current cursor "
 "position"
 msgstr ""
 "Commuta la cursiva (\\i) de la selecció actual o a la posició del cursor"
 
-#: ../src/command/edit.cpp:456
+#: ../src/command/edit.cpp:458
 msgid "toggle italic"
 msgstr "la commutació de la cursiva"
 
-#: ../src/command/edit.cpp:463 ../src/command/edit.cpp:464
+#: ../src/command/edit.cpp:465 ../src/command/edit.cpp:466
 msgid "Toggle Underline"
 msgstr "Commuta el subratllat"
 
-#: ../src/command/edit.cpp:465
+#: ../src/command/edit.cpp:467
 msgid ""
 "Toggle underline (\\u) for the current selection or at the current cursor "
 "position"
 msgstr ""
 "Commuta el subratllat (\\u) de la selecció actual o a la posició del cursor"
 
-#: ../src/command/edit.cpp:468
+#: ../src/command/edit.cpp:470
 msgid "toggle underline"
 msgstr "la commutació del subratllat"
 
-#: ../src/command/edit.cpp:475 ../src/command/edit.cpp:476
+#: ../src/command/edit.cpp:477 ../src/command/edit.cpp:478
 msgid "Toggle Strikeout"
 msgstr "Commuta el ratllat"
 
-#: ../src/command/edit.cpp:477
+#: ../src/command/edit.cpp:479
 msgid ""
 "Toggle strikeout (\\s) for the current selection or at the current cursor "
 "position"
 msgstr ""
 "Commuta el ratllat (\\s) de la selecció actual o a la posició del cursor"
 
-#: ../src/command/edit.cpp:480
+#: ../src/command/edit.cpp:482
 msgid "toggle strikeout"
 msgstr "la commutació del ratllat"
 
-#: ../src/command/edit.cpp:487
+#: ../src/command/edit.cpp:489
 msgid "Font Face..."
 msgstr "Font..."
 
-#: ../src/command/edit.cpp:488 ../src/preferences_base.cpp:250
+#: ../src/command/edit.cpp:490 ../src/preferences_base.cpp:250
 msgid "Font Face"
 msgstr "Font"
 
-#: ../src/command/edit.cpp:489
+#: ../src/command/edit.cpp:491
 msgid "Select a font face and size"
 msgstr "Selecciona una font i una mida"
 
-#: ../src/command/edit.cpp:516
+#: ../src/command/edit.cpp:518
 msgid "set font"
 msgstr "la definició de la font"
 
-#: ../src/command/edit.cpp:543
+#: ../src/command/edit.cpp:545
 msgid "Find and R&eplace..."
 msgstr "Cerca i &substitueix..."
 
-#: ../src/command/edit.cpp:544
+#: ../src/command/edit.cpp:546
 msgid "Find and Replace"
 msgstr "Cerca i substitueix"
 
-#: ../src/command/edit.cpp:545
+#: ../src/command/edit.cpp:547
 msgid "Find and replace words in subtitles"
 msgstr "Cerca i substitueix paraules als subtítols"
 
-#: ../src/command/edit.cpp:606
+#: ../src/command/edit.cpp:608
 msgid "&Copy Lines"
 msgstr "&Copia les línies"
 
-#: ../src/command/edit.cpp:607
+#: ../src/command/edit.cpp:609
 msgid "Copy Lines"
 msgstr "Copia les línies"
 
-#: ../src/command/edit.cpp:608
+#: ../src/command/edit.cpp:610
 msgid "Copy subtitles to the clipboard"
 msgstr "Copia els subtítols al porta-retalls"
 
-#: ../src/command/edit.cpp:629
+#: ../src/command/edit.cpp:631
 msgid "Cu&t Lines"
 msgstr "Re&talla les línies"
 
-#: ../src/command/edit.cpp:630
+#: ../src/command/edit.cpp:632
 msgid "Cut Lines"
 msgstr "Retalla les línies"
 
-#: ../src/command/edit.cpp:631
+#: ../src/command/edit.cpp:633
 msgid "Cut subtitles"
 msgstr "Retalla els subtítols"
 
-#: ../src/command/edit.cpp:638
+#: ../src/command/edit.cpp:640
 msgid "cut lines"
 msgstr "el retallat de les línies"
 
-#: ../src/command/edit.cpp:646
+#: ../src/command/edit.cpp:648
 msgid "De&lete Lines"
 msgstr "Suprimeix &les línies"
 
-#: ../src/command/edit.cpp:647
+#: ../src/command/edit.cpp:649
 msgid "Delete Lines"
 msgstr "Suprimeix les línies"
 
-#: ../src/command/edit.cpp:648
+#: ../src/command/edit.cpp:650
 msgid "Delete currently selected lines"
 msgstr "Suprimeix les línies seleccionades"
 
-#: ../src/command/edit.cpp:651
+#: ../src/command/edit.cpp:653
 msgid "delete lines"
 msgstr "la supressió de les línies"
 
-#: ../src/command/edit.cpp:716
+#: ../src/command/edit.cpp:718
 msgid "duplicate lines"
 msgstr "el duplicat de les línies"
 
-#: ../src/command/edit.cpp:716 ../src/command/edit.cpp:1109
+#: ../src/command/edit.cpp:718 ../src/command/edit.cpp:1111
 msgid "split"
 msgstr "la divisió"
 
-#: ../src/command/edit.cpp:723
+#: ../src/command/edit.cpp:725
 msgid "&Duplicate Lines"
 msgstr "&Duplica les línies"
 
-#: ../src/command/edit.cpp:724
+#: ../src/command/edit.cpp:726
 msgid "Duplicate Lines"
 msgstr "Duplica les línies"
 
-#: ../src/command/edit.cpp:725
+#: ../src/command/edit.cpp:727
 msgid "Duplicate the selected lines"
 msgstr "Duplica les línies seleccionades"
 
-#: ../src/command/edit.cpp:734 ../src/command/edit.cpp:735
+#: ../src/command/edit.cpp:736 ../src/command/edit.cpp:737
 msgid "Split lines after current frame"
 msgstr "Divideix les línies després del fotograma actual"
 
-#: ../src/command/edit.cpp:736
+#: ../src/command/edit.cpp:738
 msgid ""
 "Split the current line into a line which ends on the current frame and a "
 "line which starts on the next frame"
@@ -920,11 +920,11 @@ msgstr ""
 "Divideix la línia actual en una línia que acaba al fotograma actual i una "
 "línia que comença al següent fotograma"
 
-#: ../src/command/edit.cpp:746 ../src/command/edit.cpp:747
+#: ../src/command/edit.cpp:748 ../src/command/edit.cpp:749
 msgid "Split lines before current frame"
 msgstr "Divideix les línies abans del fotograma actual"
 
-#: ../src/command/edit.cpp:748
+#: ../src/command/edit.cpp:750
 msgid ""
 "Split the current line into a line which ends on the previous frame and a "
 "line which starts on the current frame"
@@ -932,47 +932,47 @@ msgstr ""
 "Divideix la línia actual en una línia que acaba al fotograma anterior i una "
 "línia que comença al fotograma actual"
 
-#: ../src/command/edit.cpp:788
+#: ../src/command/edit.cpp:790
 msgid "As &Karaoke"
 msgstr "Com a &karaoke"
 
-#: ../src/command/edit.cpp:789
+#: ../src/command/edit.cpp:791
 msgid "As Karaoke"
 msgstr "Com a karaoke"
 
-#: ../src/command/edit.cpp:790
+#: ../src/command/edit.cpp:792
 msgid "Join selected lines in a single one, as karaoke"
 msgstr "Uneix les línies seleccionades en una de sola, com a karaoke"
 
-#: ../src/command/edit.cpp:793
+#: ../src/command/edit.cpp:795
 msgid "join as karaoke"
 msgstr "la unió com a karaoke"
 
-#: ../src/command/edit.cpp:799
+#: ../src/command/edit.cpp:801
 msgid "&Concatenate"
 msgstr "&Concatena"
 
-#: ../src/command/edit.cpp:800
+#: ../src/command/edit.cpp:802
 msgid "Concatenate"
 msgstr "Concatena"
 
-#: ../src/command/edit.cpp:801
+#: ../src/command/edit.cpp:803
 msgid "Join selected lines in a single one, concatenating text together"
 msgstr "Uneix les línies seleccionades en una de sola, concatenant-ne el text"
 
-#: ../src/command/edit.cpp:804 ../src/command/edit.cpp:815
+#: ../src/command/edit.cpp:806 ../src/command/edit.cpp:817
 msgid "join lines"
 msgstr "la unió de les línies"
 
-#: ../src/command/edit.cpp:810
+#: ../src/command/edit.cpp:812
 msgid "Keep &First"
 msgstr "&Mantén la primera"
 
-#: ../src/command/edit.cpp:811
+#: ../src/command/edit.cpp:813
 msgid "Keep First"
 msgstr "Mantén la primera"
 
-#: ../src/command/edit.cpp:812
+#: ../src/command/edit.cpp:814
 msgid ""
 "Join selected lines in a single one, keeping text of first and discarding "
 "remaining"
@@ -980,66 +980,66 @@ msgstr ""
 "Uneix les línies seleccionades en una de sola, mantenint el text de la "
 "primera i descartant el de la resta"
 
-#: ../src/command/edit.cpp:853
+#: ../src/command/edit.cpp:855
 msgid "&Paste Lines"
 msgstr "Engan&xa les línies"
 
-#: ../src/command/edit.cpp:854
+#: ../src/command/edit.cpp:856
 msgid "Paste Lines"
 msgstr "Enganxa les línies"
 
-#: ../src/command/edit.cpp:855
+#: ../src/command/edit.cpp:857
 msgid "Paste subtitles"
 msgstr "Enganxa els subtítols"
 
-#: ../src/command/edit.cpp:884
+#: ../src/command/edit.cpp:886
 msgid "Paste Lines &Over..."
 msgstr "Enganxa les línies a s&obre..."
 
-#: ../src/command/edit.cpp:885
+#: ../src/command/edit.cpp:887
 msgid "Paste Lines Over"
 msgstr "Enganxa les línies a sobre"
 
-#: ../src/command/edit.cpp:886
+#: ../src/command/edit.cpp:888
 msgid "Paste subtitles over others"
 msgstr "Enganxa els subtítols damunt dels altres"
 
-#: ../src/command/edit.cpp:968
+#: ../src/command/edit.cpp:970
 msgid "Recom&bine Lines"
 msgstr "Recom&bina les línies"
 
-#: ../src/command/edit.cpp:969
+#: ../src/command/edit.cpp:971
 msgid "Recombine Lines"
 msgstr "Recombina les línies"
 
-#: ../src/command/edit.cpp:970
+#: ../src/command/edit.cpp:972
 msgid "Recombine subtitles which have been split and merged"
 msgstr "Recombina els subtítols que han estat dividits i fusionats"
 
-#: ../src/command/edit.cpp:1040
+#: ../src/command/edit.cpp:1042
 msgid "combining"
 msgstr "la combinació"
 
-#: ../src/command/edit.cpp:1046 ../src/command/edit.cpp:1047
+#: ../src/command/edit.cpp:1048 ../src/command/edit.cpp:1049
 msgid "Split Lines (by karaoke)"
 msgstr "Divideix les línies (per karaoke)"
 
-#: ../src/command/edit.cpp:1048
+#: ../src/command/edit.cpp:1050
 msgid "Use karaoke timing to split line into multiple smaller lines"
 msgstr ""
 "Utilitza el temps dels karaokes per a dividir la línia en múltiples línies "
 "més petites"
 
-#: ../src/command/edit.cpp:1082
+#: ../src/command/edit.cpp:1084
 msgid "splitting"
 msgstr "la divisió"
 
-#: ../src/command/edit.cpp:1114 ../src/command/edit.cpp:1115
+#: ../src/command/edit.cpp:1116 ../src/command/edit.cpp:1117
 #: ../src/subs_edit_ctrl.cpp:398
 msgid "Split at cursor (estimate times)"
 msgstr "Divideix al cursor (estima els temps)"
 
-#: ../src/command/edit.cpp:1116
+#: ../src/command/edit.cpp:1118
 msgid ""
 "Split the current line at the cursor, dividing the original line's duration "
 "between the new ones"
@@ -1047,12 +1047,12 @@ msgstr ""
 "Divideix la línia actual al cursor, dividint la durada de la línia original "
 "entre les noves"
 
-#: ../src/command/edit.cpp:1130 ../src/command/edit.cpp:1131
+#: ../src/command/edit.cpp:1132 ../src/command/edit.cpp:1133
 #: ../src/subs_edit_ctrl.cpp:397
 msgid "Split at cursor (preserve times)"
 msgstr "Divideix al cursor (conserva els temps)"
 
-#: ../src/command/edit.cpp:1132
+#: ../src/command/edit.cpp:1134
 msgid ""
 "Split the current line at the cursor, setting both lines to the original "
 "line's times"
@@ -1060,11 +1060,11 @@ msgstr ""
 "Divideix la línia actual al cursor, definint el temps de les dues línies al "
 "temps de la línia original"
 
-#: ../src/command/edit.cpp:1141 ../src/command/edit.cpp:1142
+#: ../src/command/edit.cpp:1143 ../src/command/edit.cpp:1144
 msgid "Split at cursor (at video frame)"
 msgstr "Divideix al cursor (al fotograma del vídeo)"
 
-#: ../src/command/edit.cpp:1143
+#: ../src/command/edit.cpp:1145
 msgid ""
 "Split the current line at the cursor, dividing the line's duration at the "
 "current video frame"
@@ -1072,101 +1072,101 @@ msgstr ""
 "Divideix la línia actual al cursor, dividint la durada de la línia al "
 "fotograma actual del vídeo"
 
-#: ../src/command/edit.cpp:1159
+#: ../src/command/edit.cpp:1161
 msgid "Redo last undone action"
 msgstr "Refés l’última acció desfeta"
 
-#: ../src/command/edit.cpp:1164
+#: ../src/command/edit.cpp:1166
 msgid "Nothing to &redo"
 msgstr "No hi ha res a &refer"
 
-#: ../src/command/edit.cpp:1165
+#: ../src/command/edit.cpp:1167
 #, c-format
 msgid "&Redo %s"
 msgstr "&Refés %s"
 
-#: ../src/command/edit.cpp:1169
+#: ../src/command/edit.cpp:1171
 msgid "Nothing to redo"
 msgstr "No hi ha res a refer"
 
-#: ../src/command/edit.cpp:1170
+#: ../src/command/edit.cpp:1172
 #, c-format
 msgid "Redo %s"
 msgstr "Refés %s"
 
-#: ../src/command/edit.cpp:1185
+#: ../src/command/edit.cpp:1187
 msgid "Undo last action"
 msgstr "Desfés la darrera acció"
 
-#: ../src/command/edit.cpp:1190
+#: ../src/command/edit.cpp:1192
 msgid "Nothing to &undo"
 msgstr "No hi ha res a &desfer"
 
-#: ../src/command/edit.cpp:1191
+#: ../src/command/edit.cpp:1193
 #, c-format
 msgid "&Undo %s"
 msgstr "&Desfés %s"
 
-#: ../src/command/edit.cpp:1195
+#: ../src/command/edit.cpp:1197
 msgid "Nothing to undo"
 msgstr "No hi ha res a desfer"
 
-#: ../src/command/edit.cpp:1196
+#: ../src/command/edit.cpp:1198
 #, c-format
 msgid "Undo %s"
 msgstr "Desfés %s"
 
-#: ../src/command/edit.cpp:1210 ../src/command/edit.cpp:1211
+#: ../src/command/edit.cpp:1212 ../src/command/edit.cpp:1213
 msgid "Revert"
 msgstr "Reverteix"
 
-#: ../src/command/edit.cpp:1212
+#: ../src/command/edit.cpp:1214
 msgid "Revert the active line to its initial state (shown in the upper editor)"
 msgstr ""
 "Reverteix la línia activa al seu estat inicial (mostrat a l’editor de dalt)"
 
-#: ../src/command/edit.cpp:1217
+#: ../src/command/edit.cpp:1219
 msgid "revert line"
 msgstr "la reversió de la línia"
 
-#: ../src/command/edit.cpp:1223 ../src/command/edit.cpp:1224
+#: ../src/command/edit.cpp:1225 ../src/command/edit.cpp:1226
 #: ../src/preferences.cpp:410
 msgid "Clear"
 msgstr "Esborra"
 
-#: ../src/command/edit.cpp:1225
+#: ../src/command/edit.cpp:1227
 msgid "Clear the current line's text"
 msgstr "Esborra el text de la línia actual"
 
-#: ../src/command/edit.cpp:1230 ../src/command/edit.cpp:1249
+#: ../src/command/edit.cpp:1232 ../src/command/edit.cpp:1251
 msgid "clear line"
 msgstr "l’esborrament de la línia"
 
-#: ../src/command/edit.cpp:1237 ../src/command/edit.cpp:1238
+#: ../src/command/edit.cpp:1239 ../src/command/edit.cpp:1240
 msgid "Clear Text"
 msgstr "Esborra el text"
 
-#: ../src/command/edit.cpp:1239
+#: ../src/command/edit.cpp:1241
 msgid "Clear the current line's text, leaving override tags"
 msgstr "Esborra el text de la línia actual, deixant-ne les etiquetes d’estil"
 
-#: ../src/command/edit.cpp:1255 ../src/command/edit.cpp:1256
-#: ../src/command/tool.cpp:256
+#: ../src/command/edit.cpp:1257 ../src/command/edit.cpp:1258
+#: ../src/command/tool.cpp:271
 msgid "Insert Original"
 msgstr "Insereix l’original"
 
-#: ../src/command/edit.cpp:1257
+#: ../src/command/edit.cpp:1259
 msgid "Insert the original line text at the cursor"
 msgstr "Insereix la línia de text original al cursor"
 
-#: ../src/command/edit.cpp:1265
+#: ../src/command/edit.cpp:1267
 msgid "insert original"
 msgstr "la inserció de l’original"
 
 #: ../src/command/grid.cpp:50 ../src/command/grid.cpp:51
 #: ../src/command/grid.cpp:62 ../src/command/grid.cpp:63
 #: ../src/command/time.cpp:355 ../src/command/time.cpp:356
-#: ../src/command/tool.cpp:234
+#: ../src/command/tool.cpp:249
 msgid "Next Line"
 msgstr "Línia següent"
 
@@ -1185,7 +1185,7 @@ msgstr "la inserció de la línia"
 
 #: ../src/command/grid.cpp:89 ../src/command/grid.cpp:90
 #: ../src/command/time.cpp:367 ../src/command/time.cpp:368
-#: ../src/command/tool.cpp:245
+#: ../src/command/tool.cpp:260
 msgid "Previous Line"
 msgstr "Línia anterior"
 
@@ -1631,7 +1631,7 @@ msgstr "Subtítols nous"
 
 #: ../src/command/subtitle.cpp:255 ../src/command/subtitle.cpp:256
 #: ../src/command/subtitle.cpp:257 ../src/dialog_progress.cpp:175
-#: ../src/dialog_style_manager.cpp:313
+#: ../src/dialog_style_manager.cpp:339
 msgid "Close"
 msgstr "Tanca"
 
@@ -1648,7 +1648,7 @@ msgid "Open a subtitles file"
 msgstr "Obre el fitxer de subtítols"
 
 #: ../src/command/subtitle.cpp:274 ../src/command/subtitle.cpp:304
-#: ../src/dialog_style_manager.cpp:667
+#: ../src/dialog_style_manager.cpp:713
 msgid "Open subtitles file"
 msgstr "Obre el fitxer de subtítols"
 
@@ -1995,14 +1995,26 @@ msgid "Save a VFR timecodes v2 file"
 msgstr "Desa el fitxer de codis de temps VFR v2"
 
 #: ../src/command/tool.cpp:56
+msgid "ASSDraw3..."
+msgstr ""
+
+#: ../src/command/tool.cpp:57
+msgid "ASSDraw3"
+msgstr ""
+
+#: ../src/command/tool.cpp:58
+msgid "Launch the ASSDraw3 tool for vector drawing"
+msgstr ""
+
+#: ../src/command/tool.cpp:71
 msgid "&Export Subtitles..."
 msgstr "&Exporta els subtítols..."
 
-#: ../src/command/tool.cpp:57
+#: ../src/command/tool.cpp:72
 msgid "Export Subtitles"
 msgstr "Exporta els subtítols"
 
-#: ../src/command/tool.cpp:58
+#: ../src/command/tool.cpp:73
 msgid ""
 "Save a copy of subtitles in a different format or with processing applied to "
 "it"
@@ -2010,39 +2022,39 @@ msgstr ""
 "Desa una còpia dels subtítols en un format diferent o aplicant-hi "
 "processament"
 
-#: ../src/command/tool.cpp:69
+#: ../src/command/tool.cpp:84
 msgid "&Fonts Collector..."
 msgstr "Recol·lector de &fonts..."
 
-#: ../src/command/tool.cpp:70 ../src/dialog_fonts_collector.cpp:226
+#: ../src/command/tool.cpp:85 ../src/dialog_fonts_collector.cpp:226
 msgid "Fonts Collector"
 msgstr "Recol·lector de fonts"
 
-#: ../src/command/tool.cpp:71
+#: ../src/command/tool.cpp:86
 msgid "Open fonts collector"
 msgstr "Obre el recol·lector de fonts"
 
-#: ../src/command/tool.cpp:81
+#: ../src/command/tool.cpp:96
 msgid "S&elect Lines..."
 msgstr "S&elecciona línies..."
 
-#: ../src/command/tool.cpp:82
+#: ../src/command/tool.cpp:97
 msgid "Select Lines"
 msgstr "Selecciona línies"
 
-#: ../src/command/tool.cpp:83
+#: ../src/command/tool.cpp:98
 msgid "Select lines based on defined criteria"
 msgstr "Selecciona línies basant-se en criteris definits"
 
-#: ../src/command/tool.cpp:93
+#: ../src/command/tool.cpp:108
 msgid "&Resample Resolution..."
 msgstr "&Reajusta la resolució..."
 
-#: ../src/command/tool.cpp:94 ../src/dialog_resample.cpp:90
+#: ../src/command/tool.cpp:109 ../src/dialog_resample.cpp:90
 msgid "Resample Resolution"
 msgstr "Reajusta la resolució"
 
-#: ../src/command/tool.cpp:95
+#: ../src/command/tool.cpp:110
 msgid ""
 "Resample subtitles to maintain their current appearance at a different "
 "script resolution"
@@ -2050,77 +2062,77 @@ msgstr ""
 "Reajusta els subtítols perquè mantinguin l’aparença actual amb una resolució "
 "de script diferent"
 
-#: ../src/command/tool.cpp:108
+#: ../src/command/tool.cpp:123
 msgid "St&yling Assistant..."
 msgstr "Assis&tent d’estils..."
 
-#: ../src/command/tool.cpp:109 ../src/dialog_styling_assistant.cpp:53
+#: ../src/command/tool.cpp:124 ../src/dialog_styling_assistant.cpp:53
 msgid "Styling Assistant"
 msgstr "Assistent d’estils"
 
-#: ../src/command/tool.cpp:110
+#: ../src/command/tool.cpp:125
 msgid "Open styling assistant"
 msgstr "Obre l’assistent d’estils"
 
-#: ../src/command/tool.cpp:127 ../src/command/tool.cpp:211
+#: ../src/command/tool.cpp:142 ../src/command/tool.cpp:226
 msgid "&Accept changes"
 msgstr "&Accepta els canvis"
 
-#: ../src/command/tool.cpp:128 ../src/command/tool.cpp:212
+#: ../src/command/tool.cpp:143 ../src/command/tool.cpp:227
 #: ../src/dialog_styling_assistant.cpp:88 ../src/dialog_translation.cpp:111
 msgid "Accept changes"
 msgstr "Accepta els canvis"
 
-#: ../src/command/tool.cpp:129 ../src/command/tool.cpp:213
+#: ../src/command/tool.cpp:144 ../src/command/tool.cpp:228
 msgid "Commit changes and move to the next line"
 msgstr "Aplica els canvis i es mou a la següent línia"
 
-#: ../src/command/tool.cpp:138 ../src/command/tool.cpp:222
+#: ../src/command/tool.cpp:153 ../src/command/tool.cpp:237
 msgid "&Preview changes"
 msgstr "&Previsualitza els canvis"
 
-#: ../src/command/tool.cpp:139 ../src/command/tool.cpp:223
+#: ../src/command/tool.cpp:154 ../src/command/tool.cpp:238
 #: ../src/dialog_styling_assistant.cpp:89 ../src/dialog_translation.cpp:112
 msgid "Preview changes"
 msgstr "Previsualitza els canvis"
 
-#: ../src/command/tool.cpp:140 ../src/command/tool.cpp:224
+#: ../src/command/tool.cpp:155 ../src/command/tool.cpp:239
 msgid "Commit changes and stay on the current line"
 msgstr "Aplica els canvis i roman a la línia actual"
 
-#: ../src/command/tool.cpp:150
+#: ../src/command/tool.cpp:165
 msgid "&Styles Manager..."
 msgstr "Ge&stor d’estils..."
 
-#: ../src/command/tool.cpp:151 ../src/dialog_style_manager.cpp:258
+#: ../src/command/tool.cpp:166 ../src/dialog_style_manager.cpp:284
 msgid "Styles Manager"
 msgstr "Gestor d’estils"
 
-#: ../src/command/tool.cpp:152
+#: ../src/command/tool.cpp:167
 msgid "Open the styles manager"
 msgstr "Obre el gestor d’estils"
 
-#: ../src/command/tool.cpp:162
+#: ../src/command/tool.cpp:177
 msgid "&Kanji Timer..."
 msgstr "Creador de temps per a &kanjis..."
 
-#: ../src/command/tool.cpp:163
+#: ../src/command/tool.cpp:178
 msgid "Kanji Timer"
 msgstr "Creador de temps per a kanjis"
 
-#: ../src/command/tool.cpp:164
+#: ../src/command/tool.cpp:179
 msgid "Open the Kanji timer copier"
 msgstr "Obre el copiador de temps per a kanjis"
 
-#: ../src/command/tool.cpp:174
+#: ../src/command/tool.cpp:189
 msgid "&Timing Post-Processor..."
 msgstr "Postprocessador de &temps..."
 
-#: ../src/command/tool.cpp:175 ../src/dialog_timing_processor.cpp:139
+#: ../src/command/tool.cpp:190 ../src/dialog_timing_processor.cpp:139
 msgid "Timing Post-Processor"
 msgstr "Postprocessador de temps"
 
-#: ../src/command/tool.cpp:176
+#: ../src/command/tool.cpp:191
 msgid ""
 "Post-process the subtitle timing to add lead-ins and lead-outs, snap timing "
 "to scene changes, etc."
@@ -2128,44 +2140,44 @@ msgstr ""
 "Postprocessa els temps dels subtítols per a afegir-hi temps d’entrada i de "
 "sortida, ajustar els temps als canvis d’escena, etc."
 
-#: ../src/command/tool.cpp:186
+#: ../src/command/tool.cpp:201
 msgid "&Translation Assistant..."
 msgstr "Assistent de &traducció..."
 
-#: ../src/command/tool.cpp:187 ../src/dialog_translation.cpp:64
+#: ../src/command/tool.cpp:202 ../src/dialog_translation.cpp:64
 #: ../src/preferences.cpp:229
 msgid "Translation Assistant"
 msgstr "Assistent de traducció"
 
-#: ../src/command/tool.cpp:188
+#: ../src/command/tool.cpp:203
 msgid "Open translation assistant"
 msgstr "Obre l’assistent de traducció"
 
-#: ../src/command/tool.cpp:196
+#: ../src/command/tool.cpp:211
 msgid "There is nothing to translate in the file."
 msgstr "No hi ha res a traduir en aquest fitxer."
 
-#: ../src/command/tool.cpp:233
+#: ../src/command/tool.cpp:248
 msgid "&Next Line"
 msgstr "Línia &següent"
 
-#: ../src/command/tool.cpp:235
+#: ../src/command/tool.cpp:250
 msgid "Move to the next line without committing changes"
 msgstr "Es mou a la línia següent sense aplicar els canvis"
 
-#: ../src/command/tool.cpp:244
+#: ../src/command/tool.cpp:259
 msgid "&Previous Line"
 msgstr "Línia &anterior"
 
-#: ../src/command/tool.cpp:246
+#: ../src/command/tool.cpp:261
 msgid "Move to the previous line without committing changes"
 msgstr "Es mou a la línia anterior sense aplicar els canvis"
 
-#: ../src/command/tool.cpp:255
+#: ../src/command/tool.cpp:270
 msgid "&Insert Original"
 msgstr "&Insereix l’original"
 
-#: ../src/command/tool.cpp:257
+#: ../src/command/tool.cpp:272
 msgid "Insert the untranslated text"
 msgstr "Insereix el text sense traduir"
 
@@ -2730,6 +2742,14 @@ msgstr "Dibuixa una forma suavitzada a mà alçada"
 msgid "Translated into LANGUAGE by PERSON\n"
 msgstr "Traduït al català per Eduard Ereza Martínez.\n"
 
+#: ../src/dialog_about.cpp:52
+#, c-format
+msgid ""
+"Copyright (c) 2005-%s Rodrigo Braz Monteiro, Niels Martin Hansen, Thomas "
+"Goyne et al.\n"
+"\n"
+msgstr ""
+
 #: ../src/dialog_about.cpp:128
 msgid ""
 "\n"
@@ -2740,8 +2760,8 @@ msgstr ""
 
 #: ../src/dialog_about.cpp:130
 #, c-format
-msgid "Built by %s on %s."
-msgstr "Muntat per %s el %s."
+msgid "Built by '%s' on '%s'."
+msgstr ""
 
 #: ../src/dialog_attachments.cpp:68
 msgid "Attachment List"
@@ -2760,7 +2780,7 @@ msgid "E&xtract"
 msgstr "E&xtreu"
 
 #: ../src/dialog_attachments.cpp:79 ../src/dialog_style_manager.cpp:204
-#: ../src/preferences.cpp:605
+#: ../src/preferences.cpp:623
 msgid "&Delete"
 msgstr "&Suprimeix"
 
@@ -3562,40 +3582,40 @@ msgstr "Actualitzat per:"
 msgid "Update details:"
 msgstr "Detalls de l’actualització:"
 
-#: ../src/dialog_properties.cpp:122 ../src/dialog_resample.cpp:141
+#: ../src/dialog_properties.cpp:123 ../src/dialog_resample.cpp:141
 #: ../src/export_framerate.cpp:70
 msgid "From &video"
 msgstr "Del &vídeo"
 
-#: ../src/dialog_properties.cpp:141
+#: ../src/dialog_properties.cpp:142
 msgid "Resolution"
 msgstr "Resolució"
 
-#: ../src/dialog_properties.cpp:149
+#: ../src/dialog_properties.cpp:150
 msgid "0: Smart wrapping, top line is wider"
 msgstr "0: Ajustament intel·ligent, la línia de dalt és més llarga"
 
-#: ../src/dialog_properties.cpp:150
+#: ../src/dialog_properties.cpp:151
 msgid "1: End-of-line word wrapping, only \\N breaks"
 msgstr "1: Ajustament de paraules a final de línia, només \\N salta de línia"
 
-#: ../src/dialog_properties.cpp:151
+#: ../src/dialog_properties.cpp:152
 msgid "2: No word wrapping, both \\n and \\N break"
 msgstr "2: Sense ajustament de paraules, tant \\n com \\N salten de línia"
 
-#: ../src/dialog_properties.cpp:152
+#: ../src/dialog_properties.cpp:153
 msgid "3: Smart wrapping, bottom line is wider"
 msgstr "3: Ajustament intel·ligent, la línia de sota és més llarga"
 
-#: ../src/dialog_properties.cpp:156
+#: ../src/dialog_properties.cpp:157
 msgid "Wrap Style: "
 msgstr "Estil d’ajustament: "
 
-#: ../src/dialog_properties.cpp:159
+#: ../src/dialog_properties.cpp:160
 msgid "Scale Border and Shadow"
 msgstr "Escala la vora i l’ombra"
 
-#: ../src/dialog_properties.cpp:160
+#: ../src/dialog_properties.cpp:161
 msgid ""
 "Scale border and shadow together with script/render resolution. If this is "
 "unchecked, relative border and shadow size will depend on renderer."
@@ -3603,7 +3623,7 @@ msgstr ""
 "Escala la vora i l’ombra juntament amb la resolució de l’script. Si està "
 "desmarcat, la vora i l’ombra relatives dependran del renderitzador."
 
-#: ../src/dialog_properties.cpp:196
+#: ../src/dialog_properties.cpp:197
 msgid "property changes"
 msgstr "els canvis a les propietats"
 
@@ -4258,11 +4278,11 @@ msgstr "Mou l’estil a baix de tot"
 msgid "Sort styles alphabetically"
 msgstr "Ordena els estils alfabèticament"
 
-#: ../src/dialog_style_manager.cpp:201 ../src/preferences.cpp:603
+#: ../src/dialog_style_manager.cpp:201 ../src/preferences.cpp:621
 msgid "&New"
 msgstr "&Nou"
 
-#: ../src/dialog_style_manager.cpp:202 ../src/preferences.cpp:604
+#: ../src/dialog_style_manager.cpp:202 ../src/preferences.cpp:622
 msgid "&Edit"
 msgstr "&Edita"
 
@@ -4292,55 +4312,79 @@ msgid_plural "Are you sure you want to delete these %d styles?"
 msgstr[0] "Segur que voleu suprimir aquest estil?"
 msgstr[1] "Esteu segur que voleu suprimir aquests %d estils?"
 
-#: ../src/dialog_style_manager.cpp:272
+#: ../src/dialog_style_manager.cpp:261
+#, c-format
+msgid ""
+"There is already a style with the name \"%s\" in the current script. "
+"Overwrite?"
+msgstr ""
+"Ja hi ha un estil amb el nom «%s» a l’script actual. El voleu sobreescriure?"
+
+#: ../src/dialog_style_manager.cpp:262 ../src/dialog_style_manager.cpp:266
+msgid "Style name collision"
+msgstr "Col·lisió de nom d’estil"
+
+#: ../src/dialog_style_manager.cpp:266
+#, c-format
+msgid ""
+"There is already a style with the name \"%s\" in the current storage. "
+"Overwrite?"
+msgstr ""
+"Ja hi ha un estil amb el nom «%s» al magatzem actual. El voleu sobreescriure?"
+
+#: ../src/dialog_style_manager.cpp:268
+msgid "&Yes, all"
+msgstr ""
+
+#: ../src/dialog_style_manager.cpp:298
 msgid "Catalog of available storages"
 msgstr "Catàleg de magatzems disponibles"
 
-#: ../src/dialog_style_manager.cpp:274
+#: ../src/dialog_style_manager.cpp:300
 msgid "New"
 msgstr "Nou"
 
-#: ../src/dialog_style_manager.cpp:275
+#: ../src/dialog_style_manager.cpp:301
 msgid "Delete"
 msgstr "Suprimeix"
 
-#: ../src/dialog_style_manager.cpp:281
+#: ../src/dialog_style_manager.cpp:307
 msgid "Copy to &current script ->"
 msgstr "C&opia a l’script actual ->"
 
-#: ../src/dialog_style_manager.cpp:288
+#: ../src/dialog_style_manager.cpp:314
 msgid "Storage"
 msgstr "Magatzem"
 
-#: ../src/dialog_style_manager.cpp:294
+#: ../src/dialog_style_manager.cpp:320
 msgid "&Import from script..."
 msgstr "&Importa d’un script..."
 
-#: ../src/dialog_style_manager.cpp:295
+#: ../src/dialog_style_manager.cpp:321
 msgid "<- Copy to &storage"
 msgstr "<- Copia al magat&zem"
 
-#: ../src/dialog_style_manager.cpp:306
+#: ../src/dialog_style_manager.cpp:332
 msgid "Current script"
 msgstr "Script actual"
 
-#: ../src/dialog_style_manager.cpp:453
+#: ../src/dialog_style_manager.cpp:479
 msgid "New catalog entry"
 msgstr "Nova entrada al catàleg"
 
-#: ../src/dialog_style_manager.cpp:453
+#: ../src/dialog_style_manager.cpp:479
 msgid "New storage name:"
 msgstr "Nom del magatzem nou:"
 
-#: ../src/dialog_style_manager.cpp:468
+#: ../src/dialog_style_manager.cpp:494
 msgid "A catalog with that name already exists."
 msgstr "Ja existeix un catàleg amb aquest nom."
 
-#: ../src/dialog_style_manager.cpp:468
+#: ../src/dialog_style_manager.cpp:494
 msgid "Catalog name conflict"
 msgstr "Conflicte de nom de catàleg"
 
-#: ../src/dialog_style_manager.cpp:475
+#: ../src/dialog_style_manager.cpp:501
 #, c-format
 msgid ""
 "The specified catalog name contains one or more illegal characters. They "
@@ -4351,89 +4395,68 @@ msgstr ""
 "substituït per guions baixos.\n"
 "El catàleg s’ha reanomenat a «%s»."
 
-#: ../src/dialog_style_manager.cpp:476
+#: ../src/dialog_style_manager.cpp:502
 msgid "Invalid characters"
 msgstr "Caràcters invàlids"
 
-#: ../src/dialog_style_manager.cpp:489
+#: ../src/dialog_style_manager.cpp:515
 #, c-format
 msgid "Are you sure you want to delete the storage \"%s\" from the catalog?"
 msgstr "Segur que voleu suprimir el magatzem «%s» del catàleg?"
 
-#: ../src/dialog_style_manager.cpp:490
+#: ../src/dialog_style_manager.cpp:516
 msgid "Confirm delete"
 msgstr "Confirmeu la supressió"
 
-#: ../src/dialog_style_manager.cpp:508 ../src/dialog_style_manager.cpp:535
-#: ../src/dialog_style_manager.cpp:714
-msgid "Style name collision"
-msgstr "Col·lisió de nom d’estil"
-
-#: ../src/dialog_style_manager.cpp:508
-#, c-format
-msgid ""
-"There is already a style with the name \"%s\" in the current storage. "
-"Overwrite?"
-msgstr ""
-"Ja hi ha un estil amb el nom «%s» al magatzem actual. El voleu sobreescriure?"
-
-#: ../src/dialog_style_manager.cpp:535 ../src/dialog_style_manager.cpp:713
-#, c-format
-msgid ""
-"There is already a style with the name \"%s\" in the current script. "
-"Overwrite?"
-msgstr ""
-"Ja hi ha un estil amb el nom «%s» a l’script actual. El voleu sobreescriure?"
-
-#: ../src/dialog_style_manager.cpp:546
+#: ../src/dialog_style_manager.cpp:592
 msgid "style copy"
 msgstr "la còpia de l’estil"
 
-#: ../src/dialog_style_manager.cpp:575
+#: ../src/dialog_style_manager.cpp:621
 msgid "style paste"
 msgstr "l’enganxat de l’estil"
 
-#: ../src/dialog_style_manager.cpp:619
+#: ../src/dialog_style_manager.cpp:665
 msgid "Confirm delete from storage"
 msgstr "Confirmeu la supressió del magatzem"
 
-#: ../src/dialog_style_manager.cpp:658
+#: ../src/dialog_style_manager.cpp:704
 msgid "Confirm delete from current"
 msgstr "Confirmeu la supressió de l’actual"
 
-#: ../src/dialog_style_manager.cpp:662
+#: ../src/dialog_style_manager.cpp:708
 msgid "style delete"
 msgstr "la supressió de l’estil"
 
-#: ../src/dialog_style_manager.cpp:698
+#: ../src/dialog_style_manager.cpp:744
 msgid "Error Importing Styles"
 msgstr "S’ha produït un error en importar estils"
 
-#: ../src/dialog_style_manager.cpp:698
+#: ../src/dialog_style_manager.cpp:744
 msgid "The selected file has no available styles."
 msgstr "El fitxer seleccionat no té cap estil disponible."
 
-#: ../src/dialog_style_manager.cpp:704
+#: ../src/dialog_style_manager.cpp:750
 msgid "Choose styles to import:"
 msgstr "Trieu els estils a importar:"
 
-#: ../src/dialog_style_manager.cpp:704
+#: ../src/dialog_style_manager.cpp:750
 msgid "Import Styles"
 msgstr "Importa estils"
 
-#: ../src/dialog_style_manager.cpp:730
+#: ../src/dialog_style_manager.cpp:786
 msgid "style import"
 msgstr "la importació d’estils"
 
-#: ../src/dialog_style_manager.cpp:839
+#: ../src/dialog_style_manager.cpp:895
 msgid "Are you sure? This cannot be undone!"
 msgstr "Segur que voleu fer això? No ho podreu desfer!"
 
-#: ../src/dialog_style_manager.cpp:839
+#: ../src/dialog_style_manager.cpp:895
 msgid "Sort styles"
 msgstr "Ordena els estils"
 
-#: ../src/dialog_style_manager.cpp:880
+#: ../src/dialog_style_manager.cpp:936
 msgid "style move"
 msgstr "el moviment de l’estil"
 
@@ -4865,7 +4888,7 @@ msgstr "Reajusta l’script (suprimeix vores)"
 msgid "Resample script"
 msgstr "Reajusta l’script"
 
-#: ../src/dialog_video_properties.cpp:163
+#: ../src/dialog_video_properties.cpp:164
 msgid "change script resolution"
 msgstr "el canvi de resolució de l’script"
 
@@ -4895,8 +4918,8 @@ msgid ""
 "It can also be used to convert subtitles to a different speed video, such as "
 "NTSC to PAL speedup."
 msgstr ""
-"Transforma els temps dels subtítols, incloent-hi els de les etiquetes d’"
-"estils, d’una taxa de fotogrames a una altra.\n"
+"Transforma els temps dels subtítols, incloent-hi els de les etiquetes "
+"d’estils, d’una taxa de fotogrames a una altra.\n"
 "\n"
 "Això serveix si convertiu uns subtítols per temps normals a subtítols per "
 "temps VFRaC per a incrustar-los al vídeo.\n"
@@ -5083,11 +5106,11 @@ msgstr "CPS"
 msgid "Characters Per Second"
 msgstr "Caràcters per segon"
 
-#: ../src/hotkey.cpp:261
+#: ../src/hotkey.cpp:263
 msgid "Invalid command name for hotkey"
 msgstr "Nom d’ordre no vàlid per a la drecera de teclat"
 
-#: ../src/main.cpp:246
+#: ../src/main.cpp:268
 #, c-format
 msgid ""
 "Oops, Aegisub has crashed!\n"
@@ -5106,11 +5129,11 @@ msgstr ""
 "\n"
 "L’Aegisub es tancarà."
 
-#: ../src/main.cpp:273
+#: ../src/main.cpp:302
 msgid "Check for updates?"
 msgstr "Voleu comprovar si hi ha actualitzacions?"
 
-#: ../src/main.cpp:273
+#: ../src/main.cpp:302
 msgid ""
 "Do you want Aegisub to check for updates whenever it starts? You can still "
 "do it manually via the Help menu."
@@ -5118,11 +5141,11 @@ msgstr ""
 "Voleu que l’Aegisub comprovi si hi ha actualitzacions cada vegada que "
 "s’iniciï? Podeu fer-ho sempre manualment al menú d’Ajuda."
 
-#: ../src/main.cpp:390 ../src/main.cpp:393
+#: ../src/main.cpp:420 ../src/main.cpp:423
 msgid "Program error"
 msgstr "S’ha produït un error al programa"
 
-#: ../src/main.cpp:407
+#: ../src/main.cpp:437
 #, c-format
 msgid ""
 "An unexpected error has occurred. Please save your work and restart "
@@ -5147,19 +5170,19 @@ msgstr "&Recents"
 msgid "No Automation macros loaded"
 msgstr "No s’han carregat macros d’automatització"
 
-#: ../src/mkv_wrap.cpp:238
+#: ../src/mkv_wrap.cpp:241
 msgid "Choose which track to read:"
 msgstr "Trieu quina pista voleu llegir:"
 
-#: ../src/mkv_wrap.cpp:238
+#: ../src/mkv_wrap.cpp:241
 msgid "Multiple subtitle tracks found"
 msgstr "S’han trobat múltiples pistes de subtítols"
 
-#: ../src/mkv_wrap.cpp:283
+#: ../src/mkv_wrap.cpp:286
 msgid "Parsing Matroska"
 msgstr "S’està analitzant el fitxer Matroska"
 
-#: ../src/mkv_wrap.cpp:283
+#: ../src/mkv_wrap.cpp:286
 msgid "Reading subtitles from Matroska file."
 msgstr "S’estan llegint els subtítols del fitxer Matroska."
 
@@ -5925,11 +5948,27 @@ msgstr "Fils de descodificació"
 msgid "Enable unsafe seeking"
 msgstr "Activa la visualització insegura"
 
-#: ../src/preferences.cpp:599
+#: ../src/preferences.cpp:473
+msgid "Plugins"
+msgstr ""
+
+#: ../src/preferences.cpp:475
+msgid "Wakatime"
+msgstr ""
+
+#: ../src/preferences.cpp:476
+msgid "Enable Debug Logs"
+msgstr ""
+
+#: ../src/preferences.cpp:480
+msgid "API Key"
+msgstr ""
+
+#: ../src/preferences.cpp:617
 msgid "Hotkeys"
 msgstr "Dreceres del teclat"
 
-#: ../src/preferences.cpp:697
+#: ../src/preferences.cpp:715
 msgid ""
 "Are you sure that you want to restore the defaults? All your settings will "
 "be overridden."
@@ -5937,15 +5976,15 @@ msgstr ""
 "Segur que voleu restaurar els valors per defecte? Tota la vostra "
 "configuració se sobreescriurà."
 
-#: ../src/preferences.cpp:697
+#: ../src/preferences.cpp:715
 msgid "Restore defaults?"
 msgstr "Voleu restaurar els valors per defecte?"
 
-#: ../src/preferences.cpp:715
+#: ../src/preferences.cpp:733
 msgid "Preferences"
 msgstr "Preferències"
 
-#: ../src/preferences.cpp:743
+#: ../src/preferences.cpp:762
 msgid "&Restore Defaults"
 msgstr "&Restaura els valors per defecte"
 
@@ -6037,7 +6076,7 @@ msgstr ""
 "\n"
 "S’han provat els següents proveïdors:\n"
 
-#: ../src/resolution_resampler.cpp:288
+#: ../src/resolution_resampler.cpp:301
 msgid "resolution resampling"
 msgstr "el reajustament de resolució"
 
@@ -6056,25 +6095,25 @@ msgstr[1] "S’han substituït %d coincidències."
 msgid "No matches found."
 msgstr "No s’han trobat coincidències."
 
-#: ../src/subs_controller.cpp:246
+#: ../src/subs_controller.cpp:249
 #, c-format
 msgid "Do you want to save changes to %s?"
 msgstr "Voleu desar els canvis a %s?"
 
-#: ../src/subs_controller.cpp:246
+#: ../src/subs_controller.cpp:249
 msgid "Unsaved changes"
 msgstr "Canvis no desats"
 
-#: ../src/subs_controller.cpp:279
+#: ../src/subs_controller.cpp:282
 #, c-format
 msgid "File backup saved as \"%s\"."
 msgstr "S’ha desat una còpia de seguretat del fitxer com a «%s»."
 
-#: ../src/subs_controller.cpp:404
+#: ../src/subs_controller.cpp:407
 msgid "Untitled"
 msgstr "Sense títol"
 
-#: ../src/subs_controller.cpp:406
+#: ../src/subs_controller.cpp:409
 msgid "untitled"
 msgstr "sense títol"
 
@@ -6406,18 +6445,6 @@ msgid "&Make times continuous (change end)"
 msgstr "Fe&s els temps continus (canvia el final)"
 
 #: default_menu.json:0
-msgid "Make Times Continuous"
-msgstr "Fes els temps continus"
-
-#: default_menu.json:0
-msgid "Set &Zoom"
-msgstr "Defineix l’&ampliació"
-
-#: default_menu.json:0
-msgid "Override &AR"
-msgstr "Imposa la relació d’as&pecte"
-
-#: default_menu.json:0
 msgid "&File"
 msgstr "&Fitxer"
 
@@ -6466,6 +6493,18 @@ msgid "Sort Selected Lines"
 msgstr "Ordena les línies seleccionades"
 
 #: default_menu.json:0
+msgid "Make Times Continuous"
+msgstr "Fes els temps continus"
+
+#: default_menu.json:0
+msgid "Set &Zoom"
+msgstr "Defineix l’&ampliació"
+
+#: default_menu.json:0
+msgid "Override &AR"
+msgstr "Imposa la relació d’as&pecte"
+
+#: default_menu.json:0
 msgid "Window"
 msgstr "Finestra"
 
@@ -6489,7 +6528,7 @@ msgstr "Anomena i desa..."
 msgid "Export As..."
 msgstr "Exporta com a..."
 
-#: default_hotkey.json:244:
+#: default_hotkey.json:268:
 msgid "Subtitle Edit Box"
 msgstr "Caixa d’edició dels subtítols"
 
@@ -6690,6 +6729,22 @@ msgid "Fully scriptable through the Automation module"
 msgstr ""
 "Completament compatible amb scripting mitjançant el mòdul d’Automatització"
 
+#: ../packages/desktop/aegisub.metainfo.xml.in.in:36
+msgid "anime"
+msgstr ""
+
+#: ../packages/desktop/aegisub.metainfo.xml.in.in:37
+msgid "movie"
+msgstr ""
+
+#: ../packages/desktop/aegisub.metainfo.xml.in.in:38
+msgid "subtitle"
+msgstr ""
+
+#: ../packages/desktop/aegisub.metainfo.xml.in.in:39
+msgid "translate"
+msgstr ""
+
 #: ../packages/desktop/aegisub.metainfo.xml.in.in:43
 msgid "Typesetting"
 msgstr "Definició d’estils"
@@ -6701,6 +6756,10 @@ msgstr "Àudio i vídeo"
 #: ../packages/desktop/aegisub.metainfo.xml.in.in:51
 msgid "Audio timing"
 msgstr "Definició de temps mitjançant l’àudio"
+
+#: ../packages/desktop/aegisub.metainfo.xml.in.in:56
+msgid "Aegisub Group"
+msgstr ""
 
 #: packages/win_installer/fragment_strings.iss:1
 msgid "Installing runtime libraries..."
@@ -6726,9 +6785,13 @@ msgid ""
 "no warranties of any kind are given either.%n%nSee the Aegisub website for "
 "information on obtaining the source code."
 msgstr ""
-"S’instal·larà l’Aegisub {#BUILD_GIT_VERSION_STRING} al vostre "
-"ordinador.%n%nL’Aegisub està cobert per la Llicència Pública General de GNU "
-"versió 2. Això vol dir que podeu utilitzar l’aplicació per a qualsevol "
-"propòsit sense càrrecs, però també que no es proporciona cap mena de "
-"garantia.%n%nVegeu el lloc web de l’Aegisub per a obtenir informació sobre "
-"com obtenir-ne el codi font."
+"S’instal·larà l’Aegisub {#BUILD_GIT_VERSION_STRING} al vostre ordinador."
+"%n%nL’Aegisub està cobert per la Llicència Pública General de GNU versió 2. "
+"Això vol dir que podeu utilitzar l’aplicació per a qualsevol propòsit sense "
+"càrrecs, però també que no es proporciona cap mena de garantia.%n%nVegeu el "
+"lloc web de l’Aegisub per a obtenir informació sobre com obtenir-ne el codi "
+"font."
+
+#, c-format
+#~ msgid "Built by %s on %s."
+#~ msgstr "Muntat per %s el %s."

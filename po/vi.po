@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Aegisub Tiếng Việt\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-02-02 21:53+0100\n"
+"POT-Creation-Date: 2025-10-24 00:19+0200\n"
 "PO-Revision-Date: \n"
 "Last-Translator: NGUY?N M?nh Hùng <loveleeyoungae@yahoo.com>\n"
 "Language-Team: OnEsChi <oneschi@yahoo.com>\n"
@@ -155,7 +155,7 @@ msgstr "căn thời gian"
 msgid "karaoke timing"
 msgstr "căn thời gian Karaoke"
 
-#: ../src/auto4_base.cpp:454
+#: ../src/automation/auto4_base.cpp:469
 #, c-format
 msgid ""
 "Failed to load Automation script '%s':\n"
@@ -164,24 +164,24 @@ msgstr ""
 "Nạp thất bại mã Tự động hóa '%s':\n"
 "%s"
 
-#: ../src/auto4_base.cpp:461
+#: ../src/automation/auto4_base.cpp:476
 #, c-format
 msgid "The file was not recognised as an Automation script: %s"
 msgstr "Tệp không được nhận diện là một mã Tự động hóa: %s"
 
-#: ../src/auto4_base.cpp:490 ../src/command/audio.cpp:84
+#: ../src/automation/auto4_base.cpp:505 ../src/command/audio.cpp:84
 #: ../src/command/keyframe.cpp:76 ../src/command/timecode.cpp:73
 #: ../src/command/timecode.cpp:93 ../src/command/video.cpp:592
 msgid "All Files"
 msgstr "Tất cả Tệp"
 
-#: ../src/auto4_base.cpp:496 ../src/command/keyframe.cpp:74
+#: ../src/automation/auto4_base.cpp:511 ../src/command/keyframe.cpp:74
 #: ../src/command/timecode.cpp:73 ../src/command/timecode.cpp:93
 #: ../src/subtitle_format.cpp:318
 msgid "All Supported Formats"
 msgstr "Tất cả Định dạng Được hỗ trợ"
 
-#: ../src/auto4_base.cpp:502
+#: ../src/automation/auto4_base.cpp:517
 msgid "File was not recognized as a script"
 msgstr "Tệp không được nhận diện như là một script"
 
@@ -309,7 +309,7 @@ msgstr "Mở một cửa sổ chương trình mới"
 msgid "&Options..."
 msgstr "Tù&y chọn..."
 
-#: ../src/command/app.cpp:205 ../src/dialog_properties.cpp:146
+#: ../src/command/app.cpp:205 ../src/dialog_properties.cpp:147
 #: ../src/dialog_timing_processor.cpp:168 ../src/preferences.cpp:129
 #: ../src/preferences.cpp:169
 msgid "Options"
@@ -694,7 +694,7 @@ msgstr ""
 msgid "'%s' is not a valid command name"
 msgstr "'%s' không phải là một lệnh hợp lệ"
 
-#: ../src/command/edit.cpp:135 ../src/command/edit.cpp:844
+#: ../src/command/edit.cpp:135 ../src/command/edit.cpp:846
 msgid "paste"
 msgstr "dán"
 
@@ -702,88 +702,88 @@ msgstr "dán"
 msgid "set color"
 msgstr "đặt màu"
 
-#: ../src/command/edit.cpp:391
+#: ../src/command/edit.cpp:393
 msgid "Primary Color..."
 msgstr "Màu chính..."
 
-#: ../src/command/edit.cpp:392
+#: ../src/command/edit.cpp:394
 msgid "Primary Color"
 msgstr "Màu chính"
 
-#: ../src/command/edit.cpp:393
+#: ../src/command/edit.cpp:395
 msgid "Set the primary fill color (\\c) at the cursor position"
 msgstr "Đặt màu chính (\\c) tại vị trí con trỏ"
 
-#: ../src/command/edit.cpp:403
+#: ../src/command/edit.cpp:405
 msgid "Secondary Color..."
 msgstr "Màu thứ cấp..."
 
-#: ../src/command/edit.cpp:404
+#: ../src/command/edit.cpp:406
 msgid "Secondary Color"
 msgstr "Màu thứ cấp"
 
-#: ../src/command/edit.cpp:405
+#: ../src/command/edit.cpp:407
 msgid "Set the secondary (karaoke) fill color (\\2c) at the cursor position"
 msgstr "Đặt màu thứ cấp (Karaoke) (\\2c) tại vị trí con trỏ"
 
-#: ../src/command/edit.cpp:415
+#: ../src/command/edit.cpp:417
 msgid "Outline Color..."
 msgstr "Màu viền..."
 
-#: ../src/command/edit.cpp:416
+#: ../src/command/edit.cpp:418
 msgid "Outline Color"
 msgstr "Màu viền"
 
-#: ../src/command/edit.cpp:417
+#: ../src/command/edit.cpp:419
 msgid "Set the outline color (\\3c) at the cursor position"
 msgstr "Đặt màu viền (\\3c) tại vị trí con trỏ "
 
-#: ../src/command/edit.cpp:427
+#: ../src/command/edit.cpp:429
 msgid "Shadow Color..."
 msgstr "Màu bóng..."
 
-#: ../src/command/edit.cpp:428
+#: ../src/command/edit.cpp:430
 msgid "Shadow Color"
 msgstr "Màu bóng"
 
-#: ../src/command/edit.cpp:429
+#: ../src/command/edit.cpp:431
 msgid "Set the shadow color (\\4c) at the cursor position"
 msgstr "Đặt màu bóng (\\4c) tại vị trí con trỏ"
 
-#: ../src/command/edit.cpp:439 ../src/command/edit.cpp:440
+#: ../src/command/edit.cpp:441 ../src/command/edit.cpp:442
 msgid "Toggle Bold"
 msgstr "Bật/Tắt chữ đậm"
 
-#: ../src/command/edit.cpp:441
+#: ../src/command/edit.cpp:443
 msgid ""
 "Toggle bold (\\b) for the current selection or at the current cursor position"
 msgstr ""
 "Bật/Tắt chữ đậm (\\b) cho dòng đang chọn hoặc tại vị trí con trỏ hiện tại"
 
-#: ../src/command/edit.cpp:444
+#: ../src/command/edit.cpp:446
 msgid "toggle bold"
 msgstr "bật/tắt chữ đậm"
 
-#: ../src/command/edit.cpp:451 ../src/command/edit.cpp:452
+#: ../src/command/edit.cpp:453 ../src/command/edit.cpp:454
 msgid "Toggle Italics"
 msgstr "Bật/Tắt chữ nghiêng"
 
-#: ../src/command/edit.cpp:453
+#: ../src/command/edit.cpp:455
 msgid ""
 "Toggle italics (\\i) for the current selection or at the current cursor "
 "position"
 msgstr ""
 "Bật/Tắt chữ nghiêng (\\i) cho dòng đang chọn hoặc tại vị trí con trỏ hiện tại"
 
-#: ../src/command/edit.cpp:456
+#: ../src/command/edit.cpp:458
 msgid "toggle italic"
 msgstr "bật/tắt chữ nghiêng"
 
-#: ../src/command/edit.cpp:463 ../src/command/edit.cpp:464
+#: ../src/command/edit.cpp:465 ../src/command/edit.cpp:466
 msgid "Toggle Underline"
 msgstr "Bật/Tắt gạch chân chữ"
 
-#: ../src/command/edit.cpp:465
+#: ../src/command/edit.cpp:467
 msgid ""
 "Toggle underline (\\u) for the current selection or at the current cursor "
 "position"
@@ -791,15 +791,15 @@ msgstr ""
 "Bật/Tắt gạch chân chữ (\\i) cho dòng đang chọn hoặc tại vị trí con trỏ hiện "
 "tại"
 
-#: ../src/command/edit.cpp:468
+#: ../src/command/edit.cpp:470
 msgid "toggle underline"
 msgstr "bật/tắt gạch chân chữ"
 
-#: ../src/command/edit.cpp:475 ../src/command/edit.cpp:476
+#: ../src/command/edit.cpp:477 ../src/command/edit.cpp:478
 msgid "Toggle Strikeout"
 msgstr "Bật/Tắt gạch ngang chữ"
 
-#: ../src/command/edit.cpp:477
+#: ../src/command/edit.cpp:479
 msgid ""
 "Toggle strikeout (\\s) for the current selection or at the current cursor "
 "position"
@@ -807,107 +807,107 @@ msgstr ""
 "Bật/Tắt gạch ngang chữ (\\i) cho dòng đang chọn hoặc tại vị trí con trỏ hiện "
 "tại"
 
-#: ../src/command/edit.cpp:480
+#: ../src/command/edit.cpp:482
 msgid "toggle strikeout"
 msgstr "bật/tắt gạch ngang chữ"
 
-#: ../src/command/edit.cpp:487
+#: ../src/command/edit.cpp:489
 msgid "Font Face..."
 msgstr "Phông chữ..."
 
-#: ../src/command/edit.cpp:488 ../src/preferences_base.cpp:250
+#: ../src/command/edit.cpp:490 ../src/preferences_base.cpp:250
 msgid "Font Face"
 msgstr "Phông chữ"
 
-#: ../src/command/edit.cpp:489
+#: ../src/command/edit.cpp:491
 msgid "Select a font face and size"
 msgstr "Chọn phông chữ và kích cỡ"
 
-#: ../src/command/edit.cpp:516
+#: ../src/command/edit.cpp:518
 msgid "set font"
 msgstr "chọn phông chữ"
 
-#: ../src/command/edit.cpp:543
+#: ../src/command/edit.cpp:545
 msgid "Find and R&eplace..."
 msgstr "Tìm và Thay thế..."
 
-#: ../src/command/edit.cpp:544
+#: ../src/command/edit.cpp:546
 msgid "Find and Replace"
 msgstr "Tìm và Thay thế"
 
-#: ../src/command/edit.cpp:545
+#: ../src/command/edit.cpp:547
 msgid "Find and replace words in subtitles"
 msgstr "Tìm và thay thế các từ trong phụ đề"
 
-#: ../src/command/edit.cpp:606
+#: ../src/command/edit.cpp:608
 msgid "&Copy Lines"
 msgstr "&Sao chép dòng"
 
-#: ../src/command/edit.cpp:607
+#: ../src/command/edit.cpp:609
 msgid "Copy Lines"
 msgstr "Sao chép dòng"
 
-#: ../src/command/edit.cpp:608
+#: ../src/command/edit.cpp:610
 msgid "Copy subtitles to the clipboard"
 msgstr "Sao chép phụ đề vào khay nhớ tạm"
 
-#: ../src/command/edit.cpp:629
+#: ../src/command/edit.cpp:631
 msgid "Cu&t Lines"
 msgstr "Cắ&t dòng"
 
-#: ../src/command/edit.cpp:630
+#: ../src/command/edit.cpp:632
 msgid "Cut Lines"
 msgstr "Cắt dòng"
 
-#: ../src/command/edit.cpp:631
+#: ../src/command/edit.cpp:633
 msgid "Cut subtitles"
 msgstr "Cắt phụ đề"
 
-#: ../src/command/edit.cpp:638
+#: ../src/command/edit.cpp:640
 msgid "cut lines"
 msgstr "cắt dòng"
 
-#: ../src/command/edit.cpp:646
+#: ../src/command/edit.cpp:648
 msgid "De&lete Lines"
 msgstr "&Xóa dòng"
 
-#: ../src/command/edit.cpp:647
+#: ../src/command/edit.cpp:649
 msgid "Delete Lines"
 msgstr "Xóa dòng"
 
-#: ../src/command/edit.cpp:648
+#: ../src/command/edit.cpp:650
 msgid "Delete currently selected lines"
 msgstr "Xóa các dòng đang chọn"
 
-#: ../src/command/edit.cpp:651
+#: ../src/command/edit.cpp:653
 msgid "delete lines"
 msgstr "xóa dòng"
 
-#: ../src/command/edit.cpp:716
+#: ../src/command/edit.cpp:718
 msgid "duplicate lines"
 msgstr "tạo bản sao của dòng"
 
-#: ../src/command/edit.cpp:716 ../src/command/edit.cpp:1109
+#: ../src/command/edit.cpp:718 ../src/command/edit.cpp:1111
 msgid "split"
 msgstr "phân tách"
 
-#: ../src/command/edit.cpp:723
+#: ../src/command/edit.cpp:725
 msgid "&Duplicate Lines"
 msgstr "Tạo &bản sao của dòng"
 
-#: ../src/command/edit.cpp:724
+#: ../src/command/edit.cpp:726
 msgid "Duplicate Lines"
 msgstr "Tạo bản sao của dòng"
 
-#: ../src/command/edit.cpp:725
+#: ../src/command/edit.cpp:727
 msgid "Duplicate the selected lines"
 msgstr "Tạo bản sao của các dòng đã chọn"
 
-#: ../src/command/edit.cpp:734 ../src/command/edit.cpp:735
+#: ../src/command/edit.cpp:736 ../src/command/edit.cpp:737
 msgid "Split lines after current frame"
 msgstr "Phân tách dòng sau khung hình hiện tại"
 
-#: ../src/command/edit.cpp:736
+#: ../src/command/edit.cpp:738
 msgid ""
 "Split the current line into a line which ends on the current frame and a "
 "line which starts on the next frame"
@@ -915,11 +915,11 @@ msgstr ""
 "Phân tách dòng hiện tại thành một dòng kết thúc ở khung hình hiện tại và một "
 "dòng bắt đầu ở khung hình kế tiếp"
 
-#: ../src/command/edit.cpp:746 ../src/command/edit.cpp:747
+#: ../src/command/edit.cpp:748 ../src/command/edit.cpp:749
 msgid "Split lines before current frame"
 msgstr "Phân tách dòng trước dòng hiện tại"
 
-#: ../src/command/edit.cpp:748
+#: ../src/command/edit.cpp:750
 msgid ""
 "Split the current line into a line which ends on the previous frame and a "
 "line which starts on the current frame"
@@ -927,49 +927,49 @@ msgstr ""
 "Phân tách dòng hiện tại thành một dòng kết thúc ở khung hình trước và một "
 "dòng bắt đầu ở khung hình hiện tại"
 
-#: ../src/command/edit.cpp:788
+#: ../src/command/edit.cpp:790
 msgid "As &Karaoke"
 msgstr "Như &Karaoke"
 
-#: ../src/command/edit.cpp:789
+#: ../src/command/edit.cpp:791
 msgid "As Karaoke"
 msgstr "Như Karaoke"
 
-#: ../src/command/edit.cpp:790
+#: ../src/command/edit.cpp:792
 msgid "Join selected lines in a single one, as karaoke"
 msgstr "Hợp nhất các dòng đã chọn thành một dòng duy nhất, như Karaoke"
 
-#: ../src/command/edit.cpp:793
+#: ../src/command/edit.cpp:795
 msgid "join as karaoke"
 msgstr "hợp nhất như karaoke"
 
-#: ../src/command/edit.cpp:799
+#: ../src/command/edit.cpp:801
 msgid "&Concatenate"
 msgstr "&Nối tiếp"
 
-#: ../src/command/edit.cpp:800
+#: ../src/command/edit.cpp:802
 msgid "Concatenate"
 msgstr "&Nối tiếp"
 
-#: ../src/command/edit.cpp:801
+#: ../src/command/edit.cpp:803
 msgid "Join selected lines in a single one, concatenating text together"
 msgstr ""
 "Hợp nhất các dòng đã chọn thành một dòng, nối tiếp nội dung văn bản chúng "
 "chứa cùng nhau"
 
-#: ../src/command/edit.cpp:804 ../src/command/edit.cpp:815
+#: ../src/command/edit.cpp:806 ../src/command/edit.cpp:817
 msgid "join lines"
 msgstr "hợp nhất các dòng"
 
-#: ../src/command/edit.cpp:810
+#: ../src/command/edit.cpp:812
 msgid "Keep &First"
 msgstr "&Chỉ giữ lại dòng đầu tiên"
 
-#: ../src/command/edit.cpp:811
+#: ../src/command/edit.cpp:813
 msgid "Keep First"
 msgstr "Chỉ giữ lại dòng đầu tiên"
 
-#: ../src/command/edit.cpp:812
+#: ../src/command/edit.cpp:814
 msgid ""
 "Join selected lines in a single one, keeping text of first and discarding "
 "remaining"
@@ -977,66 +977,66 @@ msgstr ""
 "Hợp nhất các dòng đã chọn thành một, giữ nội dung văn bản của dòng đầu tiên "
 "được chọn và hủy của những dòng còn lại"
 
-#: ../src/command/edit.cpp:853
+#: ../src/command/edit.cpp:855
 msgid "&Paste Lines"
 msgstr "&Dán dòng"
 
-#: ../src/command/edit.cpp:854
+#: ../src/command/edit.cpp:856
 msgid "Paste Lines"
 msgstr "Dán dòng"
 
-#: ../src/command/edit.cpp:855
+#: ../src/command/edit.cpp:857
 msgid "Paste subtitles"
 msgstr "Dán phụ đề"
 
-#: ../src/command/edit.cpp:884
+#: ../src/command/edit.cpp:886
 msgid "Paste Lines &Over..."
 msgstr "Dán dòn&g đè lên"
 
-#: ../src/command/edit.cpp:885
+#: ../src/command/edit.cpp:887
 msgid "Paste Lines Over"
 msgstr "Dán dòng đè lên"
 
-#: ../src/command/edit.cpp:886
+#: ../src/command/edit.cpp:888
 msgid "Paste subtitles over others"
 msgstr "Dán phụ đề đè lên những cái khác"
 
-#: ../src/command/edit.cpp:968
+#: ../src/command/edit.cpp:970
 msgid "Recom&bine Lines"
 msgstr "Tái hợ&p các dòng"
 
-#: ../src/command/edit.cpp:969
+#: ../src/command/edit.cpp:971
 msgid "Recombine Lines"
 msgstr "Tái hợp các dòng"
 
-#: ../src/command/edit.cpp:970
+#: ../src/command/edit.cpp:972
 msgid "Recombine subtitles which have been split and merged"
 msgstr "Hợp lại các dòng phụ đề đã bị phân tách"
 
-#: ../src/command/edit.cpp:1040
+#: ../src/command/edit.cpp:1042
 msgid "combining"
 msgstr "tái hợp"
 
-#: ../src/command/edit.cpp:1046 ../src/command/edit.cpp:1047
+#: ../src/command/edit.cpp:1048 ../src/command/edit.cpp:1049
 msgid "Split Lines (by karaoke)"
 msgstr "Phân tách Dòng (theo karaoke)"
 
-#: ../src/command/edit.cpp:1048
+#: ../src/command/edit.cpp:1050
 msgid "Use karaoke timing to split line into multiple smaller lines"
 msgstr ""
 "Sử dụng căn chỉnh thời gian Karaoke để phân tách một dòng thành những dòng "
 "nhỏ hơn"
 
-#: ../src/command/edit.cpp:1082
+#: ../src/command/edit.cpp:1084
 msgid "splitting"
 msgstr "Phân tách"
 
-#: ../src/command/edit.cpp:1114 ../src/command/edit.cpp:1115
+#: ../src/command/edit.cpp:1116 ../src/command/edit.cpp:1117
 #: ../src/subs_edit_ctrl.cpp:398
 msgid "Split at cursor (estimate times)"
 msgstr "Phân tách tại con trỏ (ước tính thời gian)"
 
-#: ../src/command/edit.cpp:1116
+#: ../src/command/edit.cpp:1118
 msgid ""
 "Split the current line at the cursor, dividing the original line's duration "
 "between the new ones"
@@ -1044,12 +1044,12 @@ msgstr ""
 "Phân tách dòng hiện tại tại con trỏ, chia thời lượng dòng ban đầu giữa những "
 "cái mới"
 
-#: ../src/command/edit.cpp:1130 ../src/command/edit.cpp:1131
+#: ../src/command/edit.cpp:1132 ../src/command/edit.cpp:1133
 #: ../src/subs_edit_ctrl.cpp:397
 msgid "Split at cursor (preserve times)"
 msgstr "Phân tách tại con trỏ (giữ nguyên thời gian)"
 
-#: ../src/command/edit.cpp:1132
+#: ../src/command/edit.cpp:1134
 msgid ""
 "Split the current line at the cursor, setting both lines to the original "
 "line's times"
@@ -1057,11 +1057,11 @@ msgstr ""
 "Phân tách dòng hiện tại tại con trỏ, đặt thời gian của cả hai dòng thành "
 "thời gian của dòng gốc"
 
-#: ../src/command/edit.cpp:1141 ../src/command/edit.cpp:1142
+#: ../src/command/edit.cpp:1143 ../src/command/edit.cpp:1144
 msgid "Split at cursor (at video frame)"
 msgstr "Phân tách tại con trỏ (ở khung hình video)"
 
-#: ../src/command/edit.cpp:1143
+#: ../src/command/edit.cpp:1145
 msgid ""
 "Split the current line at the cursor, dividing the line's duration at the "
 "current video frame"
@@ -1069,102 +1069,102 @@ msgstr ""
 "Phân tách dòng hiện tại tại con trỏ, chia thời lượng của dòng ở khung hình "
 "video hiện tại"
 
-#: ../src/command/edit.cpp:1159
+#: ../src/command/edit.cpp:1161
 msgid "Redo last undone action"
 msgstr "Làm lại hành động cuối cùng"
 
-#: ../src/command/edit.cpp:1164
+#: ../src/command/edit.cpp:1166
 msgid "Nothing to &redo"
 msgstr "Không có hành động nào để làm lại"
 
-#: ../src/command/edit.cpp:1165
+#: ../src/command/edit.cpp:1167
 #, c-format
 msgid "&Redo %s"
 msgstr "&Làm lại %s"
 
-#: ../src/command/edit.cpp:1169
+#: ../src/command/edit.cpp:1171
 msgid "Nothing to redo"
 msgstr "Không có hành động nào để làm lại"
 
-#: ../src/command/edit.cpp:1170
+#: ../src/command/edit.cpp:1172
 #, c-format
 msgid "Redo %s"
 msgstr "Làm lại %s"
 
-#: ../src/command/edit.cpp:1185
+#: ../src/command/edit.cpp:1187
 msgid "Undo last action"
 msgstr "Hoàn tác hành động cuối cùng"
 
-#: ../src/command/edit.cpp:1190
+#: ../src/command/edit.cpp:1192
 msgid "Nothing to &undo"
 msgstr "Không có hành động nào để hoàn tác"
 
-#: ../src/command/edit.cpp:1191
+#: ../src/command/edit.cpp:1193
 #, c-format
 msgid "&Undo %s"
 msgstr "&Hoàn tác %s"
 
-#: ../src/command/edit.cpp:1195
+#: ../src/command/edit.cpp:1197
 msgid "Nothing to undo"
 msgstr "Không có hành động nào để hoàn tác"
 
-#: ../src/command/edit.cpp:1196
+#: ../src/command/edit.cpp:1198
 #, c-format
 msgid "Undo %s"
 msgstr "Hoàn tác %s"
 
-#: ../src/command/edit.cpp:1210 ../src/command/edit.cpp:1211
+#: ../src/command/edit.cpp:1212 ../src/command/edit.cpp:1213
 msgid "Revert"
 msgstr "Đảo ngược"
 
-#: ../src/command/edit.cpp:1212
+#: ../src/command/edit.cpp:1214
 msgid "Revert the active line to its initial state (shown in the upper editor)"
 msgstr ""
 "Đảo ngược dòng đang hoạt động về trạng thái ban đầu của nó (Hiển thị ở trình "
 "biên tập ở trên)"
 
-#: ../src/command/edit.cpp:1217
+#: ../src/command/edit.cpp:1219
 msgid "revert line"
 msgstr "đảo ngược dòng"
 
-#: ../src/command/edit.cpp:1223 ../src/command/edit.cpp:1224
+#: ../src/command/edit.cpp:1225 ../src/command/edit.cpp:1226
 #: ../src/preferences.cpp:410
 msgid "Clear"
 msgstr "Xóa"
 
-#: ../src/command/edit.cpp:1225
+#: ../src/command/edit.cpp:1227
 msgid "Clear the current line's text"
 msgstr "Xóa hết nội dung văn bản của dòng hiện tại"
 
-#: ../src/command/edit.cpp:1230 ../src/command/edit.cpp:1249
+#: ../src/command/edit.cpp:1232 ../src/command/edit.cpp:1251
 msgid "clear line"
 msgstr "xóa dòng"
 
-#: ../src/command/edit.cpp:1237 ../src/command/edit.cpp:1238
+#: ../src/command/edit.cpp:1239 ../src/command/edit.cpp:1240
 msgid "Clear Text"
 msgstr "Xóa nội dung văn bản"
 
-#: ../src/command/edit.cpp:1239
+#: ../src/command/edit.cpp:1241
 msgid "Clear the current line's text, leaving override tags"
 msgstr "Xóa hết nội dung văn bản của dòng hiện tại, để lại các thẻ"
 
-#: ../src/command/edit.cpp:1255 ../src/command/edit.cpp:1256
-#: ../src/command/tool.cpp:256
+#: ../src/command/edit.cpp:1257 ../src/command/edit.cpp:1258
+#: ../src/command/tool.cpp:271
 msgid "Insert Original"
 msgstr "Chèn nội dung văn bản gốc"
 
-#: ../src/command/edit.cpp:1257
+#: ../src/command/edit.cpp:1259
 msgid "Insert the original line text at the cursor"
 msgstr "Chèn nội dung văn bản gốc của dòng tại con trỏ"
 
-#: ../src/command/edit.cpp:1265
+#: ../src/command/edit.cpp:1267
 msgid "insert original"
 msgstr "chèn nội dung văn bản gốc"
 
 #: ../src/command/grid.cpp:50 ../src/command/grid.cpp:51
 #: ../src/command/grid.cpp:62 ../src/command/grid.cpp:63
 #: ../src/command/time.cpp:355 ../src/command/time.cpp:356
-#: ../src/command/tool.cpp:234
+#: ../src/command/tool.cpp:249
 msgid "Next Line"
 msgstr "Dòng kế tiếp"
 
@@ -1183,7 +1183,7 @@ msgstr "chèn dòng"
 
 #: ../src/command/grid.cpp:89 ../src/command/grid.cpp:90
 #: ../src/command/time.cpp:367 ../src/command/time.cpp:368
-#: ../src/command/tool.cpp:245
+#: ../src/command/tool.cpp:260
 msgid "Previous Line"
 msgstr "Dòng trước"
 
@@ -1619,7 +1619,7 @@ msgstr "Phụ đề mới"
 
 #: ../src/command/subtitle.cpp:255 ../src/command/subtitle.cpp:256
 #: ../src/command/subtitle.cpp:257 ../src/dialog_progress.cpp:175
-#: ../src/dialog_style_manager.cpp:313
+#: ../src/dialog_style_manager.cpp:339
 msgid "Close"
 msgstr "Đóng"
 
@@ -1636,7 +1636,7 @@ msgid "Open a subtitles file"
 msgstr "Mở một tệp phụ đề"
 
 #: ../src/command/subtitle.cpp:274 ../src/command/subtitle.cpp:304
-#: ../src/dialog_style_manager.cpp:667
+#: ../src/dialog_style_manager.cpp:713
 msgid "Open subtitles file"
 msgstr "Mở tệp phụ đề"
 
@@ -1984,14 +1984,26 @@ msgid "Save a VFR timecodes v2 file"
 msgstr "Lưu tệp Mã Thời gian VFR v2"
 
 #: ../src/command/tool.cpp:56
+msgid "ASSDraw3..."
+msgstr ""
+
+#: ../src/command/tool.cpp:57
+msgid "ASSDraw3"
+msgstr ""
+
+#: ../src/command/tool.cpp:58
+msgid "Launch the ASSDraw3 tool for vector drawing"
+msgstr ""
+
+#: ../src/command/tool.cpp:71
 msgid "&Export Subtitles..."
 msgstr "&Xuất phụ đề..."
 
-#: ../src/command/tool.cpp:57
+#: ../src/command/tool.cpp:72
 msgid "Export Subtitles"
 msgstr "Xuất phụ đề"
 
-#: ../src/command/tool.cpp:58
+#: ../src/command/tool.cpp:73
 msgid ""
 "Save a copy of subtitles in a different format or with processing applied to "
 "it"
@@ -1999,39 +2011,39 @@ msgstr ""
 "Lưu một bản sao của phụ đề trong định dạng khác hoặc với một quy trình áp "
 "dụng vào nó"
 
-#: ../src/command/tool.cpp:69
+#: ../src/command/tool.cpp:84
 msgid "&Fonts Collector..."
 msgstr "Thu thập &phông chữ..."
 
-#: ../src/command/tool.cpp:70 ../src/dialog_fonts_collector.cpp:226
+#: ../src/command/tool.cpp:85 ../src/dialog_fonts_collector.cpp:226
 msgid "Fonts Collector"
 msgstr "Trình thu thập phông chữ"
 
-#: ../src/command/tool.cpp:71
+#: ../src/command/tool.cpp:86
 msgid "Open fonts collector"
 msgstr "Mở trình thu thập phông chữ"
 
-#: ../src/command/tool.cpp:81
+#: ../src/command/tool.cpp:96
 msgid "S&elect Lines..."
 msgstr "Chọn các dòng..."
 
-#: ../src/command/tool.cpp:82
+#: ../src/command/tool.cpp:97
 msgid "Select Lines"
 msgstr "Chọn các dòng"
 
-#: ../src/command/tool.cpp:83
+#: ../src/command/tool.cpp:98
 msgid "Select lines based on defined criteria"
 msgstr "Chọn các dòng dựa trên yêu cầu được định sẵn"
 
-#: ../src/command/tool.cpp:93
+#: ../src/command/tool.cpp:108
 msgid "&Resample Resolution..."
 msgstr "Tạo lại &mẫu độ phân giải"
 
-#: ../src/command/tool.cpp:94 ../src/dialog_resample.cpp:90
+#: ../src/command/tool.cpp:109 ../src/dialog_resample.cpp:90
 msgid "Resample Resolution"
 msgstr "Tạo lại mẫu độ phân giải"
 
-#: ../src/command/tool.cpp:95
+#: ../src/command/tool.cpp:110
 msgid ""
 "Resample subtitles to maintain their current appearance at a different "
 "script resolution"
@@ -2039,77 +2051,77 @@ msgstr ""
 "Tạo lại mẫu cho phụ đề để chúng vẫn giữ được hình dáng của chúng ở những độ "
 "phân giải khác nhau"
 
-#: ../src/command/tool.cpp:108
+#: ../src/command/tool.cpp:123
 msgid "St&yling Assistant..."
 msgstr "&Trợ lí Tạo kiểu dáng..."
 
-#: ../src/command/tool.cpp:109 ../src/dialog_styling_assistant.cpp:53
+#: ../src/command/tool.cpp:124 ../src/dialog_styling_assistant.cpp:53
 msgid "Styling Assistant"
 msgstr "Trợ lí Tạo kiểu dáng"
 
-#: ../src/command/tool.cpp:110
+#: ../src/command/tool.cpp:125
 msgid "Open styling assistant"
 msgstr "Mở trình trợ lí tạo kiểu dáng"
 
-#: ../src/command/tool.cpp:127 ../src/command/tool.cpp:211
+#: ../src/command/tool.cpp:142 ../src/command/tool.cpp:226
 msgid "&Accept changes"
 msgstr "&Chấp nhận thay đổi"
 
-#: ../src/command/tool.cpp:128 ../src/command/tool.cpp:212
+#: ../src/command/tool.cpp:143 ../src/command/tool.cpp:227
 #: ../src/dialog_styling_assistant.cpp:88 ../src/dialog_translation.cpp:111
 msgid "Accept changes"
 msgstr "Chấp nhận thay đổi"
 
-#: ../src/command/tool.cpp:129 ../src/command/tool.cpp:213
+#: ../src/command/tool.cpp:144 ../src/command/tool.cpp:228
 msgid "Commit changes and move to the next line"
 msgstr "Xác nhận thay đổi và đi tới dòng tiếp theo"
 
-#: ../src/command/tool.cpp:138 ../src/command/tool.cpp:222
+#: ../src/command/tool.cpp:153 ../src/command/tool.cpp:237
 msgid "&Preview changes"
 msgstr "&Xem trước các thay đổi"
 
-#: ../src/command/tool.cpp:139 ../src/command/tool.cpp:223
+#: ../src/command/tool.cpp:154 ../src/command/tool.cpp:238
 #: ../src/dialog_styling_assistant.cpp:89 ../src/dialog_translation.cpp:112
 msgid "Preview changes"
 msgstr "Xem trước thay đổi"
 
-#: ../src/command/tool.cpp:140 ../src/command/tool.cpp:224
+#: ../src/command/tool.cpp:155 ../src/command/tool.cpp:239
 msgid "Commit changes and stay on the current line"
 msgstr "Xác nhận thay đổi và vẫn giữ ở dòng này"
 
-#: ../src/command/tool.cpp:150
+#: ../src/command/tool.cpp:165
 msgid "&Styles Manager..."
 msgstr "&Quản lí Kiểu dáng..."
 
-#: ../src/command/tool.cpp:151 ../src/dialog_style_manager.cpp:258
+#: ../src/command/tool.cpp:166 ../src/dialog_style_manager.cpp:284
 msgid "Styles Manager"
 msgstr "Quản lí Kiểu dáng"
 
-#: ../src/command/tool.cpp:152
+#: ../src/command/tool.cpp:167
 msgid "Open the styles manager"
 msgstr "Mở trình quản lý kiểu dáng"
 
-#: ../src/command/tool.cpp:162
+#: ../src/command/tool.cpp:177
 msgid "&Kanji Timer..."
 msgstr "&Trình căn thời gian Kanji"
 
-#: ../src/command/tool.cpp:163
+#: ../src/command/tool.cpp:178
 msgid "Kanji Timer"
 msgstr "Trình căn thời gian Kanji"
 
-#: ../src/command/tool.cpp:164
+#: ../src/command/tool.cpp:179
 msgid "Open the Kanji timer copier"
 msgstr "Mở trình căn thời gian Kanji"
 
-#: ../src/command/tool.cpp:174
+#: ../src/command/tool.cpp:189
 msgid "&Timing Post-Processor..."
 msgstr "&Xử lí căn chỉnh thời gian sau..."
 
-#: ../src/command/tool.cpp:175 ../src/dialog_timing_processor.cpp:139
+#: ../src/command/tool.cpp:190 ../src/dialog_timing_processor.cpp:139
 msgid "Timing Post-Processor"
 msgstr "Xử lí căn chỉnh thời gian sau"
 
-#: ../src/command/tool.cpp:176
+#: ../src/command/tool.cpp:191
 msgid ""
 "Post-process the subtitle timing to add lead-ins and lead-outs, snap timing "
 "to scene changes, etc."
@@ -2117,44 +2129,44 @@ msgstr ""
 "Xử lí sau cho việc căn chỉnh thời gian phụ đề như thêm dẫn vào, dẫn ra, khớp "
 "thời gian phụ đề vào lúc phân cảnh thay đổi, v.v"
 
-#: ../src/command/tool.cpp:186
+#: ../src/command/tool.cpp:201
 msgid "&Translation Assistant..."
 msgstr "Trợ &lí Dịch thuật..."
 
-#: ../src/command/tool.cpp:187 ../src/dialog_translation.cpp:64
+#: ../src/command/tool.cpp:202 ../src/dialog_translation.cpp:64
 #: ../src/preferences.cpp:229
 msgid "Translation Assistant"
 msgstr "Trợ lí Dịch thuật"
 
-#: ../src/command/tool.cpp:188
+#: ../src/command/tool.cpp:203
 msgid "Open translation assistant"
 msgstr "Mở trình trợ lí dịch thuật"
 
-#: ../src/command/tool.cpp:196
+#: ../src/command/tool.cpp:211
 msgid "There is nothing to translate in the file."
 msgstr "Không có gì để dịch ở tệp này"
 
-#: ../src/command/tool.cpp:233
+#: ../src/command/tool.cpp:248
 msgid "&Next Line"
 msgstr "&Dòng kế tiếp"
 
-#: ../src/command/tool.cpp:235
+#: ../src/command/tool.cpp:250
 msgid "Move to the next line without committing changes"
 msgstr "Di chuyển đến dòng kế tiếp mà không xác nhận các thay đổi"
 
-#: ../src/command/tool.cpp:244
+#: ../src/command/tool.cpp:259
 msgid "&Previous Line"
 msgstr "&Dòng trước"
 
-#: ../src/command/tool.cpp:246
+#: ../src/command/tool.cpp:261
 msgid "Move to the previous line without committing changes"
 msgstr "Di chuyển đến dòng trước mà không xác nhận các thay đổi"
 
-#: ../src/command/tool.cpp:255
+#: ../src/command/tool.cpp:270
 msgid "&Insert Original"
 msgstr "&Chèn dòng gốc"
 
-#: ../src/command/tool.cpp:257
+#: ../src/command/tool.cpp:272
 msgid "Insert the untranslated text"
 msgstr "Chèn văn bản chưa được dịch"
 
@@ -2708,6 +2720,14 @@ msgstr "Vẽ một hình vẽ tay mượt mà"
 msgid "Translated into LANGUAGE by PERSON\n"
 msgstr "Dịch sang Tiếng Việt bởi NGUYỄN Mạnh Hùng\n"
 
+#: ../src/dialog_about.cpp:52
+#, c-format
+msgid ""
+"Copyright (c) 2005-%s Rodrigo Braz Monteiro, Niels Martin Hansen, Thomas "
+"Goyne et al.\n"
+"\n"
+msgstr ""
+
 #: ../src/dialog_about.cpp:128
 msgid ""
 "\n"
@@ -2718,8 +2738,8 @@ msgstr ""
 
 #: ../src/dialog_about.cpp:130
 #, c-format
-msgid "Built by %s on %s."
-msgstr "Xây dựng bởi %s lúc %s."
+msgid "Built by '%s' on '%s'."
+msgstr ""
 
 #: ../src/dialog_attachments.cpp:68
 msgid "Attachment List"
@@ -2738,7 +2758,7 @@ msgid "E&xtract"
 msgstr "Trích x&uất"
 
 #: ../src/dialog_attachments.cpp:79 ../src/dialog_style_manager.cpp:204
-#: ../src/preferences.cpp:605
+#: ../src/preferences.cpp:623
 msgid "&Delete"
 msgstr "&Xóa"
 
@@ -3540,40 +3560,40 @@ msgstr "Cập nhật bởi:"
 msgid "Update details:"
 msgstr "Chi tiết cập nhật:"
 
-#: ../src/dialog_properties.cpp:122 ../src/dialog_resample.cpp:141
+#: ../src/dialog_properties.cpp:123 ../src/dialog_resample.cpp:141
 #: ../src/export_framerate.cpp:70
 msgid "From &video"
 msgstr "Từ &Video"
 
-#: ../src/dialog_properties.cpp:141
+#: ../src/dialog_properties.cpp:142
 msgid "Resolution"
 msgstr "Độ phân giải"
 
-#: ../src/dialog_properties.cpp:149
+#: ../src/dialog_properties.cpp:150
 msgid "0: Smart wrapping, top line is wider"
 msgstr "0: Bao gói thông minh, dòng trên cùng rộng hơn"
 
-#: ../src/dialog_properties.cpp:150
+#: ../src/dialog_properties.cpp:151
 msgid "1: End-of-line word wrapping, only \\N breaks"
 msgstr "1: Bao gói văn bản thuộc cuối dòng, chỉ các thẻ ngắt \\N"
 
-#: ../src/dialog_properties.cpp:151
+#: ../src/dialog_properties.cpp:152
 msgid "2: No word wrapping, both \\n and \\N break"
 msgstr "2: Không bao gói văn bản, cả thẻ ngắt \\n và \\N"
 
-#: ../src/dialog_properties.cpp:152
+#: ../src/dialog_properties.cpp:153
 msgid "3: Smart wrapping, bottom line is wider"
 msgstr "3: Bao gói thông minh, dòng cuối rộng hơn"
 
-#: ../src/dialog_properties.cpp:156
+#: ../src/dialog_properties.cpp:157
 msgid "Wrap Style: "
 msgstr "Kiểu dáng Bao gói:"
 
-#: ../src/dialog_properties.cpp:159
+#: ../src/dialog_properties.cpp:160
 msgid "Scale Border and Shadow"
 msgstr "Chỉnh tỉ lệ Biên và Bóng đổ"
 
-#: ../src/dialog_properties.cpp:160
+#: ../src/dialog_properties.cpp:161
 msgid ""
 "Scale border and shadow together with script/render resolution. If this is "
 "unchecked, relative border and shadow size will depend on renderer."
@@ -3582,7 +3602,7 @@ msgstr ""
 "phần này không được chọn, kích thước bóng đổ và biên tương ứng sẽ tùy thuộc "
 "vào trình dựng hình."
 
-#: ../src/dialog_properties.cpp:196
+#: ../src/dialog_properties.cpp:197
 msgid "property changes"
 msgstr "thay đổi thuộc tính"
 
@@ -4235,11 +4255,11 @@ msgstr "Di chuyển kiểu dáng xuống dưới cùng"
 msgid "Sort styles alphabetically"
 msgstr "Sắp xếp kiểu dáng theo abc"
 
-#: ../src/dialog_style_manager.cpp:201 ../src/preferences.cpp:603
+#: ../src/dialog_style_manager.cpp:201 ../src/preferences.cpp:621
 msgid "&New"
 msgstr "&Mới"
 
-#: ../src/dialog_style_manager.cpp:202 ../src/preferences.cpp:604
+#: ../src/dialog_style_manager.cpp:202 ../src/preferences.cpp:622
 msgid "&Edit"
 msgstr "&Sửa"
 
@@ -4269,55 +4289,78 @@ msgid_plural "Are you sure you want to delete these %d styles?"
 msgstr[0] "Bạn có thật sự muốn xóa kiểu dáng này?"
 msgstr[1] "Bạn có thật sự muốn xóa %d kiểu dáng này?"
 
-#: ../src/dialog_style_manager.cpp:272
+#: ../src/dialog_style_manager.cpp:261
+#, c-format
+msgid ""
+"There is already a style with the name \"%s\" in the current script. "
+"Overwrite?"
+msgstr "Đã có một kiểu dáng tên \"%s\" trong phụ đề hiện tại. Ghi đè lên?"
+
+#: ../src/dialog_style_manager.cpp:262 ../src/dialog_style_manager.cpp:266
+msgid "Style name collision"
+msgstr "Xung đột tên kiểu dáng"
+
+#: ../src/dialog_style_manager.cpp:266
+#, c-format
+msgid ""
+"There is already a style with the name \"%s\" in the current storage. "
+"Overwrite?"
+msgstr ""
+"Đã có một kiểu dáng có tên \"%s\" trong kho lưu trữ hiện tại. Ghi đè lên?"
+
+#: ../src/dialog_style_manager.cpp:268
+msgid "&Yes, all"
+msgstr ""
+
+#: ../src/dialog_style_manager.cpp:298
 msgid "Catalog of available storages"
 msgstr "Danh mục các kho lưu trữ hiện có"
 
-#: ../src/dialog_style_manager.cpp:274
+#: ../src/dialog_style_manager.cpp:300
 msgid "New"
 msgstr "Mới"
 
-#: ../src/dialog_style_manager.cpp:275
+#: ../src/dialog_style_manager.cpp:301
 msgid "Delete"
 msgstr "Xóa"
 
-#: ../src/dialog_style_manager.cpp:281
+#: ../src/dialog_style_manager.cpp:307
 msgid "Copy to &current script ->"
 msgstr "&Sao chép sang tệp phụ đề hiện tại ->"
 
-#: ../src/dialog_style_manager.cpp:288
+#: ../src/dialog_style_manager.cpp:314
 msgid "Storage"
 msgstr "Kho lưu trữ"
 
-#: ../src/dialog_style_manager.cpp:294
+#: ../src/dialog_style_manager.cpp:320
 msgid "&Import from script..."
 msgstr "&Nhập từ phụ đề..."
 
-#: ../src/dialog_style_manager.cpp:295
+#: ../src/dialog_style_manager.cpp:321
 msgid "<- Copy to &storage"
 msgstr "<- Sao chép sang kho lưu trữ"
 
-#: ../src/dialog_style_manager.cpp:306
+#: ../src/dialog_style_manager.cpp:332
 msgid "Current script"
 msgstr "Tệp phụ đề hiện tại"
 
-#: ../src/dialog_style_manager.cpp:453
+#: ../src/dialog_style_manager.cpp:479
 msgid "New catalog entry"
 msgstr "Đầu vào mới trên danh mục"
 
-#: ../src/dialog_style_manager.cpp:453
+#: ../src/dialog_style_manager.cpp:479
 msgid "New storage name:"
 msgstr "Tên kho lưu trữ mới:"
 
-#: ../src/dialog_style_manager.cpp:468
+#: ../src/dialog_style_manager.cpp:494
 msgid "A catalog with that name already exists."
 msgstr "Một danh mục có tên đó đã tồn tại."
 
-#: ../src/dialog_style_manager.cpp:468
+#: ../src/dialog_style_manager.cpp:494
 msgid "Catalog name conflict"
 msgstr "Xung đột tên danh mục"
 
-#: ../src/dialog_style_manager.cpp:475
+#: ../src/dialog_style_manager.cpp:501
 #, c-format
 msgid ""
 "The specified catalog name contains one or more illegal characters. They "
@@ -4328,88 +4371,68 @@ msgstr ""
 "được thay thế bằng dấu gạch dưới.\n"
 "Danh mục đã được đổi tên thành \"%s\"."
 
-#: ../src/dialog_style_manager.cpp:476
+#: ../src/dialog_style_manager.cpp:502
 msgid "Invalid characters"
 msgstr "Kí tự không hợp lệ"
 
-#: ../src/dialog_style_manager.cpp:489
+#: ../src/dialog_style_manager.cpp:515
 #, c-format
 msgid "Are you sure you want to delete the storage \"%s\" from the catalog?"
 msgstr "Bạn có thật sự muốn xóa kho lưu trữ \"%s\" khỏi danh mục không?"
 
-#: ../src/dialog_style_manager.cpp:490
+#: ../src/dialog_style_manager.cpp:516
 msgid "Confirm delete"
 msgstr "Xác nhận xóa"
 
-#: ../src/dialog_style_manager.cpp:508 ../src/dialog_style_manager.cpp:535
-#: ../src/dialog_style_manager.cpp:714
-msgid "Style name collision"
-msgstr "Xung đột tên kiểu dáng"
-
-#: ../src/dialog_style_manager.cpp:508
-#, c-format
-msgid ""
-"There is already a style with the name \"%s\" in the current storage. "
-"Overwrite?"
-msgstr ""
-"Đã có một kiểu dáng có tên \"%s\" trong kho lưu trữ hiện tại. Ghi đè lên?"
-
-#: ../src/dialog_style_manager.cpp:535 ../src/dialog_style_manager.cpp:713
-#, c-format
-msgid ""
-"There is already a style with the name \"%s\" in the current script. "
-"Overwrite?"
-msgstr "Đã có một kiểu dáng tên \"%s\" trong phụ đề hiện tại. Ghi đè lên?"
-
-#: ../src/dialog_style_manager.cpp:546
+#: ../src/dialog_style_manager.cpp:592
 msgid "style copy"
 msgstr "sao chép kiểu dáng"
 
-#: ../src/dialog_style_manager.cpp:575
+#: ../src/dialog_style_manager.cpp:621
 msgid "style paste"
 msgstr "dán kiểu dáng"
 
-#: ../src/dialog_style_manager.cpp:619
+#: ../src/dialog_style_manager.cpp:665
 msgid "Confirm delete from storage"
 msgstr "Xác nhận xóa khỏi kho lưu trữ"
 
-#: ../src/dialog_style_manager.cpp:658
+#: ../src/dialog_style_manager.cpp:704
 msgid "Confirm delete from current"
 msgstr "Xác nhận xóa khỏi hiện hành"
 
-#: ../src/dialog_style_manager.cpp:662
+#: ../src/dialog_style_manager.cpp:708
 msgid "style delete"
 msgstr "xóa kiểu dáng"
 
-#: ../src/dialog_style_manager.cpp:698
+#: ../src/dialog_style_manager.cpp:744
 msgid "Error Importing Styles"
 msgstr "Lỗi khi Nhập kiểu dáng"
 
-#: ../src/dialog_style_manager.cpp:698
+#: ../src/dialog_style_manager.cpp:744
 msgid "The selected file has no available styles."
 msgstr "Tệp được chọn không có kiểu dáng nào."
 
-#: ../src/dialog_style_manager.cpp:704
+#: ../src/dialog_style_manager.cpp:750
 msgid "Choose styles to import:"
 msgstr "Chọn kiểu dáng để nhập:"
 
-#: ../src/dialog_style_manager.cpp:704
+#: ../src/dialog_style_manager.cpp:750
 msgid "Import Styles"
 msgstr "Nhập kiểu dáng"
 
-#: ../src/dialog_style_manager.cpp:730
+#: ../src/dialog_style_manager.cpp:786
 msgid "style import"
 msgstr "nhập kiểu dáng"
 
-#: ../src/dialog_style_manager.cpp:839
+#: ../src/dialog_style_manager.cpp:895
 msgid "Are you sure? This cannot be undone!"
 msgstr "Bạn có chắc không? Hành động này sẽ không thể hoàn tác được!"
 
-#: ../src/dialog_style_manager.cpp:839
+#: ../src/dialog_style_manager.cpp:895
 msgid "Sort styles"
 msgstr "Sắp xếp kiểu dáng"
 
-#: ../src/dialog_style_manager.cpp:880
+#: ../src/dialog_style_manager.cpp:936
 msgid "style move"
 msgstr "di chuyển kiểu dáng"
 
@@ -4837,7 +4860,7 @@ msgstr "Lấy lại mẫu phụ đề (Xóa viền)"
 msgid "Resample script"
 msgstr "Lấy lại mẫu phụ đề"
 
-#: ../src/dialog_video_properties.cpp:163
+#: ../src/dialog_video_properties.cpp:164
 msgid "change script resolution"
 msgstr "thay đổi độ phân giải của phụ đề"
 
@@ -5057,11 +5080,11 @@ msgstr "CPS"
 msgid "Characters Per Second"
 msgstr "Số kí tự một giây"
 
-#: ../src/hotkey.cpp:261
+#: ../src/hotkey.cpp:263
 msgid "Invalid command name for hotkey"
 msgstr "Lệnh không hợp lệ cho phím tắt"
 
-#: ../src/main.cpp:246
+#: ../src/main.cpp:268
 #, c-format
 msgid ""
 "Oops, Aegisub has crashed!\n"
@@ -5080,11 +5103,11 @@ msgstr ""
 "\n"
 "Aegisub sẽ đóng ngay"
 
-#: ../src/main.cpp:273
+#: ../src/main.cpp:302
 msgid "Check for updates?"
 msgstr "Kiểm tra cập nhật?"
 
-#: ../src/main.cpp:273
+#: ../src/main.cpp:302
 msgid ""
 "Do you want Aegisub to check for updates whenever it starts? You can still "
 "do it manually via the Help menu."
@@ -5092,11 +5115,11 @@ msgstr ""
 "Bạn có muốn Aegisub kiểm tra cập nhật mỗi khi khởi động không? Bạn vẫn có "
 "thể tự làm việc này thông qua menu Trợ giúp."
 
-#: ../src/main.cpp:390 ../src/main.cpp:393
+#: ../src/main.cpp:420 ../src/main.cpp:423
 msgid "Program error"
 msgstr "Lỗi chương trình"
 
-#: ../src/main.cpp:407
+#: ../src/main.cpp:437
 #, c-format
 msgid ""
 "An unexpected error has occurred. Please save your work and restart "
@@ -5121,19 +5144,19 @@ msgstr "&Gần đây"
 msgid "No Automation macros loaded"
 msgstr "Không có macro Tự động hóa nào được nạp"
 
-#: ../src/mkv_wrap.cpp:238
+#: ../src/mkv_wrap.cpp:241
 msgid "Choose which track to read:"
 msgstr "Chọn track nào để đọc"
 
-#: ../src/mkv_wrap.cpp:238
+#: ../src/mkv_wrap.cpp:241
 msgid "Multiple subtitle tracks found"
 msgstr "Tìm thấy nhiều track phụ đề"
 
-#: ../src/mkv_wrap.cpp:283
+#: ../src/mkv_wrap.cpp:286
 msgid "Parsing Matroska"
 msgstr "Đang phân tích Matroska"
 
-#: ../src/mkv_wrap.cpp:283
+#: ../src/mkv_wrap.cpp:286
 msgid "Reading subtitles from Matroska file."
 msgstr "Đang đọc phụ đề từ tệp Matroska."
 
@@ -5899,11 +5922,27 @@ msgstr "Luồng giải mã"
 msgid "Enable unsafe seeking"
 msgstr "Bật tua không an toàn"
 
-#: ../src/preferences.cpp:599
+#: ../src/preferences.cpp:473
+msgid "Plugins"
+msgstr ""
+
+#: ../src/preferences.cpp:475
+msgid "Wakatime"
+msgstr ""
+
+#: ../src/preferences.cpp:476
+msgid "Enable Debug Logs"
+msgstr ""
+
+#: ../src/preferences.cpp:480
+msgid "API Key"
+msgstr ""
+
+#: ../src/preferences.cpp:617
 msgid "Hotkeys"
 msgstr "Phím tắt"
 
-#: ../src/preferences.cpp:697
+#: ../src/preferences.cpp:715
 msgid ""
 "Are you sure that you want to restore the defaults? All your settings will "
 "be overridden."
@@ -5911,15 +5950,15 @@ msgstr ""
 "Bạn có thật sự muốn khôi phục các tùy chọn mặc định không? Tất cả các thiết "
 "lập của bạn sẽ bị ghi đè."
 
-#: ../src/preferences.cpp:697
+#: ../src/preferences.cpp:715
 msgid "Restore defaults?"
 msgstr "Khôi phục mặc định?"
 
-#: ../src/preferences.cpp:715
+#: ../src/preferences.cpp:733
 msgid "Preferences"
 msgstr "Cài đặt"
 
-#: ../src/preferences.cpp:743
+#: ../src/preferences.cpp:762
 msgid "&Restore Defaults"
 msgstr "&Khôi phục mặc định"
 
@@ -6011,7 +6050,7 @@ msgstr ""
 "\n"
 "Những trình cung cấp sau đây đã được thử:\n"
 
-#: ../src/resolution_resampler.cpp:288
+#: ../src/resolution_resampler.cpp:301
 msgid "resolution resampling"
 msgstr "tạo lại mẫu độ phân giải"
 
@@ -6030,25 +6069,25 @@ msgstr[1] "%d trùng khớp đã được thay thế."
 msgid "No matches found."
 msgstr "Không tìm thấy trùng khớp nào."
 
-#: ../src/subs_controller.cpp:246
+#: ../src/subs_controller.cpp:249
 #, c-format
 msgid "Do you want to save changes to %s?"
 msgstr "Bạn có muốn lưu các thay đổi vào %s không?"
 
-#: ../src/subs_controller.cpp:246
+#: ../src/subs_controller.cpp:249
 msgid "Unsaved changes"
 msgstr "Các thay đổi chưa được lưu"
 
-#: ../src/subs_controller.cpp:279
+#: ../src/subs_controller.cpp:282
 #, c-format
 msgid "File backup saved as \"%s\"."
 msgstr "Tệp đã được sao lưu là \"%s\"."
 
-#: ../src/subs_controller.cpp:404
+#: ../src/subs_controller.cpp:407
 msgid "Untitled"
 msgstr "Không đề"
 
-#: ../src/subs_controller.cpp:406
+#: ../src/subs_controller.cpp:409
 msgid "untitled"
 msgstr "không đề"
 
@@ -6381,18 +6420,6 @@ msgid "&Make times continuous (change end)"
 msgstr "&Tiếp diễn với dòng kề  (thay đổi điểm kết thúc)"
 
 #: default_menu.json:0
-msgid "Make Times Continuous"
-msgstr "&Tiếp diễn với dòng kề "
-
-#: default_menu.json:0
-msgid "Set &Zoom"
-msgstr "Đặt mức thu phóng"
-
-#: default_menu.json:0
-msgid "Override &AR"
-msgstr "Điều chỉnh &AR"
-
-#: default_menu.json:0
 msgid "&File"
 msgstr "&Tệp"
 
@@ -6441,6 +6468,18 @@ msgid "Sort Selected Lines"
 msgstr "Sắp xếp các dòng đã chọn"
 
 #: default_menu.json:0
+msgid "Make Times Continuous"
+msgstr "&Tiếp diễn với dòng kề "
+
+#: default_menu.json:0
+msgid "Set &Zoom"
+msgstr "Đặt mức thu phóng"
+
+#: default_menu.json:0
+msgid "Override &AR"
+msgstr "Điều chỉnh &AR"
+
+#: default_menu.json:0
 msgid "Window"
 msgstr ""
 
@@ -6464,7 +6503,7 @@ msgstr ""
 msgid "Export As..."
 msgstr ""
 
-#: default_hotkey.json:244:
+#: default_hotkey.json:268:
 msgid "Subtitle Edit Box"
 msgstr "Hộp biên tập phụ đề"
 
@@ -6640,6 +6679,22 @@ msgstr ""
 msgid "Fully scriptable through the Automation module"
 msgstr ""
 
+#: ../packages/desktop/aegisub.metainfo.xml.in.in:36
+msgid "anime"
+msgstr ""
+
+#: ../packages/desktop/aegisub.metainfo.xml.in.in:37
+msgid "movie"
+msgstr ""
+
+#: ../packages/desktop/aegisub.metainfo.xml.in.in:38
+msgid "subtitle"
+msgstr ""
+
+#: ../packages/desktop/aegisub.metainfo.xml.in.in:39
+msgid "translate"
+msgstr ""
+
 #: ../packages/desktop/aegisub.metainfo.xml.in.in:43
 msgid "Typesetting"
 msgstr ""
@@ -6650,6 +6705,10 @@ msgstr ""
 
 #: ../packages/desktop/aegisub.metainfo.xml.in.in:51
 msgid "Audio timing"
+msgstr ""
+
+#: ../packages/desktop/aegisub.metainfo.xml.in.in:56
+msgid "Aegisub Group"
 msgstr ""
 
 #: packages/win_installer/fragment_strings.iss:1
@@ -6681,6 +6740,10 @@ msgstr ""
 "Có nghĩa là bạn có thể dùng ứng dụng này cho bất kì mục đích nào mà không "
 "cần có phí, nhưng sẽ không có bảo hành hoặc bất kì những cái tương tự. %n%n "
 "Xem website của Aegisub để có thêm thông tin về việc tải về mã nguồn."
+
+#, c-format
+#~ msgid "Built by %s on %s."
+#~ msgstr "Xây dựng bởi %s lúc %s."
 
 #~ msgid "Drawings"
 #~ msgstr "Mã hình vẽ"

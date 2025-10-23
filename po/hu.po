@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Aegisub Hungarian translation\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-02-02 21:53+0100\n"
+"POT-Creation-Date: 2025-10-24 00:19+0200\n"
 "PO-Revision-Date: 2014-11-08 13:56+0100\n"
 "Last-Translator: Yuri <yurielvtars@gmail.com>\n"
 "Language-Team: Yuri <yurielvtars@gmail.com>\n"
@@ -156,7 +156,7 @@ msgstr "időzítés"
 msgid "karaoke timing"
 msgstr "karaoke időzítés"
 
-#: ../src/auto4_base.cpp:454
+#: ../src/automation/auto4_base.cpp:469
 #, c-format
 msgid ""
 "Failed to load Automation script '%s':\n"
@@ -165,24 +165,24 @@ msgstr ""
 "Nem sikerült betölteni az alábbi automatizációs scriptet: '%s':\n"
 "%s"
 
-#: ../src/auto4_base.cpp:461
+#: ../src/automation/auto4_base.cpp:476
 #, c-format
 msgid "The file was not recognised as an Automation script: %s"
 msgstr "Ez nem automatizációs script: %s"
 
-#: ../src/auto4_base.cpp:490 ../src/command/audio.cpp:84
+#: ../src/automation/auto4_base.cpp:505 ../src/command/audio.cpp:84
 #: ../src/command/keyframe.cpp:76 ../src/command/timecode.cpp:73
 #: ../src/command/timecode.cpp:93 ../src/command/video.cpp:592
 msgid "All Files"
 msgstr "Minden fájl"
 
-#: ../src/auto4_base.cpp:496 ../src/command/keyframe.cpp:74
+#: ../src/automation/auto4_base.cpp:511 ../src/command/keyframe.cpp:74
 #: ../src/command/timecode.cpp:73 ../src/command/timecode.cpp:93
 #: ../src/subtitle_format.cpp:318
 msgid "All Supported Formats"
 msgstr "Minden támogatott formátum"
 
-#: ../src/auto4_base.cpp:502
+#: ../src/automation/auto4_base.cpp:517
 msgid "File was not recognized as a script"
 msgstr "Ez nem script fájl."
 
@@ -310,7 +310,7 @@ msgstr "Megnyit egy új programablakot."
 msgid "&Options..."
 msgstr "&Beállítások..."
 
-#: ../src/command/app.cpp:205 ../src/dialog_properties.cpp:146
+#: ../src/command/app.cpp:205 ../src/dialog_properties.cpp:147
 #: ../src/dialog_timing_processor.cpp:168 ../src/preferences.cpp:129
 #: ../src/preferences.cpp:169
 msgid "Options"
@@ -694,7 +694,7 @@ msgstr ""
 msgid "'%s' is not a valid command name"
 msgstr "Érvénytelen parancsnév: '%s'"
 
-#: ../src/command/edit.cpp:135 ../src/command/edit.cpp:844
+#: ../src/command/edit.cpp:135 ../src/command/edit.cpp:846
 msgid "paste"
 msgstr "beillesztés"
 
@@ -702,206 +702,206 @@ msgstr "beillesztés"
 msgid "set color"
 msgstr "színbeállítás"
 
-#: ../src/command/edit.cpp:391
+#: ../src/command/edit.cpp:393
 msgid "Primary Color..."
 msgstr "Elsődleges szín..."
 
-#: ../src/command/edit.cpp:392
+#: ../src/command/edit.cpp:394
 msgid "Primary Color"
 msgstr "Elsődleges szín"
 
-#: ../src/command/edit.cpp:393
+#: ../src/command/edit.cpp:395
 msgid "Set the primary fill color (\\c) at the cursor position"
 msgstr "Elsődleges szín (\\c) beállítása a kurzornál."
 
-#: ../src/command/edit.cpp:403
+#: ../src/command/edit.cpp:405
 msgid "Secondary Color..."
 msgstr "Másodlagos szín..."
 
-#: ../src/command/edit.cpp:404
+#: ../src/command/edit.cpp:406
 msgid "Secondary Color"
 msgstr "Másodlagos szín"
 
-#: ../src/command/edit.cpp:405
+#: ../src/command/edit.cpp:407
 msgid "Set the secondary (karaoke) fill color (\\2c) at the cursor position"
 msgstr "Másodlagos szín (\\2c) beállítása a kurzornál."
 
-#: ../src/command/edit.cpp:415
+#: ../src/command/edit.cpp:417
 msgid "Outline Color..."
 msgstr "Körvonal színe..."
 
-#: ../src/command/edit.cpp:416
+#: ../src/command/edit.cpp:418
 msgid "Outline Color"
 msgstr "Körvonal színe"
 
-#: ../src/command/edit.cpp:417
+#: ../src/command/edit.cpp:419
 msgid "Set the outline color (\\3c) at the cursor position"
 msgstr "Körvonal színének (\\3c) beállítása a kurzornál."
 
-#: ../src/command/edit.cpp:427
+#: ../src/command/edit.cpp:429
 msgid "Shadow Color..."
 msgstr "Árnyék színe..."
 
-#: ../src/command/edit.cpp:428
+#: ../src/command/edit.cpp:430
 msgid "Shadow Color"
 msgstr "Árnyék színe"
 
-#: ../src/command/edit.cpp:429
+#: ../src/command/edit.cpp:431
 msgid "Set the shadow color (\\4c) at the cursor position"
 msgstr "Árnyék színének (\\4c) beállítása a kurzornál."
 
-#: ../src/command/edit.cpp:439 ../src/command/edit.cpp:440
+#: ../src/command/edit.cpp:441 ../src/command/edit.cpp:442
 msgid "Toggle Bold"
 msgstr "Félkövér stílus kiválasztása."
 
-#: ../src/command/edit.cpp:441
+#: ../src/command/edit.cpp:443
 msgid ""
 "Toggle bold (\\b) for the current selection or at the current cursor position"
 msgstr "A kijelölés vagy a kurzor utáni szöveg legyen félkövér (\\b)."
 
-#: ../src/command/edit.cpp:444
+#: ../src/command/edit.cpp:446
 msgid "toggle bold"
 msgstr "félkövér"
 
-#: ../src/command/edit.cpp:451 ../src/command/edit.cpp:452
+#: ../src/command/edit.cpp:453 ../src/command/edit.cpp:454
 msgid "Toggle Italics"
 msgstr "Dőlt stílus kiválasztása."
 
-#: ../src/command/edit.cpp:453
+#: ../src/command/edit.cpp:455
 msgid ""
 "Toggle italics (\\i) for the current selection or at the current cursor "
 "position"
 msgstr "A kijelölés vagy a kurzor utáni szöveg legyen dőlt (\\i)."
 
-#: ../src/command/edit.cpp:456
+#: ../src/command/edit.cpp:458
 msgid "toggle italic"
 msgstr "dőlt"
 
-#: ../src/command/edit.cpp:463 ../src/command/edit.cpp:464
+#: ../src/command/edit.cpp:465 ../src/command/edit.cpp:466
 msgid "Toggle Underline"
 msgstr "Aláhúzott stílus kiválasztása."
 
-#: ../src/command/edit.cpp:465
+#: ../src/command/edit.cpp:467
 msgid ""
 "Toggle underline (\\u) for the current selection or at the current cursor "
 "position"
 msgstr "A kijelölés vagy a kurzor utáni szöveg legyen aláhúzott (\\u)."
 
-#: ../src/command/edit.cpp:468
+#: ../src/command/edit.cpp:470
 msgid "toggle underline"
 msgstr "aláhúzás"
 
-#: ../src/command/edit.cpp:475 ../src/command/edit.cpp:476
+#: ../src/command/edit.cpp:477 ../src/command/edit.cpp:478
 msgid "Toggle Strikeout"
 msgstr "Áthúzott stílus kiválasztása."
 
-#: ../src/command/edit.cpp:477
+#: ../src/command/edit.cpp:479
 msgid ""
 "Toggle strikeout (\\s) for the current selection or at the current cursor "
 "position"
 msgstr "A kijelölés vagy a kurzor utáni szöveg legyen áthúzott (\\s)."
 
-#: ../src/command/edit.cpp:480
+#: ../src/command/edit.cpp:482
 msgid "toggle strikeout"
 msgstr "áthúzás"
 
-#: ../src/command/edit.cpp:487
+#: ../src/command/edit.cpp:489
 msgid "Font Face..."
 msgstr "Betűtípus..."
 
-#: ../src/command/edit.cpp:488 ../src/preferences_base.cpp:250
+#: ../src/command/edit.cpp:490 ../src/preferences_base.cpp:250
 msgid "Font Face"
 msgstr "Betűtípus"
 
-#: ../src/command/edit.cpp:489
+#: ../src/command/edit.cpp:491
 msgid "Select a font face and size"
 msgstr "Betű típusának és méretének kiválasztása."
 
-#: ../src/command/edit.cpp:516
+#: ../src/command/edit.cpp:518
 msgid "set font"
 msgstr "betűtípus beállítás"
 
-#: ../src/command/edit.cpp:543
+#: ../src/command/edit.cpp:545
 msgid "Find and R&eplace..."
 msgstr "Keresés és &Csere..."
 
-#: ../src/command/edit.cpp:544
+#: ../src/command/edit.cpp:546
 msgid "Find and Replace"
 msgstr "Keresés és csere"
 
-#: ../src/command/edit.cpp:545
+#: ../src/command/edit.cpp:547
 msgid "Find and replace words in subtitles"
 msgstr "Megkeresi és kicseréli a szavakat."
 
-#: ../src/command/edit.cpp:606
+#: ../src/command/edit.cpp:608
 msgid "&Copy Lines"
 msgstr "&Másolás"
 
-#: ../src/command/edit.cpp:607
+#: ../src/command/edit.cpp:609
 msgid "Copy Lines"
 msgstr "Másolás"
 
-#: ../src/command/edit.cpp:608
+#: ../src/command/edit.cpp:610
 msgid "Copy subtitles to the clipboard"
 msgstr "Felirat mentése a Vágólapra."
 
-#: ../src/command/edit.cpp:629
+#: ../src/command/edit.cpp:631
 msgid "Cu&t Lines"
 msgstr "&Kivágás"
 
-#: ../src/command/edit.cpp:630
+#: ../src/command/edit.cpp:632
 msgid "Cut Lines"
 msgstr "Kivágás"
 
-#: ../src/command/edit.cpp:631
+#: ../src/command/edit.cpp:633
 msgid "Cut subtitles"
 msgstr "Kivágja a feliratsorokat."
 
-#: ../src/command/edit.cpp:638
+#: ../src/command/edit.cpp:640
 msgid "cut lines"
 msgstr "sorkivágás"
 
-#: ../src/command/edit.cpp:646
+#: ../src/command/edit.cpp:648
 msgid "De&lete Lines"
 msgstr "T&örlés"
 
-#: ../src/command/edit.cpp:647
+#: ../src/command/edit.cpp:649
 msgid "Delete Lines"
 msgstr "Sor törlése"
 
-#: ../src/command/edit.cpp:648
+#: ../src/command/edit.cpp:650
 msgid "Delete currently selected lines"
 msgstr "Törli a kijelölt sort, sorokat."
 
-#: ../src/command/edit.cpp:651
+#: ../src/command/edit.cpp:653
 msgid "delete lines"
 msgstr "sortörlés"
 
-#: ../src/command/edit.cpp:716
+#: ../src/command/edit.cpp:718
 msgid "duplicate lines"
 msgstr "sorismétlés"
 
-#: ../src/command/edit.cpp:716 ../src/command/edit.cpp:1109
+#: ../src/command/edit.cpp:718 ../src/command/edit.cpp:1111
 msgid "split"
 msgstr "szétválasztás"
 
-#: ../src/command/edit.cpp:723
+#: ../src/command/edit.cpp:725
 msgid "&Duplicate Lines"
 msgstr "&Ismétlés"
 
-#: ../src/command/edit.cpp:724
+#: ../src/command/edit.cpp:726
 msgid "Duplicate Lines"
 msgstr "Ismétlés"
 
-#: ../src/command/edit.cpp:725
+#: ../src/command/edit.cpp:727
 msgid "Duplicate the selected lines"
 msgstr "Ismételje meg a kiválasztott sort, sorokat."
 
-#: ../src/command/edit.cpp:734 ../src/command/edit.cpp:735
+#: ../src/command/edit.cpp:736 ../src/command/edit.cpp:737
 msgid "Split lines after current frame"
 msgstr "Sor szétválasztása képkocka mögé"
 
-#: ../src/command/edit.cpp:736
+#: ../src/command/edit.cpp:738
 msgid ""
 "Split the current line into a line which ends on the current frame and a "
 "line which starts on the next frame"
@@ -909,11 +909,11 @@ msgstr ""
 "A szétválasztás jelenlegi sora a jelenlegi képkockával végződik, a másik sor "
 "pedig a következővel kezdődik."
 
-#: ../src/command/edit.cpp:746 ../src/command/edit.cpp:747
+#: ../src/command/edit.cpp:748 ../src/command/edit.cpp:749
 msgid "Split lines before current frame"
 msgstr "Sor szétválasztása képkocka elé"
 
-#: ../src/command/edit.cpp:748
+#: ../src/command/edit.cpp:750
 msgid ""
 "Split the current line into a line which ends on the previous frame and a "
 "line which starts on the current frame"
@@ -921,47 +921,47 @@ msgstr ""
 "A szétválasztás jelenlegi sora a jelenlegi képkockával kezdődik, a másik sor "
 "pedig az előzővel végződik."
 
-#: ../src/command/edit.cpp:788
+#: ../src/command/edit.cpp:790
 msgid "As &Karaoke"
 msgstr "&Karaokeként"
 
-#: ../src/command/edit.cpp:789
+#: ../src/command/edit.cpp:791
 msgid "As Karaoke"
 msgstr "Karaokeként"
 
-#: ../src/command/edit.cpp:790
+#: ../src/command/edit.cpp:792
 msgid "Join selected lines in a single one, as karaoke"
 msgstr "Karaoke címkéket felhasználva összeilleszti a kiválasztott sorokat."
 
-#: ../src/command/edit.cpp:793
+#: ../src/command/edit.cpp:795
 msgid "join as karaoke"
 msgstr "összeillesztés karaokeként"
 
-#: ../src/command/edit.cpp:799
+#: ../src/command/edit.cpp:801
 msgid "&Concatenate"
 msgstr "Ö&sszefűzés"
 
-#: ../src/command/edit.cpp:800
+#: ../src/command/edit.cpp:802
 msgid "Concatenate"
 msgstr "Összefűzés"
 
-#: ../src/command/edit.cpp:801
+#: ../src/command/edit.cpp:803
 msgid "Join selected lines in a single one, concatenating text together"
 msgstr "Összeilleszti a kiválasztott sorokat tartalmuk összevonásával."
 
-#: ../src/command/edit.cpp:804 ../src/command/edit.cpp:815
+#: ../src/command/edit.cpp:806 ../src/command/edit.cpp:817
 msgid "join lines"
 msgstr "sorok összeillesztése"
 
-#: ../src/command/edit.cpp:810
+#: ../src/command/edit.cpp:812
 msgid "Keep &First"
 msgstr "&Első megtartása"
 
-#: ../src/command/edit.cpp:811
+#: ../src/command/edit.cpp:813
 msgid "Keep First"
 msgstr "Első megtartása"
 
-#: ../src/command/edit.cpp:812
+#: ../src/command/edit.cpp:814
 msgid ""
 "Join selected lines in a single one, keeping text of first and discarding "
 "remaining"
@@ -969,85 +969,85 @@ msgstr ""
 "Összeilleszti a kiválasztott sorokat megtartva az első tartalmát és törölve "
 "a többiét."
 
-#: ../src/command/edit.cpp:853
+#: ../src/command/edit.cpp:855
 msgid "&Paste Lines"
 msgstr "&Beillesztés"
 
-#: ../src/command/edit.cpp:854
+#: ../src/command/edit.cpp:856
 msgid "Paste Lines"
 msgstr "Beillesztés"
 
-#: ../src/command/edit.cpp:855
+#: ../src/command/edit.cpp:857
 msgid "Paste subtitles"
 msgstr "Beilleszti a feliratsorokat."
 
-#: ../src/command/edit.cpp:884
+#: ../src/command/edit.cpp:886
 msgid "Paste Lines &Over..."
 msgstr "I&rányított beillesztés"
 
-#: ../src/command/edit.cpp:885
+#: ../src/command/edit.cpp:887
 msgid "Paste Lines Over"
 msgstr "Irányított beillesztés"
 
-#: ../src/command/edit.cpp:886
+#: ../src/command/edit.cpp:888
 msgid "Paste subtitles over others"
 msgstr "Különböző szempontok szerinti beillesztés."
 
-#: ../src/command/edit.cpp:968
+#: ../src/command/edit.cpp:970
 msgid "Recom&bine Lines"
 msgstr "Sorok e&gyesítése"
 
-#: ../src/command/edit.cpp:969
+#: ../src/command/edit.cpp:971
 msgid "Recombine Lines"
 msgstr "Sorok egyesítése"
 
-#: ../src/command/edit.cpp:970
+#: ../src/command/edit.cpp:972
 msgid "Recombine subtitles which have been split and merged"
 msgstr "Szétválasztás és összeillesztés után egyesíti a feliratsorokat."
 
-#: ../src/command/edit.cpp:1040
+#: ../src/command/edit.cpp:1042
 msgid "combining"
 msgstr "egyesítés"
 
-#: ../src/command/edit.cpp:1046 ../src/command/edit.cpp:1047
+#: ../src/command/edit.cpp:1048 ../src/command/edit.cpp:1049
 msgid "Split Lines (by karaoke)"
 msgstr "Szétválasztás (karaokevel)"
 
-#: ../src/command/edit.cpp:1048
+#: ../src/command/edit.cpp:1050
 msgid "Use karaoke timing to split line into multiple smaller lines"
 msgstr "A karaoke időzítését felhasználva választja szét a sorokat."
 
-#: ../src/command/edit.cpp:1082
+#: ../src/command/edit.cpp:1084
 msgid "splitting"
 msgstr "szétválasztás"
 
-#: ../src/command/edit.cpp:1114 ../src/command/edit.cpp:1115
+#: ../src/command/edit.cpp:1116 ../src/command/edit.cpp:1117
 #: ../src/subs_edit_ctrl.cpp:398
 msgid "Split at cursor (estimate times)"
 msgstr "Kurzornál szétválaszt (idők becslése)"
 
-#: ../src/command/edit.cpp:1116
+#: ../src/command/edit.cpp:1118
 msgid ""
 "Split the current line at the cursor, dividing the original line's duration "
 "between the new ones"
 msgstr "Az eredeti sor idejét fölosztja a szétválasztott sorok közt."
 
-#: ../src/command/edit.cpp:1130 ../src/command/edit.cpp:1131
+#: ../src/command/edit.cpp:1132 ../src/command/edit.cpp:1133
 #: ../src/subs_edit_ctrl.cpp:397
 msgid "Split at cursor (preserve times)"
 msgstr "Kurzornál szétválaszt (idők megtartása)"
 
-#: ../src/command/edit.cpp:1132
+#: ../src/command/edit.cpp:1134
 msgid ""
 "Split the current line at the cursor, setting both lines to the original "
 "line's times"
 msgstr "A szétválasztott sorok ideje megegyezik az eredeti sor idejével."
 
-#: ../src/command/edit.cpp:1141 ../src/command/edit.cpp:1142
+#: ../src/command/edit.cpp:1143 ../src/command/edit.cpp:1144
 msgid "Split at cursor (at video frame)"
 msgstr "Kurzornál szétválaszt (jelenlegi képkockánál)"
 
-#: ../src/command/edit.cpp:1143
+#: ../src/command/edit.cpp:1145
 msgid ""
 "Split the current line at the cursor, dividing the line's duration at the "
 "current video frame"
@@ -1055,102 +1055,102 @@ msgstr ""
 "Az eredeti sor idejét a jelenlegi képkocka mentén osztja föl a "
 "szétválasztott sorok közt."
 
-#: ../src/command/edit.cpp:1159
+#: ../src/command/edit.cpp:1161
 msgid "Redo last undone action"
 msgstr "Mégis meghagyja az előző tevékenységet."
 
-#: ../src/command/edit.cpp:1164
+#: ../src/command/edit.cpp:1166
 msgid "Nothing to &redo"
 msgstr "Nincs mit &újra végrehajtani"
 
-#: ../src/command/edit.cpp:1165
+#: ../src/command/edit.cpp:1167
 #, c-format
 msgid "&Redo %s"
 msgstr "&Mégis %s"
 
-#: ../src/command/edit.cpp:1169
+#: ../src/command/edit.cpp:1171
 msgid "Nothing to redo"
 msgstr "Nincs mit újra végrehajtani"
 
-#: ../src/command/edit.cpp:1170
+#: ../src/command/edit.cpp:1172
 #, c-format
 msgid "Redo %s"
 msgstr "Mégis %s"
 
-#: ../src/command/edit.cpp:1185
+#: ../src/command/edit.cpp:1187
 msgid "Undo last action"
 msgstr "Visszavonja a legutóbbi tevékenységet."
 
-#: ../src/command/edit.cpp:1190
+#: ../src/command/edit.cpp:1192
 msgid "Nothing to &undo"
 msgstr "Nincs mit &visszavonni"
 
-#: ../src/command/edit.cpp:1191
+#: ../src/command/edit.cpp:1193
 #, c-format
 msgid "&Undo %s"
 msgstr "&Visszavonás %s"
 
-#: ../src/command/edit.cpp:1195
+#: ../src/command/edit.cpp:1197
 msgid "Nothing to undo"
 msgstr "Nincs mit visszavonni"
 
-#: ../src/command/edit.cpp:1196
+#: ../src/command/edit.cpp:1198
 #, c-format
 msgid "Undo %s"
 msgstr "Visszavonás %s"
 
-#: ../src/command/edit.cpp:1210 ../src/command/edit.cpp:1211
+#: ../src/command/edit.cpp:1212 ../src/command/edit.cpp:1213
 msgid "Revert"
 msgstr "Visszaállít"
 
-#: ../src/command/edit.cpp:1212
+#: ../src/command/edit.cpp:1214
 msgid "Revert the active line to its initial state (shown in the upper editor)"
 msgstr ""
 "Visszaállítja a szerkesztett sort az eredeti állapotába, ahogyan az a felső "
 "sorban látható."
 
-#: ../src/command/edit.cpp:1217
+#: ../src/command/edit.cpp:1219
 msgid "revert line"
 msgstr "eredetire vissza"
 
-#: ../src/command/edit.cpp:1223 ../src/command/edit.cpp:1224
+#: ../src/command/edit.cpp:1225 ../src/command/edit.cpp:1226
 #: ../src/preferences.cpp:410
 msgid "Clear"
 msgstr "Törlés"
 
-#: ../src/command/edit.cpp:1225
+#: ../src/command/edit.cpp:1227
 msgid "Clear the current line's text"
 msgstr "Sor szövegének teljes törlése."
 
-#: ../src/command/edit.cpp:1230 ../src/command/edit.cpp:1249
+#: ../src/command/edit.cpp:1232 ../src/command/edit.cpp:1251
 msgid "clear line"
 msgstr "sor törlése"
 
-#: ../src/command/edit.cpp:1237 ../src/command/edit.cpp:1238
+#: ../src/command/edit.cpp:1239 ../src/command/edit.cpp:1240
 msgid "Clear Text"
 msgstr "Szöveg törlése"
 
-#: ../src/command/edit.cpp:1239
+#: ../src/command/edit.cpp:1241
 msgid "Clear the current line's text, leaving override tags"
 msgstr "Kitörli a sor szövegét, de meghagyja a felülíró címkéket."
 
-#: ../src/command/edit.cpp:1255 ../src/command/edit.cpp:1256
-#: ../src/command/tool.cpp:256
+#: ../src/command/edit.cpp:1257 ../src/command/edit.cpp:1258
+#: ../src/command/tool.cpp:271
 msgid "Insert Original"
 msgstr "Eredetiből beilleszt"
 
-#: ../src/command/edit.cpp:1257
+#: ../src/command/edit.cpp:1259
 msgid "Insert the original line text at the cursor"
 msgstr "Beszúrja az eredeti sort a kurzorhoz."
 
-#: ../src/command/edit.cpp:1265
+#: ../src/command/edit.cpp:1267
 msgid "insert original"
 msgstr "eredetiből beillesztés"
 
 #: ../src/command/grid.cpp:50 ../src/command/grid.cpp:51
 #: ../src/command/grid.cpp:62 ../src/command/grid.cpp:63
 #: ../src/command/time.cpp:355 ../src/command/time.cpp:356
-#: ../src/command/tool.cpp:234
+#: ../src/command/tool.cpp:249
 msgid "Next Line"
 msgstr "Következő sor"
 
@@ -1169,7 +1169,7 @@ msgstr "sor beszúrása"
 
 #: ../src/command/grid.cpp:89 ../src/command/grid.cpp:90
 #: ../src/command/time.cpp:367 ../src/command/time.cpp:368
-#: ../src/command/tool.cpp:245
+#: ../src/command/tool.cpp:260
 msgid "Previous Line"
 msgstr "Előző sor"
 
@@ -1605,7 +1605,7 @@ msgstr "Új felirat"
 
 #: ../src/command/subtitle.cpp:255 ../src/command/subtitle.cpp:256
 #: ../src/command/subtitle.cpp:257 ../src/dialog_progress.cpp:175
-#: ../src/dialog_style_manager.cpp:313
+#: ../src/dialog_style_manager.cpp:339
 msgid "Close"
 msgstr "Bezárás"
 
@@ -1622,7 +1622,7 @@ msgid "Open a subtitles file"
 msgstr "Megnyit egy feliratfájlt."
 
 #: ../src/command/subtitle.cpp:274 ../src/command/subtitle.cpp:304
-#: ../src/dialog_style_manager.cpp:667
+#: ../src/dialog_style_manager.cpp:713
 msgid "Open subtitles file"
 msgstr "Feliratfájl megnyitása"
 
@@ -1961,52 +1961,64 @@ msgid "Save a VFR timecodes v2 file"
 msgstr "Elmenti a VFR időkódokat tartalmazó fájlt v2-es formátumban."
 
 #: ../src/command/tool.cpp:56
+msgid "ASSDraw3..."
+msgstr ""
+
+#: ../src/command/tool.cpp:57
+msgid "ASSDraw3"
+msgstr ""
+
+#: ../src/command/tool.cpp:58
+msgid "Launch the ASSDraw3 tool for vector drawing"
+msgstr ""
+
+#: ../src/command/tool.cpp:71
 msgid "&Export Subtitles..."
 msgstr "&Felirat exportálása..."
 
-#: ../src/command/tool.cpp:57
+#: ../src/command/tool.cpp:72
 msgid "Export Subtitles"
 msgstr "Felirat exportálása"
 
-#: ../src/command/tool.cpp:58
+#: ../src/command/tool.cpp:73
 msgid ""
 "Save a copy of subtitles in a different format or with processing applied to "
 "it"
 msgstr "A felirat másolatának más formátumba mentése, átdolgozása."
 
-#: ../src/command/tool.cpp:69
+#: ../src/command/tool.cpp:84
 msgid "&Fonts Collector..."
 msgstr "&Betűtípus összegyűjtő..."
 
-#: ../src/command/tool.cpp:70 ../src/dialog_fonts_collector.cpp:226
+#: ../src/command/tool.cpp:85 ../src/dialog_fonts_collector.cpp:226
 msgid "Fonts Collector"
 msgstr "Betűtípus összegyűjtő"
 
-#: ../src/command/tool.cpp:71
+#: ../src/command/tool.cpp:86
 msgid "Open fonts collector"
 msgstr "Betűtípus összegyűjtő megnyitása."
 
-#: ../src/command/tool.cpp:81
+#: ../src/command/tool.cpp:96
 msgid "S&elect Lines..."
 msgstr "So&rok kijelölése..."
 
-#: ../src/command/tool.cpp:82
+#: ../src/command/tool.cpp:97
 msgid "Select Lines"
 msgstr "Sorok kijelölése"
 
-#: ../src/command/tool.cpp:83
+#: ../src/command/tool.cpp:98
 msgid "Select lines based on defined criteria"
 msgstr "Sorok kijelölése megadott szempontok szerint."
 
-#: ../src/command/tool.cpp:93
+#: ../src/command/tool.cpp:108
 msgid "&Resample Resolution..."
 msgstr "F&elbontás módosítása..."
 
-#: ../src/command/tool.cpp:94 ../src/dialog_resample.cpp:90
+#: ../src/command/tool.cpp:109 ../src/dialog_resample.cpp:90
 msgid "Resample Resolution"
 msgstr "Felbontás módosítása"
 
-#: ../src/command/tool.cpp:95
+#: ../src/command/tool.cpp:110
 msgid ""
 "Resample subtitles to maintain their current appearance at a different "
 "script resolution"
@@ -2014,77 +2026,77 @@ msgstr ""
 "Megváltoztatja a felirat felbontását és megfelelően módosítja a tőle függő "
 "értékeket."
 
-#: ../src/command/tool.cpp:108
+#: ../src/command/tool.cpp:123
 msgid "St&yling Assistant..."
 msgstr "&Dekoráló segéd..."
 
-#: ../src/command/tool.cpp:109 ../src/dialog_styling_assistant.cpp:53
+#: ../src/command/tool.cpp:124 ../src/dialog_styling_assistant.cpp:53
 msgid "Styling Assistant"
 msgstr "Dekoráló segéd"
 
-#: ../src/command/tool.cpp:110
+#: ../src/command/tool.cpp:125
 msgid "Open styling assistant"
 msgstr "Különböző stílusok gyors hozzárendelése a feliratsorokhoz."
 
-#: ../src/command/tool.cpp:127 ../src/command/tool.cpp:211
+#: ../src/command/tool.cpp:142 ../src/command/tool.cpp:226
 msgid "&Accept changes"
 msgstr "&Elfogad és tovább"
 
-#: ../src/command/tool.cpp:128 ../src/command/tool.cpp:212
+#: ../src/command/tool.cpp:143 ../src/command/tool.cpp:227
 #: ../src/dialog_styling_assistant.cpp:88 ../src/dialog_translation.cpp:111
 msgid "Accept changes"
 msgstr "Elfogad és tovább"
 
-#: ../src/command/tool.cpp:129 ../src/command/tool.cpp:213
+#: ../src/command/tool.cpp:144 ../src/command/tool.cpp:228
 msgid "Commit changes and move to the next line"
 msgstr "Változások elfogadása, majd új sorra ugrás"
 
-#: ../src/command/tool.cpp:138 ../src/command/tool.cpp:222
+#: ../src/command/tool.cpp:153 ../src/command/tool.cpp:237
 msgid "&Preview changes"
 msgstr "E&lfogad és marad"
 
-#: ../src/command/tool.cpp:139 ../src/command/tool.cpp:223
+#: ../src/command/tool.cpp:154 ../src/command/tool.cpp:238
 #: ../src/dialog_styling_assistant.cpp:89 ../src/dialog_translation.cpp:112
 msgid "Preview changes"
 msgstr "Elfogad és marad"
 
-#: ../src/command/tool.cpp:140 ../src/command/tool.cpp:224
+#: ../src/command/tool.cpp:155 ../src/command/tool.cpp:239
 msgid "Commit changes and stay on the current line"
 msgstr "Változások elfogadása, de maradjon a jelenlegi soron"
 
-#: ../src/command/tool.cpp:150
+#: ../src/command/tool.cpp:165
 msgid "&Styles Manager..."
 msgstr "&Stíluskezelő..."
 
-#: ../src/command/tool.cpp:151 ../src/dialog_style_manager.cpp:258
+#: ../src/command/tool.cpp:166 ../src/dialog_style_manager.cpp:284
 msgid "Styles Manager"
 msgstr "Stíluskezelő"
 
-#: ../src/command/tool.cpp:152
+#: ../src/command/tool.cpp:167
 msgid "Open the styles manager"
 msgstr "Stíluskezelő megnyitása."
 
-#: ../src/command/tool.cpp:162
+#: ../src/command/tool.cpp:177
 msgid "&Kanji Timer..."
 msgstr "K&andzsi időzítő..."
 
-#: ../src/command/tool.cpp:163
+#: ../src/command/tool.cpp:178
 msgid "Kanji Timer"
 msgstr "Kandzsi időzítő"
 
-#: ../src/command/tool.cpp:164
+#: ../src/command/tool.cpp:179
 msgid "Open the Kanji timer copier"
 msgstr "Már létező karaoke sorhoz időzít egy másik, nem időzített sort."
 
-#: ../src/command/tool.cpp:174
+#: ../src/command/tool.cpp:189
 msgid "&Timing Post-Processor..."
 msgstr "Időzítési &utómunkák..."
 
-#: ../src/command/tool.cpp:175 ../src/dialog_timing_processor.cpp:139
+#: ../src/command/tool.cpp:190 ../src/dialog_timing_processor.cpp:139
 msgid "Timing Post-Processor"
 msgstr "Időzítési utómunkák"
 
-#: ../src/command/tool.cpp:176
+#: ../src/command/tool.cpp:191
 msgid ""
 "Post-process the subtitle timing to add lead-ins and lead-outs, snap timing "
 "to scene changes, etc."
@@ -2092,44 +2104,44 @@ msgstr ""
 "Utólagos időzítési javításokra, jelenetidőzítésre és egyéb módosításokra ad "
 "lehetőséget."
 
-#: ../src/command/tool.cpp:186
+#: ../src/command/tool.cpp:201
 msgid "&Translation Assistant..."
 msgstr "&Fordító segéd..."
 
-#: ../src/command/tool.cpp:187 ../src/dialog_translation.cpp:64
+#: ../src/command/tool.cpp:202 ../src/dialog_translation.cpp:64
 #: ../src/preferences.cpp:229
 msgid "Translation Assistant"
 msgstr "Fordító segéd"
 
-#: ../src/command/tool.cpp:188
+#: ../src/command/tool.cpp:203
 msgid "Open translation assistant"
 msgstr "Feliratsorok egyszerű és gyors fordítása."
 
-#: ../src/command/tool.cpp:196
+#: ../src/command/tool.cpp:211
 msgid "There is nothing to translate in the file."
 msgstr "Nincs lefordítandó sor a fájlban."
 
-#: ../src/command/tool.cpp:233
+#: ../src/command/tool.cpp:248
 msgid "&Next Line"
 msgstr "&Következő sor"
 
-#: ../src/command/tool.cpp:235
+#: ../src/command/tool.cpp:250
 msgid "Move to the next line without committing changes"
 msgstr "Nem menti a változásokat és a következő sorra ugrik."
 
-#: ../src/command/tool.cpp:244
+#: ../src/command/tool.cpp:259
 msgid "&Previous Line"
 msgstr "&Előző sor"
 
-#: ../src/command/tool.cpp:246
+#: ../src/command/tool.cpp:261
 msgid "Move to the previous line without committing changes"
 msgstr "Nem menti a változásokat és az előző sorra ugrik."
 
-#: ../src/command/tool.cpp:255
+#: ../src/command/tool.cpp:270
 msgid "&Insert Original"
 msgstr "E&redetiből beilleszt"
 
-#: ../src/command/tool.cpp:257
+#: ../src/command/tool.cpp:272
 msgid "Insert the untranslated text"
 msgstr "Lefordítatlan szöveg beillesztése"
 
@@ -2680,6 +2692,14 @@ msgstr "Ívelt szabadkézi forma rajzolása"
 msgid "Translated into LANGUAGE by PERSON\n"
 msgstr "Magyar nyelvre lefordította: Yuri.\n"
 
+#: ../src/dialog_about.cpp:52
+#, c-format
+msgid ""
+"Copyright (c) 2005-%s Rodrigo Braz Monteiro, Niels Martin Hansen, Thomas "
+"Goyne et al.\n"
+"\n"
+msgstr ""
+
 #: ../src/dialog_about.cpp:128
 msgid ""
 "\n"
@@ -2690,8 +2710,8 @@ msgstr ""
 
 #: ../src/dialog_about.cpp:130
 #, c-format
-msgid "Built by %s on %s."
-msgstr "Összeállítva %s által. Dátum: %s."
+msgid "Built by '%s' on '%s'."
+msgstr ""
 
 #: ../src/dialog_attachments.cpp:68
 msgid "Attachment List"
@@ -2710,7 +2730,7 @@ msgid "E&xtract"
 msgstr "&Kibontás"
 
 #: ../src/dialog_attachments.cpp:79 ../src/dialog_style_manager.cpp:204
-#: ../src/preferences.cpp:605
+#: ../src/preferences.cpp:623
 msgid "&Delete"
 msgstr "T&örlés"
 
@@ -3512,40 +3532,40 @@ msgstr "Frissítve:"
 msgid "Update details:"
 msgstr "Részletek:"
 
-#: ../src/dialog_properties.cpp:122 ../src/dialog_resample.cpp:141
+#: ../src/dialog_properties.cpp:123 ../src/dialog_resample.cpp:141
 #: ../src/export_framerate.cpp:70
 msgid "From &video"
 msgstr "&Videóból"
 
-#: ../src/dialog_properties.cpp:141
+#: ../src/dialog_properties.cpp:142
 msgid "Resolution"
 msgstr "Felbontás"
 
-#: ../src/dialog_properties.cpp:149
+#: ../src/dialog_properties.cpp:150
 msgid "0: Smart wrapping, top line is wider"
 msgstr "0: Intelligens törés, fölső sor szélesebb"
 
-#: ../src/dialog_properties.cpp:150
+#: ../src/dialog_properties.cpp:151
 msgid "1: End-of-line word wrapping, only \\N breaks"
 msgstr "1: Sor végén, csak az \\N tör"
 
-#: ../src/dialog_properties.cpp:151
+#: ../src/dialog_properties.cpp:152
 msgid "2: No word wrapping, both \\n and \\N break"
 msgstr "2: Nincs sortörés, \\n és \\N is tör"
 
-#: ../src/dialog_properties.cpp:152
+#: ../src/dialog_properties.cpp:153
 msgid "3: Smart wrapping, bottom line is wider"
 msgstr "3: Intelligens törés, alsó sor szélesebb"
 
-#: ../src/dialog_properties.cpp:156
+#: ../src/dialog_properties.cpp:157
 msgid "Wrap Style: "
 msgstr "Sortörés: "
 
-#: ../src/dialog_properties.cpp:159
+#: ../src/dialog_properties.cpp:160
 msgid "Scale Border and Shadow"
 msgstr "Körvonal és árnyék méretezése"
 
-#: ../src/dialog_properties.cpp:160
+#: ../src/dialog_properties.cpp:161
 msgid ""
 "Scale border and shadow together with script/render resolution. If this is "
 "unchecked, relative border and shadow size will depend on renderer."
@@ -3554,7 +3574,7 @@ msgstr ""
 "nem jelöli be, akkor a körvonal és az árnyék relatív mérete a renderertől "
 "fog függeni."
 
-#: ../src/dialog_properties.cpp:196
+#: ../src/dialog_properties.cpp:197
 msgid "property changes"
 msgstr "tulajdonság változtatása"
 
@@ -4203,11 +4223,11 @@ msgstr "Aljára"
 msgid "Sort styles alphabetically"
 msgstr "Rendezés név szerint"
 
-#: ../src/dialog_style_manager.cpp:201 ../src/preferences.cpp:603
+#: ../src/dialog_style_manager.cpp:201 ../src/preferences.cpp:621
 msgid "&New"
 msgstr "&Új"
 
-#: ../src/dialog_style_manager.cpp:202 ../src/preferences.cpp:604
+#: ../src/dialog_style_manager.cpp:202 ../src/preferences.cpp:622
 msgid "&Edit"
 msgstr "S&zerkesztés"
 
@@ -4237,55 +4257,77 @@ msgid_plural "Are you sure you want to delete these %d styles?"
 msgstr[0] "Biztos, hogy törölni akarja ezt a stílust?"
 msgstr[1] "Biztos, hogy törölni akarja ezt a(z) %d stílust?"
 
-#: ../src/dialog_style_manager.cpp:272
+#: ../src/dialog_style_manager.cpp:261
+#, c-format
+msgid ""
+"There is already a style with the name \"%s\" in the current script. "
+"Overwrite?"
+msgstr "A jelenlegi felirat már tartalmaz egy \"%s\" nevű stílust. Felülírja?"
+
+#: ../src/dialog_style_manager.cpp:262 ../src/dialog_style_manager.cpp:266
+msgid "Style name collision"
+msgstr "Stílusnév ütközés"
+
+#: ../src/dialog_style_manager.cpp:266
+#, c-format
+msgid ""
+"There is already a style with the name \"%s\" in the current storage. "
+"Overwrite?"
+msgstr "A jelenlegi tároló már tartalmaz egy \"%s\" nevű stílust. Felülírja?"
+
+#: ../src/dialog_style_manager.cpp:268
+msgid "&Yes, all"
+msgstr ""
+
+#: ../src/dialog_style_manager.cpp:298
 msgid "Catalog of available storages"
 msgstr "Elérhető tárolók"
 
-#: ../src/dialog_style_manager.cpp:274
+#: ../src/dialog_style_manager.cpp:300
 msgid "New"
 msgstr "Új"
 
-#: ../src/dialog_style_manager.cpp:275
+#: ../src/dialog_style_manager.cpp:301
 msgid "Delete"
 msgstr "Törlés"
 
-#: ../src/dialog_style_manager.cpp:281
+#: ../src/dialog_style_manager.cpp:307
 msgid "Copy to &current script ->"
 msgstr "Másolja a &mostani feliratba ->"
 
-#: ../src/dialog_style_manager.cpp:288
+#: ../src/dialog_style_manager.cpp:314
 msgid "Storage"
 msgstr "Tároló"
 
-#: ../src/dialog_style_manager.cpp:294
+#: ../src/dialog_style_manager.cpp:320
 msgid "&Import from script..."
 msgstr "&Importálás feliratból..."
 
-#: ../src/dialog_style_manager.cpp:295
+#: ../src/dialog_style_manager.cpp:321
 msgid "<- Copy to &storage"
 msgstr "<- Másolja a t&árolóba"
 
-#: ../src/dialog_style_manager.cpp:306
+#: ../src/dialog_style_manager.cpp:332
 msgid "Current script"
 msgstr "Jelenlegi feliratfájl"
 
-#: ../src/dialog_style_manager.cpp:453
+#: ../src/dialog_style_manager.cpp:479
 msgid "New catalog entry"
 msgstr "Új bejegyzés"
 
-#: ../src/dialog_style_manager.cpp:453
+#: ../src/dialog_style_manager.cpp:479
 msgid "New storage name:"
 msgstr "Új tároló neve:"
 
-#: ../src/dialog_style_manager.cpp:468
+#: ../src/dialog_style_manager.cpp:494
 msgid "A catalog with that name already exists."
 msgstr "Ilyen nevű tároló már van a listában."
 
-#: ../src/dialog_style_manager.cpp:468
+#: ../src/dialog_style_manager.cpp:494
 msgid "Catalog name conflict"
 msgstr "Tárolónév hiba"
 
-#: ../src/dialog_style_manager.cpp:475
+#: ../src/dialog_style_manager.cpp:501
 #, c-format
 msgid ""
 "The specified catalog name contains one or more illegal characters. They "
@@ -4296,87 +4338,68 @@ msgstr ""
 "alulvonással lettek helyettesítve.\n"
 "A tároló új neve: \"%s\"."
 
-#: ../src/dialog_style_manager.cpp:476
+#: ../src/dialog_style_manager.cpp:502
 msgid "Invalid characters"
 msgstr "Érvénytelen karakter"
 
-#: ../src/dialog_style_manager.cpp:489
+#: ../src/dialog_style_manager.cpp:515
 #, c-format
 msgid "Are you sure you want to delete the storage \"%s\" from the catalog?"
 msgstr "Biztos, hogy törölni akarja a(z) \"%s\" nevű letárolt stíluslistát?"
 
-#: ../src/dialog_style_manager.cpp:490
+#: ../src/dialog_style_manager.cpp:516
 msgid "Confirm delete"
 msgstr "Törlés megerősítése"
 
-#: ../src/dialog_style_manager.cpp:508 ../src/dialog_style_manager.cpp:535
-#: ../src/dialog_style_manager.cpp:714
-msgid "Style name collision"
-msgstr "Stílusnév ütközés"
-
-#: ../src/dialog_style_manager.cpp:508
-#, c-format
-msgid ""
-"There is already a style with the name \"%s\" in the current storage. "
-"Overwrite?"
-msgstr "A jelenlegi tároló már tartalmaz egy \"%s\" nevű stílust. Felülírja?"
-
-#: ../src/dialog_style_manager.cpp:535 ../src/dialog_style_manager.cpp:713
-#, c-format
-msgid ""
-"There is already a style with the name \"%s\" in the current script. "
-"Overwrite?"
-msgstr "A jelenlegi felirat már tartalmaz egy \"%s\" nevű stílust. Felülírja?"
-
-#: ../src/dialog_style_manager.cpp:546
+#: ../src/dialog_style_manager.cpp:592
 msgid "style copy"
 msgstr "stílus másolás"
 
-#: ../src/dialog_style_manager.cpp:575
+#: ../src/dialog_style_manager.cpp:621
 msgid "style paste"
 msgstr "stílus beillesztés"
 
-#: ../src/dialog_style_manager.cpp:619
+#: ../src/dialog_style_manager.cpp:665
 msgid "Confirm delete from storage"
 msgstr "A tárolóból való törlés megerősítése"
 
-#: ../src/dialog_style_manager.cpp:658
+#: ../src/dialog_style_manager.cpp:704
 msgid "Confirm delete from current"
 msgstr "A jelenlegi feliratból való törlés megerősítése"
 
-#: ../src/dialog_style_manager.cpp:662
+#: ../src/dialog_style_manager.cpp:708
 msgid "style delete"
 msgstr "stílus törlés"
 
-#: ../src/dialog_style_manager.cpp:698
+#: ../src/dialog_style_manager.cpp:744
 msgid "Error Importing Styles"
 msgstr "Hiba a stílusok importálásakor"
 
-#: ../src/dialog_style_manager.cpp:698
+#: ../src/dialog_style_manager.cpp:744
 msgid "The selected file has no available styles."
 msgstr "A kiválasztott fájlban nincsenek elérhető stílusok."
 
-#: ../src/dialog_style_manager.cpp:704
+#: ../src/dialog_style_manager.cpp:750
 msgid "Choose styles to import:"
 msgstr "Válassza ki az importálni kívánt stílusokat:"
 
-#: ../src/dialog_style_manager.cpp:704
+#: ../src/dialog_style_manager.cpp:750
 msgid "Import Styles"
 msgstr "Stílusok importálása"
 
-#: ../src/dialog_style_manager.cpp:730
+#: ../src/dialog_style_manager.cpp:786
 msgid "style import"
 msgstr "stílus importálás"
 
-#: ../src/dialog_style_manager.cpp:839
+#: ../src/dialog_style_manager.cpp:895
 msgid "Are you sure? This cannot be undone!"
 msgstr "Biztos benne? Később már nem lehet visszavonni!"
 
-#: ../src/dialog_style_manager.cpp:839
+#: ../src/dialog_style_manager.cpp:895
 msgid "Sort styles"
 msgstr "stílusok rendezése"
 
-#: ../src/dialog_style_manager.cpp:880
+#: ../src/dialog_style_manager.cpp:936
 msgid "style move"
 msgstr "stílus mozgatása"
 
@@ -4804,7 +4827,7 @@ msgstr "Felirat felbontásának módosítása (keret eltávolítása)"
 msgid "Resample script"
 msgstr "Felbontás módosítása"
 
-#: ../src/dialog_video_properties.cpp:163
+#: ../src/dialog_video_properties.cpp:164
 msgid "change script resolution"
 msgstr "felirat felbontás változtatás"
 
@@ -5020,11 +5043,11 @@ msgstr "CPS"
 msgid "Characters Per Second"
 msgstr "Másodpercenkénti karakterszám"
 
-#: ../src/hotkey.cpp:261
+#: ../src/hotkey.cpp:263
 msgid "Invalid command name for hotkey"
 msgstr "Érvénytelen gyorsgomb parancsnév"
 
-#: ../src/main.cpp:246
+#: ../src/main.cpp:268
 #, c-format
 msgid ""
 "Oops, Aegisub has crashed!\n"
@@ -5043,11 +5066,11 @@ msgstr ""
 "\n"
 "Az Aegisub most bezáródik."
 
-#: ../src/main.cpp:273
+#: ../src/main.cpp:302
 msgid "Check for updates?"
 msgstr "Frissítések keresése?"
 
-#: ../src/main.cpp:273
+#: ../src/main.cpp:302
 msgid ""
 "Do you want Aegisub to check for updates whenever it starts? You can still "
 "do it manually via the Help menu."
@@ -5055,11 +5078,11 @@ msgstr ""
 "Szeretné, ha az Aegisub minden indításkor a program frissebb verziója után "
 "keresne? Ezt kézzel is megteheti a Súgó menüponton keresztül."
 
-#: ../src/main.cpp:390 ../src/main.cpp:393
+#: ../src/main.cpp:420 ../src/main.cpp:423
 msgid "Program error"
 msgstr "Programhiba"
 
-#: ../src/main.cpp:407
+#: ../src/main.cpp:437
 #, c-format
 msgid ""
 "An unexpected error has occurred. Please save your work and restart "
@@ -5084,19 +5107,19 @@ msgstr "&Mostanában megnyitott"
 msgid "No Automation macros loaded"
 msgstr "Automatizációs makrók nem kerültek betöltésre."
 
-#: ../src/mkv_wrap.cpp:238
+#: ../src/mkv_wrap.cpp:241
 msgid "Choose which track to read:"
 msgstr "Beolvasandó sáv kiválasztása:"
 
-#: ../src/mkv_wrap.cpp:238
+#: ../src/mkv_wrap.cpp:241
 msgid "Multiple subtitle tracks found"
 msgstr "Több feliratsávot találtam"
 
-#: ../src/mkv_wrap.cpp:283
+#: ../src/mkv_wrap.cpp:286
 msgid "Parsing Matroska"
 msgstr "Matroska elemzése"
 
-#: ../src/mkv_wrap.cpp:283
+#: ../src/mkv_wrap.cpp:286
 msgid "Reading subtitles from Matroska file."
 msgstr "Felirat beolvasása a Matroska fájlból..."
 
@@ -5865,11 +5888,27 @@ msgstr "Dekódoló threadek"
 msgid "Enable unsafe seeking"
 msgstr "Nem megbízható videoléptetés engedése"
 
-#: ../src/preferences.cpp:599
+#: ../src/preferences.cpp:473
+msgid "Plugins"
+msgstr ""
+
+#: ../src/preferences.cpp:475
+msgid "Wakatime"
+msgstr ""
+
+#: ../src/preferences.cpp:476
+msgid "Enable Debug Logs"
+msgstr ""
+
+#: ../src/preferences.cpp:480
+msgid "API Key"
+msgstr ""
+
+#: ../src/preferences.cpp:617
 msgid "Hotkeys"
 msgstr "Gyorsgombok"
 
-#: ../src/preferences.cpp:697
+#: ../src/preferences.cpp:715
 msgid ""
 "Are you sure that you want to restore the defaults? All your settings will "
 "be overridden."
@@ -5877,15 +5916,15 @@ msgstr ""
 "Biztos, hogy vissza akarja állítani az alapértelmezett értékeket? Minden "
 "mostani beállítás felül fog íródni."
 
-#: ../src/preferences.cpp:697
+#: ../src/preferences.cpp:715
 msgid "Restore defaults?"
 msgstr "Alapértelmezések visszaállítása?"
 
-#: ../src/preferences.cpp:715
+#: ../src/preferences.cpp:733
 msgid "Preferences"
 msgstr "Beállítások"
 
-#: ../src/preferences.cpp:743
+#: ../src/preferences.cpp:762
 msgid "&Restore Defaults"
 msgstr "&Alapértelmezések visszaállítása"
 
@@ -5976,7 +6015,7 @@ msgstr ""
 "\n"
 "Az alábbi kimeneti vezérlők kerültek kipróbálásra:\n"
 
-#: ../src/resolution_resampler.cpp:288
+#: ../src/resolution_resampler.cpp:301
 msgid "resolution resampling"
 msgstr "felbontás módosítás"
 
@@ -5995,25 +6034,25 @@ msgstr[1] "%i egyezés cserélésre került."
 msgid "No matches found."
 msgstr "Nincs egyezés."
 
-#: ../src/subs_controller.cpp:246
+#: ../src/subs_controller.cpp:249
 #, c-format
 msgid "Do you want to save changes to %s?"
 msgstr "El akarja menteni a %s változásait?"
 
-#: ../src/subs_controller.cpp:246
+#: ../src/subs_controller.cpp:249
 msgid "Unsaved changes"
 msgstr "Nem mentett változások"
 
-#: ../src/subs_controller.cpp:279
+#: ../src/subs_controller.cpp:282
 #, c-format
 msgid "File backup saved as \"%s\"."
 msgstr "Automatikus mentés: \"%s\"."
 
-#: ../src/subs_controller.cpp:404
+#: ../src/subs_controller.cpp:407
 msgid "Untitled"
 msgstr "Névtelen"
 
-#: ../src/subs_controller.cpp:406
+#: ../src/subs_controller.cpp:409
 msgid "untitled"
 msgstr "névtelen"
 
@@ -6345,18 +6384,6 @@ msgid "&Make times continuous (change end)"
 msgstr "Idők folytonossá tétele (&vége illesztése)"
 
 #: default_menu.json:0
-msgid "Make Times Continuous"
-msgstr "Sorok folytonossá tétele"
-
-#: default_menu.json:0
-msgid "Set &Zoom"
-msgstr "N&agyítás beállítása"
-
-#: default_menu.json:0
-msgid "Override &AR"
-msgstr "K&éparány felülbírálása"
-
-#: default_menu.json:0
 msgid "&File"
 msgstr "&Fájl"
 
@@ -6405,6 +6432,18 @@ msgid "Sort Selected Lines"
 msgstr "Kijelölt sorok rendezése"
 
 #: default_menu.json:0
+msgid "Make Times Continuous"
+msgstr "Sorok folytonossá tétele"
+
+#: default_menu.json:0
+msgid "Set &Zoom"
+msgstr "N&agyítás beállítása"
+
+#: default_menu.json:0
+msgid "Override &AR"
+msgstr "K&éparány felülbírálása"
+
+#: default_menu.json:0
 msgid "Window"
 msgstr ""
 
@@ -6428,7 +6467,7 @@ msgstr ""
 msgid "Export As..."
 msgstr ""
 
-#: default_hotkey.json:244:
+#: default_hotkey.json:268:
 msgid "Subtitle Edit Box"
 msgstr "Feliratszerkesztő ablak"
 
@@ -6604,6 +6643,22 @@ msgstr ""
 msgid "Fully scriptable through the Automation module"
 msgstr ""
 
+#: ../packages/desktop/aegisub.metainfo.xml.in.in:36
+msgid "anime"
+msgstr ""
+
+#: ../packages/desktop/aegisub.metainfo.xml.in.in:37
+msgid "movie"
+msgstr ""
+
+#: ../packages/desktop/aegisub.metainfo.xml.in.in:38
+msgid "subtitle"
+msgstr ""
+
+#: ../packages/desktop/aegisub.metainfo.xml.in.in:39
+msgid "translate"
+msgstr ""
+
 #: ../packages/desktop/aegisub.metainfo.xml.in.in:43
 msgid "Typesetting"
 msgstr ""
@@ -6614,6 +6669,10 @@ msgstr ""
 
 #: ../packages/desktop/aegisub.metainfo.xml.in.in:51
 msgid "Audio timing"
+msgstr ""
+
+#: ../packages/desktop/aegisub.metainfo.xml.in.in:56
+msgid "Aegisub Group"
 msgstr ""
 
 #: packages/win_installer/fragment_strings.iss:1
@@ -6646,6 +6705,10 @@ msgstr ""
 "ingyenesen használhatja, viszont a fejlesztők semmiféle garanciát nem "
 "vállalnak a program működéséért.%n%nTovábbi információkért látogasson el az "
 "Aegisub weboldalára, ahol többek között beszerezheti a program forráskódját."
+
+#, c-format
+#~ msgid "Built by %s on %s."
+#~ msgstr "Összeállítva %s által. Dátum: %s."
 
 #~ msgid "Drawings"
 #~ msgstr "Rajzok"
