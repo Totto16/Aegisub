@@ -372,6 +372,89 @@ elif cc.has_header_symbol('malloc.h', 'alloca', prefix: '#include <stdlib.h>')
     conf.set('HAVE_MALLOC_H', true)
 endif
 
+
+enable_js_automation = false
+
+js_deps = []
+js_include_dirs = []
+
+if get_option('enable_js_automation').allowed()
+    cpp = meson.get_compiler('cpp')
+
+    all_deps_found = true
+
+    foreach dep_name : ['v8', 'v8_libbase', 'v8_libplatform', 'v8_libsampler', 'node', 'uv']
+        local_dep = cpp.find_library(
+            dep_name,
+            required: get_option('enable_js_automation').enabled(),
+        )
+
+        if not local_dep.found()
+            all_deps_found = false
+        else
+            js_deps += local_dep
+        endif
+
+    endforeach
+
+    found_include_dirs = true
+
+    foreach def : [['node', 'node.h'], ['node', 'v8.h'], ['nodejs/deps/uv/include/', 'uv.h']]
+        local_found = false
+        foreach idir : ['/usr/include', '/usr/local/include']
+
+            subdir = def[0]
+            header = def[1]
+
+            dir = idir / subdir
+            if not local_found and cpp.has_header(header, args: '-I' + dir)
+                js_include_dirs += dir
+                local_found = true
+            endif
+        endforeach
+
+        if not local_found
+            found_include_dirs = false
+        endif
+    endforeach
+
+    if not found_include_dirs and get_option('enable_js_automation').enabled()
+        error('Not all headers could be found!')
+    endif
+
+    if all_deps_found and found_include_dirs
+        enable_js_automation = true
+        js_include_dirs = include_directories(js_include_dirs)
+        deps += js_deps
+    endif
+endif
+
+
+if enable_js_automation
+    conf.set('ENABLE_JS_AUTOMATION', true)
+
+    node_js_version = 20
+
+    if (
+        not cpp.compiles(
+            '''
+#include "node_version.h"
+
+int main(void){
+static_assert(NODE_MAJOR_VERSION == ''' + node_js_version.to_string() + ''', "Wrong node js version");
+}
+''',
+            dependencies: js_deps,
+            include_directories: js_include_dirs,
+        )
+    )
+        error('Required node.js version ' + node_js_version.to_string())
+
+    endif
+
+
+endif
+
 aegisub_order_dep = []
 aegisub_defines = []
 
@@ -397,12 +480,15 @@ else
     endif
 endif
 
+
+general_inc = []
+
 subdir('automation')
 subdir('libaegisub')
 subdir('packages')
 subdir('po')
 subdir('src')
-if get_option('tests')
+if get_option('tests').allowed()
     subdir('tests')
 endif
 
@@ -423,7 +509,7 @@ aegisub = executable('aegisub', aegisub_src, version_h, resrc, aegisub_order_dep
                      link_with: [libresrc, libaegisub],
                      link_args: link_args,
                      link_depends: link_depends,
-                     include_directories: [libaegisub_inc, libresrc_inc, version_inc, include_directories('src')],
+                     include_directories: [general_inc,libaegisub_inc, libresrc_inc, version_inc, include_directories('src')],
                      cpp_pch: aegisub_cpp_pch,
                      c_pch: aegisub_c_pch,
                      install: true,

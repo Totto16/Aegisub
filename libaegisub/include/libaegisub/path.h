@@ -17,7 +17,7 @@
 #pragma once
 
 
-#include <libaegisub/fs_fwd.h>
+#include <libaegisub/fs.h>
 
 #include <array>
 

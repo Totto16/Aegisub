@@ -1,3 +1,7 @@
+all_test_deps = []
+all_test_dep_libs = []
+all_test_sources = []
+
 gtest_ver = '>=1.14.0'
 gtest_dep = dependency('gtest', 
                        fallback : ['gtest', 'gtest_dep'], 
@@ -12,7 +16,7 @@ gtest_dep = gtest_proj.get_variable('gtest_dep')
 gmock_dep = gtest_proj.get_variable('gmock_dep')
 
 
-all_test_deps += [gtest_dep, gmock_dep, iconv_dep, boost_dep, js_deps]
+all_test_deps += [gtest_dep, gmock_dep, boost_dep, js_deps]
 all_test_dep_libs += [libaegisub]
 
 if enable_js_automation
@@ -54,7 +58,7 @@ all_test_sources += [
     'tests/word_split.cpp',
 ]
 
-tests_inc = include_directories('support')
+test_inc = include_directories('support')
 
 tests_args = []
 
@@ -68,9 +72,8 @@ endif
 runner = executable(
     'gtest-main',
     all_test_sources,
-    include_directories: [test_inc, libaegisub_inc, deps_inc, js_include_dirs],
+    include_directories: [test_inc, libaegisub_inc, js_include_dirs],
     dependencies: all_test_deps,
-    cpp_args: extra_args,
     link_with: all_test_dep_libs,
 )
 test('gtest main', runner)
