@@ -16,7 +16,7 @@
 
 #include <cstddef>
 
-#ifdef _LIBCPP_VERSION
+#if defined(_LIBCPP_VERSION) || defined(__clang__)
 #include <thread>
 #else
 #include <boost/thread.hpp>
@@ -26,7 +26,7 @@ namespace agi { namespace util {
 void SetThreadName(const char *) { }
 
 void sleep_for(int ms) {
-#ifdef __clang__
+#if defined(_LIBCPP_VERSION) || defined(__clang__)
 	std::this_thread::sleep_for(std::chrono::milliseconds(ms));
 #else
 	boost::this_thread::sleep_for(boost::chrono::milliseconds(ms));
