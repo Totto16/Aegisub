@@ -139,7 +139,7 @@ else
         build_shared = false
     endif
     build_type = 'Release'
-    if get_option('buildtype') == 'debug'
+    if get_option('buildtype') == 'debug' or get_option('buildtype') == 'debugoptimized'
         build_type = 'Debug'
     endif
 
@@ -164,6 +164,13 @@ else
         wx.dependency('wxmono'),
         wx.dependency('wxscintilla')
     ]
+
+    if not build_shared
+        deps += [
+            dependency('gtk+-3.0'),
+            dependency('wayland-egl')
+        ]
+    endif
 
     if host_machine.system() == 'windows' or host_machine.system() == 'darwin'
         deps += [
