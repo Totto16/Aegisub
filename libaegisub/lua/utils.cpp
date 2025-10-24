@@ -23,6 +23,7 @@
 #include <boost/range/adaptor/reversed.hpp>
 
 #include <regex>
+#include <iostream>
 
 #ifdef _MSC_VER
 // Disable warnings for noreturn functions having return types
@@ -213,6 +214,20 @@ void argcheck(lua_State *L, bool cond, int narg, const char *msg) {
 	if (!cond) argerror(L, narg, msg);
 }
 
+#if defined(__GNUC__)
+#include <cxxabi.h>
+
+static std::string util_demangle(std::string to_demangle)
+{
+    int status = 0;
+    char * buff = __cxxabiv1::__cxa_demangle(to_demangle.c_str(), NULL, NULL, &status);
+    std::string demangled = buff;
+    std::free(buff);
+    return demangled;
+}
+
+#endif
+
 int exception_wrapper(lua_State *L, int (*func)(lua_State *L)) {
 	try {
 		return func(L);
@@ -230,6 +245,11 @@ int exception_wrapper(lua_State *L, int (*func)(lua_State *L)) {
 		return lua_error(L);
 	}
 	catch (...) {
+#if defined(__GNUC__)
+		std::cerr << "\nUnknown exception type: '" << util_demangle(__cxxabiv1::__cxa_current_exception_type()->name()) << "'\n";
+#else
+		std::cerr << "Unknown exception type\n";
+#endif
 		std::terminate();
 	}
 }
