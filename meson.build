@@ -155,7 +155,9 @@ else
         'wxUSE_WEBVIEW': false,         # breaks build on linux
         'CMAKE_BUILD_TYPE': build_type,
         'wxUSE_IMAGE': true,
-        'wxBUILD_MONOLITHIC': true      # otherwise breaks project generation w/ meson
+        'wxBUILD_MONOLITHIC': true,      # otherwise breaks project generation w/ meson
+
+        'wxUSE_GLCANVAS_EGL': 'OFF' # disable wayland
     })
 
     wx = cmake.subproject('wxWidgets', options: opt_var)
@@ -168,8 +170,8 @@ else
     if not build_shared
         deps += [
             dependency('gtk+-3.0'),
-            dependency('wayland-egl')
         ]
+        
     endif
 
     if host_machine.system() == 'windows' or host_machine.system() == 'darwin'
