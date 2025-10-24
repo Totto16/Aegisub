@@ -162,7 +162,6 @@ else
 
     deps += [
         wx.dependency('wxmono'),
-        wx.dependency('wxregex'),
         wx.dependency('wxscintilla')
     ]
 
