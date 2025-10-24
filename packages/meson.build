@@ -23,7 +23,7 @@ elif host_machine.system() == 'darwin'
                command: [build_dmg_sh, meson.project_source_root(), meson.project_build_root(), meson.project_version()])
 else
     aegisub_rdns_developer = 'org.aegisub'
-    aegisub_rdns_name = aegisub_rdns_developer + '.Aegisub'
+    aegisub_rdns_name = 'aegisub'
     conf_pkg.set('AEGISUB_COMMAND', 'aegisub')
     conf_pkg.set('AEGISUB_RDNS_DEVELOPER', aegisub_rdns_developer)
     conf_pkg.set('AEGISUB_RDNS_NAME', aegisub_rdns_name)
